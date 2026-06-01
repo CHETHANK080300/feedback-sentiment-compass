@@ -1,10 +1,40 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
-  LayoutDashboard, Activity, MessageSquare, ClipboardList, Star,
-  Share2, Headphones, Rocket, AlertTriangle, SmilePlus, Sparkles,
-  Globe2, FileBarChart, Bot, Settings, Search, Bell, ChevronDown,
+  LayoutDashboard,
+  Activity,
+  MessageSquare,
+  ClipboardList,
+  Star,
+  Share2,
+  Headphones,
+  Rocket,
+  AlertTriangle,
+  SmilePlus,
+  Sparkles,
+  Globe2,
+  FileBarChart,
+  Bot,
+  Settings,
+  Search,
+  Bell,
+  ChevronDown,
+  Check,
 } from "lucide-react";
 import type { ReactNode } from "react";
+import {
+  useFilters,
+  type DateRange,
+  type Application,
+  type Country,
+} from "@/hooks/useFilters";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const nav = [
   { to: "/", label: "Executive Overview", icon: LayoutDashboard },
@@ -24,7 +54,15 @@ const nav = [
   { to: "/admin", label: "Administration", icon: Settings },
 ] as const;
 
-export function DashboardLayout({ children, title, subtitle }: { children: ReactNode; title: string; subtitle?: string }) {
+export function DashboardLayout({
+  children,
+  title,
+  subtitle,
+}: {
+  children: ReactNode;
+  title: string;
+  subtitle?: string;
+}) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
@@ -36,12 +74,18 @@ export function DashboardLayout({ children, title, subtitle }: { children: React
             <Sparkles className="h-5 w-5 text-primary-foreground" />
           </div>
           <div className="leading-tight">
-            <div className="font-display text-sm font-bold tracking-tight">CXIP</div>
-            <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Intelligence</div>
+            <div className="font-display text-sm font-bold tracking-tight">
+              CXIP
+            </div>
+            <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
+              Intelligence
+            </div>
           </div>
         </div>
         <nav className="flex-1 overflow-y-auto p-3">
-          <div className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Workspace</div>
+          <div className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+            Workspace
+          </div>
           {nav.map((item) => {
             const Icon = item.icon;
             const active = pathname === item.to;
@@ -55,7 +99,9 @@ export function DashboardLayout({ children, title, subtitle }: { children: React
                     : "text-sidebar-foreground hover:bg-sidebar-accent/50"
                 }`}
               >
-                <Icon className={`h-4 w-4 ${active ? "text-primary" : "text-muted-foreground group-hover:text-foreground"}`} />
+                <Icon
+                  className={`h-4 w-4 ${active ? "text-primary" : "text-muted-foreground group-hover:text-foreground"}`}
+                />
                 <span className="truncate">{item.label}</span>
               </Link>
             );
@@ -63,10 +109,14 @@ export function DashboardLayout({ children, title, subtitle }: { children: React
         </nav>
         <div className="border-t border-sidebar-border p-4">
           <div className="flex items-center gap-3 rounded-lg bg-sidebar-accent/50 p-2">
-            <div className="grid h-8 w-8 place-items-center rounded-full bg-gradient-accent text-xs font-semibold">AS</div>
+            <div className="grid h-8 w-8 place-items-center rounded-full bg-gradient-accent text-xs font-semibold">
+              AS
+            </div>
             <div className="flex-1 leading-tight">
               <div className="text-xs font-medium">Aarav Singh</div>
-              <div className="text-[10px] text-muted-foreground">Product Director</div>
+              <div className="text-[10px] text-muted-foreground">
+                Product Director
+              </div>
             </div>
           </div>
         </div>
@@ -96,8 +146,12 @@ export function DashboardLayout({ children, title, subtitle }: { children: React
         <main className="px-6 py-6">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-2">
             <div>
-              <h1 className="font-display text-3xl font-bold tracking-tight">{title}</h1>
-              {subtitle && <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>}
+              <h1 className="font-display text-3xl font-bold tracking-tight">
+                {title}
+              </h1>
+              {subtitle && (
+                <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
+              )}
             </div>
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <span className="flex h-2 w-2 rounded-full bg-success animate-pulse" />
@@ -112,19 +166,101 @@ export function DashboardLayout({ children, title, subtitle }: { children: React
 }
 
 function GlobalFilters() {
-  const chips = [
-    { label: "Last 7 Days" },
-    { label: "All Apps" },
-    { label: "Global" },
-  ];
+  const { filters, setFilters } = useFilters();
+
+  const dateLabels: Record<DateRange, string> = {
+    today: "Today",
+    yesterday: "Yesterday",
+    "7d": "Last 7 Days",
+    "30d": "Last 30 Days",
+    quarter: "Last Quarter",
+    custom: "Custom Range",
+  };
+
+  const appLabels: Record<Application, string> = {
+    retail: "Retail Banking",
+    corporate: "Corporate Banking",
+    wealth: "Wealth Banking",
+    all: "All Applications",
+  };
+
+  const countryLabels: Record<Country, string> = {
+    india: "India",
+    malaysia: "Malaysia",
+    singapore: "Singapore",
+    global: "Global",
+  };
+
   return (
     <div className="hidden md:flex items-center gap-1.5">
-      {chips.map((c) => (
-        <button key={c.label} className="flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:border-primary/50">
-          {c.label}
+      <DropdownMenu>
+        <DropdownMenuTrigger className="flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:border-primary/50">
+          {dateLabels[filters.dateRange]}
           <ChevronDown className="h-3 w-3 text-muted-foreground" />
-        </button>
-      ))}
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-48">
+          <DropdownMenuLabel>Date Range</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          {(Object.keys(dateLabels) as DateRange[]).map((key) => (
+            <DropdownMenuItem
+              key={key}
+              onClick={() => setFilters((f) => ({ ...f, dateRange: key }))}
+              className="flex items-center justify-between"
+            >
+              {dateLabels[key]}
+              {filters.dateRange === key && (
+                <Check className="h-3.5 w-3.5 text-primary" />
+              )}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger className="flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:border-primary/50">
+          {appLabels[filters.application]}
+          <ChevronDown className="h-3 w-3 text-muted-foreground" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-48">
+          <DropdownMenuLabel>Application</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          {(Object.keys(appLabels) as Application[]).map((key) => (
+            <DropdownMenuItem
+              key={key}
+              onClick={() => setFilters((f) => ({ ...f, application: key }))}
+              className="flex items-center justify-between"
+            >
+              {appLabels[key]}
+              {filters.application === key && (
+                <Check className="h-3.5 w-3.5 text-primary" />
+              )}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger className="flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:border-primary/50">
+          {countryLabels[filters.country]}
+          <ChevronDown className="h-3 w-3 text-muted-foreground" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-48">
+          <DropdownMenuLabel>Country</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          {(Object.keys(countryLabels) as Country[]).map((key) => (
+            <DropdownMenuItem
+              key={key}
+              onClick={() => setFilters((f) => ({ ...f, country: key }))}
+              className="flex items-center justify-between"
+            >
+              {countryLabels[key]}
+              {filters.country === key && (
+                <Check className="h-3.5 w-3.5 text-primary" />
+              )}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }
