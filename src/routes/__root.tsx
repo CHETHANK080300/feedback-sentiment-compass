@@ -6,12 +6,16 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  useNavigate,
+  useLocation,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
-import { FilterProvider } from "../hooks/useFilters";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { FilterProvider } from "../hooks/useFilters";
+import { AuthProvider, useAuth } from "../hooks/useAuth";
+import { ThemeProvider } from "../hooks/useTheme";
 
 function NotFoundComponent() {
   return (
@@ -135,13 +139,33 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function AuthGuard({ children }: { children: ReactNode }) {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!isAuthenticated && location.pathname !== "/login") {
+      navigate({ to: "/login" });
+    }
+  }, [isAuthenticated, navigate, location.pathname]);
+
+  return <>{children}</>;
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <FilterProvider>
-        <Outlet />
-      </FilterProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <FilterProvider>
+            <AuthGuard>
+              <Outlet />
+            </AuthGuard>
+          </FilterProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

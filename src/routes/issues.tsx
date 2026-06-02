@@ -10,6 +10,9 @@ import {
   Zap,
   Layers,
 } from "lucide-react";
+import { InlineFilters } from "@/components/dashboard/InlineFilters";
+import { useFilters } from "@/hooks/useFilters";
+import { useMemo } from "react";
 
 export const Route = createFileRoute("/issues")({
   head: () => ({
@@ -25,7 +28,7 @@ export const Route = createFileRoute("/issues")({
   component: IssueIntelligence,
 });
 
-const clusters = [
+const clustersData = [
   {
     id: "login-failure",
     title: "Login Failure",
@@ -35,6 +38,8 @@ const clusters = [
     status: "Active",
     description:
       "Users unable to authenticate after 5.2 update, primarily biometric fallback issues.",
+    app: "retail",
+    country: "malaysia",
   },
   {
     id: "upi-timeout",
@@ -45,6 +50,8 @@ const clusters = [
     status: "Investigating",
     description:
       "Payment gateway timeouts during peak hours (19:00-21:00 IST).",
+    app: "retail",
+    country: "india",
   },
   {
     id: "app-crash",
@@ -55,6 +62,8 @@ const clusters = [
     status: "Fixing",
     description:
       "Cold start crash on Android 14 devices related to analytics SDK init.",
+    app: "retail",
+    country: "india",
   },
   {
     id: "slow-loading",
@@ -64,6 +73,8 @@ const clusters = [
     trend: "+8%",
     status: "Active",
     description: "Latency regression in account aggregation API endpoint.",
+    app: "corporate",
+    country: "singapore",
   },
 ];
 
@@ -74,18 +85,34 @@ const sevColor: Record<string, string> = {
 };
 
 function IssueIntelligence() {
+  const { filters } = useFilters();
+
+  const filteredClusters = useMemo(() => {
+    return clustersData.filter((c) => {
+      const appMatch =
+        filters.application === "all" || c.app === filters.application;
+      const countryMatch =
+        filters.country === "global" || c.country === filters.country;
+      return appMatch && countryMatch;
+    });
+  }, [filters]);
+
   return (
     <DashboardLayout
       title="Issue Intelligence"
       subtitle="AI-driven clustering and root cause analysis of customer complaints"
     >
+      <InlineFilters />
+
       <div className="grid gap-4 md:grid-cols-3 mb-6">
         <Panel
           title="Emerging Issues"
           action={<Zap className="h-4 w-4 text-warning" />}
         >
           <div className="py-2">
-            <h4 className="text-sm font-semibold mb-1">Beneficiary Add Loop</h4>
+            <h4 className="text-sm font-semibold mb-1 text-foreground">
+              Beneficiary Add Loop
+            </h4>
             <p className="text-xs text-muted-foreground">
               Detected 15m ago · 45 users affected
             </p>
@@ -104,7 +131,12 @@ function IssueIntelligence() {
           action={<ShieldAlert className="h-4 w-4 text-critical" />}
         >
           <div className="flex items-end justify-between">
-            <div className="text-3xl font-bold">03</div>
+            <div className="text-3xl font-bold text-foreground">
+              {String(
+                filteredClusters.filter((c) => c.severity === "critical")
+                  .length,
+              ).padStart(2, "0")}
+            </div>
             <div className="text-xs text-muted-foreground mb-1">
               Clusters requiring action
             </div>
@@ -115,7 +147,7 @@ function IssueIntelligence() {
           action={<Layers className="h-4 w-4 text-info" />}
         >
           <div className="flex items-end justify-between">
-            <div className="text-3xl font-bold">4.2h</div>
+            <div className="text-3xl font-bold text-foreground">4.2h</div>
             <div className="text-xs text-muted-foreground mb-1">
               -15% from last week
             </div>
@@ -125,12 +157,14 @@ function IssueIntelligence() {
 
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="font-display text-xl font-bold">Issue Clusters</h2>
+          <h2 className="font-display text-xl font-bold text-foreground">
+            Issue Clusters
+          </h2>
           <div className="flex gap-2">
             {["All", "Critical", "High", "Medium"].map((f) => (
               <button
                 key={f}
-                className="px-3 py-1 bg-muted/50 rounded-lg text-xs font-medium border border-border/50 hover:bg-muted transition-colors"
+                className="px-3 py-1 bg-muted/50 rounded-lg text-xs font-medium border border-border/50 hover:bg-muted transition-colors text-foreground"
               >
                 {f}
               </button>
@@ -138,57 +172,66 @@ function IssueIntelligence() {
           </div>
         </div>
 
-        <div className="grid gap-4 lg:grid-cols-2">
-          {clusters.map((c) => (
-            <Link
-              key={c.id}
-              to="/issues/$issueId"
-              params={{ issueId: c.id }}
-              className="group block bg-card border border-border rounded-xl p-5 hover:border-primary/40 transition-all shadow-sm hover:shadow-md"
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className={`p-2 rounded-lg ${sevColor[c.severity]}`}>
-                    <AlertTriangle className="h-5 w-5" />
+        {filteredClusters.length > 0 ? (
+          <div className="grid gap-4 lg:grid-cols-2">
+            {filteredClusters.map((c) => (
+              <Link
+                key={c.id}
+                to="/issues/$issueId"
+                params={{ issueId: c.id }}
+                className="group block bg-card border border-border rounded-xl p-5 hover:border-primary/40 transition-all shadow-sm hover:shadow-md"
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className={`p-2 rounded-lg ${sevColor[c.severity]}`}>
+                      <AlertTriangle className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold group-hover:text-primary transition-colors text-foreground">
+                        {c.title}
+                      </h3>
+                      <div className="text-[10px] text-muted-foreground uppercase tracking-widest mt-0.5">
+                        {c.status}
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-semibold group-hover:text-primary transition-colors">
-                      {c.title}
-                    </h3>
-                    <div className="text-[10px] text-muted-foreground uppercase tracking-widest mt-0.5">
-                      {c.status}
+                  <div className="text-right">
+                    <div
+                      className={`text-sm font-bold flex items-center justify-end gap-1 ${c.trend.startsWith("+") ? "text-critical" : "text-success"}`}
+                    >
+                      <TrendingUp className="h-3.5 w-3.5" /> {c.trend}
+                    </div>
+                    <div className="text-[10px] text-muted-foreground">
+                      Volume Trend
                     </div>
                   </div>
                 </div>
-                <div className="text-right">
-                  <div
-                    className={`text-sm font-bold flex items-center justify-end gap-1 ${c.trend.startsWith("+") ? "text-critical" : "text-success"}`}
-                  >
-                    <TrendingUp className="h-3.5 w-3.5" /> {c.trend}
+                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                  "{c.description}"
+                </p>
+                <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-1.5 text-xs text-foreground">
+                      <Users className="h-3.5 w-3.5 text-muted-foreground" />
+                      <span className="font-medium">{c.users}</span>
+                      <span className="text-muted-foreground">affected</span>
+                    </div>
                   </div>
-                  <div className="text-[10px] text-muted-foreground">
-                    Volume Trend
-                  </div>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-primary flex items-center gap-1">
+                    View Detail <ArrowRight className="h-3 w-3" />
+                  </span>
                 </div>
-              </div>
-              <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                "{c.description}"
-              </p>
-              <div className="flex items-center justify-between pt-4 border-t border-border/50">
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-1.5 text-xs">
-                    <Users className="h-3.5 w-3.5 text-muted-foreground" />
-                    <span className="font-medium">{c.users}</span>
-                    <span className="text-muted-foreground">affected</span>
-                  </div>
-                </div>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-primary flex items-center gap-1">
-                  View Detail <ArrowRight className="h-3 w-3" />
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="bg-card border border-dashed border-border rounded-xl p-12 text-center shadow-sm">
+            <AlertTriangle className="h-8 w-8 text-muted-foreground/30 mx-auto mb-3" />
+            <p className="text-sm text-muted-foreground">
+              No active issue clusters for the selected filters.
+            </p>
+          </div>
+        )}
       </div>
     </DashboardLayout>
   );

@@ -11,6 +11,7 @@ import {
   Cpu,
   ArrowRight,
 } from "lucide-react";
+import { InlineFilters } from "@/components/dashboard/InlineFilters";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -76,24 +77,26 @@ function AdministrationModule() {
       title="Platform Administration"
       subtitle="Configure platform settings, manage users and fine-tune AI intelligence"
     >
+      <InlineFilters />
+
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2 grid gap-4 sm:grid-cols-2">
           {adminSections.map((section) => (
             <div
               key={section.id}
-              className="bg-card border border-border rounded-xl p-5 hover:border-primary/40 transition-all group cursor-pointer"
+              className="bg-card border border-border rounded-xl p-5 hover:border-primary/40 transition-all group cursor-pointer shadow-sm"
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="p-3 bg-muted rounded-xl text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors">
                   <section.icon className="h-6 w-6" />
                 </div>
                 {section.count !== undefined && (
-                  <div className="px-2 py-1 bg-muted/50 rounded text-[10px] font-bold">
+                  <div className="px-2 py-1 bg-muted/50 rounded text-[10px] font-bold text-foreground">
                     {section.count} Active
                   </div>
                 )}
               </div>
-              <h3 className="font-bold mb-1">{section.name}</h3>
+              <h3 className="font-bold mb-1 text-foreground">{section.name}</h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
                 {section.desc}
               </p>
@@ -134,7 +137,9 @@ function AdministrationModule() {
                 <div className="text-[10px] uppercase font-bold text-muted-foreground mb-1">
                   Platform Version
                 </div>
-                <div className="text-sm font-mono">v2.4.8-enterprise</div>
+                <div className="text-sm font-mono text-foreground">
+                  v2.4.8-enterprise
+                </div>
               </div>
             </div>
           </Panel>
@@ -158,8 +163,11 @@ function AdministrationModule() {
                   time: "1d ago",
                 },
               ].map((log, i) => (
-                <div key={i} className="text-xs">
-                  <div className="flex justify-between font-medium mb-0.5">
+                <div
+                  key={i}
+                  className="text-xs p-2 rounded bg-muted/5 border border-border/30"
+                >
+                  <div className="flex justify-between font-bold mb-0.5 text-foreground">
                     <span>{log.user}</span>
                     <span className="text-muted-foreground font-normal">
                       {log.time}
@@ -168,7 +176,7 @@ function AdministrationModule() {
                   <div className="text-muted-foreground">{log.action}</div>
                 </div>
               ))}
-              <button className="w-full mt-2 text-[10px] font-bold text-primary uppercase tracking-widest text-center">
+              <button className="w-full mt-2 text-[10px] font-bold text-primary uppercase tracking-widest text-center hover:opacity-80 transition-opacity">
                 View Full Audit Trail
               </button>
             </div>

@@ -33,6 +33,9 @@ import {
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { KpiCard } from "@/components/dashboard/KpiCard";
 import { Panel } from "@/components/dashboard/Panel";
+import { InlineFilters } from "@/components/dashboard/InlineFilters";
+import { useFilters } from "@/hooks/useFilters";
+import { useMemo } from "react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -158,23 +161,52 @@ const chartTooltipStyle = {
 };
 
 function ExecutiveOverview() {
+  const { filters } = useFilters();
+
+  const filteredKPIs = useMemo(() => {
+    // Basic reactive filtering logic
+    let multiplier = 1.0;
+    if (filters.application === "retail") multiplier = 0.7;
+    if (filters.application === "corporate") multiplier = 0.2;
+    if (filters.application === "wealth") multiplier = 0.1;
+
+    if (filters.country === "india") multiplier *= 0.6;
+    if (filters.country === "malaysia") multiplier *= 0.2;
+    if (filters.country === "singapore") multiplier *= 0.2;
+
+    return {
+      totalFeedback: (48.2 * multiplier).toFixed(1) + "K",
+      avgRating: (4.32 + (multiplier * 0.1 - 0.05)).toFixed(2),
+      nps:
+        "+" +
+        Math.round(
+          58 * multiplier + (filters.application === "corporate" ? 20 : 0),
+        ),
+      csat: Math.round(88 + (multiplier * 5 - 2.5)) + "%",
+      criticalOpen: Math.round(23 * multiplier),
+      activeUsers: (2.4 * multiplier).toFixed(1) + "M",
+    };
+  }, [filters]);
+
   return (
     <DashboardLayout
       title="Executive Overview"
       subtitle="Unified pulse of customer experience across all applications, channels and geographies"
     >
+      <InlineFilters />
+
       {/* KPI grid */}
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5">
         <KpiCard
           label="Applications"
-          value="14"
+          value={filters.application === "all" ? "14" : "1"}
           icon={Smartphone}
           tone="primary"
           delta={0}
         />
         <KpiCard
           label="Total Feedback"
-          value="48.2K"
+          value={filteredKPIs.totalFeedback}
           icon={MessageSquare}
           tone="primary"
           delta={12}
@@ -182,7 +214,7 @@ function ExecutiveOverview() {
         />
         <KpiCard
           label="Avg Rating"
-          value="4.32"
+          value={filteredKPIs.avgRating}
           icon={Star}
           tone="warning"
           delta={3}
@@ -190,7 +222,7 @@ function ExecutiveOverview() {
         />
         <KpiCard
           label="NPS Score"
-          value="+58"
+          value={filteredKPIs.nps}
           icon={Heart}
           tone="success"
           delta={6}
@@ -198,7 +230,7 @@ function ExecutiveOverview() {
         />
         <KpiCard
           label="CSAT"
-          value="88%"
+          value={filteredKPIs.csat}
           icon={ThumbsUp}
           tone="success"
           delta={2}
@@ -221,7 +253,7 @@ function ExecutiveOverview() {
         />
         <KpiCard
           label="Critical Open"
-          value="23"
+          value={String(filteredKPIs.criticalOpen)}
           icon={AlertOctagon}
           tone="critical"
           delta={18}
@@ -236,7 +268,7 @@ function ExecutiveOverview() {
         />
         <KpiCard
           label="Active Users"
-          value="2.4M"
+          value={filteredKPIs.activeUsers}
           icon={Users}
           tone="accent"
           delta={5}
@@ -443,8 +475,11 @@ function ExecutiveOverview() {
                     </span>
                   </div>
                   <div className="mt-1 text-xs text-muted-foreground">
-                    {c.count.toLocaleString()} mentions · {c.trend} this week ·
-                    drill down →
+                    {Math.round(
+                      c.count *
+                        (filteredKPIs.totalFeedback === "48.2K" ? 1 : 0.6),
+                    ).toLocaleString()}{" "}
+                    mentions · {c.trend} this week · drill down →
                   </div>
                 </div>
                 <TrendingUp className="h-4 w-4 text-critical" />
@@ -471,7 +506,10 @@ function ExecutiveOverview() {
                   <div className="mb-1.5 flex items-center justify-between text-sm">
                     <span className="font-medium">{a.label}</span>
                     <span className="text-xs text-muted-foreground">
-                      {a.count.toLocaleString()}
+                      {Math.round(
+                        a.count *
+                          (filteredKPIs.totalFeedback === "48.2K" ? 1 : 0.6),
+                      ).toLocaleString()}
                     </span>
                   </div>
                   <div className="h-2 overflow-hidden rounded-full bg-muted">

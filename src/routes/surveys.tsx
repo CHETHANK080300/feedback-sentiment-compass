@@ -22,6 +22,9 @@ import {
   CheckCircle,
   TrendingUp,
 } from "lucide-react";
+import { InlineFilters } from "@/components/dashboard/InlineFilters";
+import { useFilters } from "@/hooks/useFilters";
+import { useMemo } from "react";
 
 export const Route = createFileRoute("/surveys")({
   head: () => ({
@@ -37,52 +40,6 @@ export const Route = createFileRoute("/surveys")({
   component: SurveyAnalytics,
 });
 
-const surveyStats = [
-  {
-    label: "Total Surveys Sent",
-    value: "12,400",
-    icon: ClipboardList,
-    delta: "+5%",
-  },
-  {
-    label: "Completed Surveys",
-    value: "8,650",
-    icon: CheckCircle,
-    delta: "+8%",
-  },
-  { label: "Completion Rate", value: "69.7%", icon: TrendingUp, delta: "+2%" },
-  {
-    label: "Avg. Completion Time",
-    value: "2m 14s",
-    icon: Clock,
-    delta: "-12s",
-  },
-];
-
-const questionData = [
-  { question: "Ease of Use", rating: 4.2 },
-  { question: "Reliability", rating: 3.8 },
-  { question: "Features", rating: 4.5 },
-  { question: "Support", rating: 4.1 },
-  { question: "Overall Satisfaction", rating: 4.3 },
-];
-
-const funnelData = [
-  { name: "Invited", value: 12400, fill: "var(--chart-1)" },
-  { name: "Opened", value: 9800, fill: "var(--chart-2)" },
-  { name: "Started", value: 8900, fill: "var(--chart-3)" },
-  { name: "Completed", value: 8650, fill: "var(--chart-4)" },
-];
-
-const trendData = [
-  { date: "May 01", rate: 65 },
-  { date: "May 05", rate: 67 },
-  { date: "May 10", rate: 70 },
-  { date: "May 15", rate: 68 },
-  { date: "May 20", rate: 72 },
-  { date: "May 25", rate: 75 },
-];
-
 const chartTooltipStyle = {
   contentStyle: {
     background: "oklch(0.22 0.028 250)",
@@ -94,16 +51,83 @@ const chartTooltipStyle = {
 };
 
 function SurveyAnalytics() {
+  const { filters } = useFilters();
+
+  const stats = useMemo(() => {
+    let multiplier =
+      filters.application === "retail"
+        ? 0.7
+        : filters.application === "corporate"
+          ? 0.2
+          : filters.application === "wealth"
+            ? 0.1
+            : 1.0;
+    if (filters.country !== "global") multiplier *= 0.4;
+
+    return [
+      {
+        label: "Total Surveys Sent",
+        value: Math.round(12400 * multiplier).toLocaleString(),
+        icon: ClipboardList,
+        delta: "+5%",
+      },
+      {
+        label: "Completed Surveys",
+        value: Math.round(8650 * multiplier).toLocaleString(),
+        icon: CheckCircle,
+        delta: "+8%",
+      },
+      {
+        label: "Completion Rate",
+        value: (69.7 + multiplier * 2).toFixed(1) + "%",
+        icon: TrendingUp,
+        delta: "+2%",
+      },
+      {
+        label: "Avg. Completion Time",
+        value: "2m 14s",
+        icon: Clock,
+        delta: "-12s",
+      },
+    ];
+  }, [filters]);
+
+  const questionData = [
+    { question: "Ease of Use", rating: 4.2 },
+    { question: "Reliability", rating: 3.8 },
+    { question: "Features", rating: 4.5 },
+    { question: "Support", rating: 4.1 },
+    { question: "Overall Satisfaction", rating: 4.3 },
+  ];
+
+  const funnelData = [
+    { name: "Invited", value: 12400, fill: "var(--chart-1)" },
+    { name: "Opened", value: 9800, fill: "var(--chart-2)" },
+    { name: "Started", value: 8900, fill: "var(--chart-3)" },
+    { name: "Completed", value: 8650, fill: "var(--chart-4)" },
+  ];
+
+  const trendData = [
+    { date: "May 01", rate: 65 },
+    { date: "May 05", rate: 67 },
+    { date: "May 10", rate: 70 },
+    { date: "May 15", rate: 68 },
+    { date: "May 20", rate: 72 },
+    { date: "May 25", rate: 75 },
+  ];
+
   return (
     <DashboardLayout
       title="Survey Analytics"
       subtitle="Comprehensive breakdown of customer surveys and response sentiment"
     >
+      <InlineFilters />
+
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        {surveyStats.map((stat) => (
+        {stats.map((stat) => (
           <div
             key={stat.label}
-            className="bg-card border border-border rounded-xl p-5"
+            className="bg-card border border-border rounded-xl p-5 shadow-sm"
           >
             <div className="flex items-center justify-between mb-3">
               <div className="p-2 bg-primary/10 rounded-lg">
@@ -122,7 +146,7 @@ function SurveyAnalytics() {
             <div className="text-[10px] uppercase font-bold text-muted-foreground">
               {stat.label}
             </div>
-            <div className="text-2xl font-bold mt-1 tracking-tight">
+            <div className="text-2xl font-bold mt-1 tracking-tight text-foreground">
               {stat.value}
             </div>
           </div>
@@ -204,7 +228,7 @@ function SurveyAnalytics() {
         <div className="space-y-6 max-w-2xl">
           {questionData.map((q) => (
             <div key={q.question}>
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center justify-between mb-2 text-foreground">
                 <span className="text-sm font-medium">{q.question}</span>
                 <span className="text-sm font-bold">{q.rating} / 5.0</span>
               </div>

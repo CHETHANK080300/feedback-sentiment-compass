@@ -13,14 +13,10 @@ import {
   Line,
   Legend,
 } from "recharts";
-import {
-  Rocket,
-  Star,
-  MessageCircle,
-  AlertCircle,
-  ArrowDown,
-  ArrowUp,
-} from "lucide-react";
+import { Rocket, ArrowDown, ArrowUp } from "lucide-react";
+import { InlineFilters } from "@/components/dashboard/InlineFilters";
+import { useFilters } from "@/hooks/useFilters";
+import { useMemo } from "react";
 
 export const Route = createFileRoute("/releases")({
   head: () => ({
@@ -36,50 +32,6 @@ export const Route = createFileRoute("/releases")({
   component: ReleaseImpact,
 });
 
-const releases = [
-  {
-    version: "5.2.1",
-    date: "May 15, 2026",
-    status: "Active",
-    rating: 3.8,
-    prevRating: 4.4,
-    complaints: "+250%",
-  },
-  {
-    version: "5.2.0",
-    date: "May 10, 2026",
-    status: "Rolled Back",
-    rating: 3.2,
-    prevRating: 4.5,
-    complaints: "+400%",
-  },
-  {
-    version: "5.1.3",
-    date: "Apr 28, 2026",
-    status: "Stable",
-    rating: 4.4,
-    prevRating: 4.3,
-    complaints: "-5%",
-  },
-];
-
-const compareData = [
-  { metric: "Avg Rating", before: 4.5, after: 3.8 },
-  { metric: "Sentiment", before: 78, after: 42 },
-  { metric: "Load Time", before: 1.2, after: 2.8 },
-  { metric: "Crash Rate", before: 0.2, after: 1.5 },
-];
-
-const trendData = [
-  { day: "-3", rating: 4.5, complaints: 45 },
-  { day: "-2", rating: 4.4, complaints: 52 },
-  { day: "-1", rating: 4.5, complaints: 48 },
-  { day: "Release", rating: 3.8, complaints: 240 },
-  { day: "+1", rating: 3.5, complaints: 380 },
-  { day: "+2", rating: 3.2, complaints: 420 },
-  { day: "+3", rating: 3.6, complaints: 310 },
-];
-
 const chartTooltipStyle = {
   contentStyle: {
     background: "oklch(0.22 0.028 250)",
@@ -91,19 +43,80 @@ const chartTooltipStyle = {
 };
 
 function ReleaseImpact() {
+  const { filters } = useFilters();
+
+  const data = useMemo(() => {
+    const multiplier =
+      filters.application === "retail"
+        ? 1.0
+        : filters.application === "corporate"
+          ? 0.4
+          : filters.application === "wealth"
+            ? 0.3
+            : 1.0;
+
+    const releases = [
+      {
+        version: "5.2.1",
+        date: "May 15, 2026",
+        status: "Active",
+        rating: 3.8,
+        prevRating: 4.4,
+        complaints: "+250%",
+      },
+      {
+        version: "5.2.0",
+        date: "May 10, 2026",
+        status: "Rolled Back",
+        rating: 3.2,
+        prevRating: 4.5,
+        complaints: "+400%",
+      },
+      {
+        version: "5.1.3",
+        date: "Apr 28, 2026",
+        status: "Stable",
+        rating: 4.4,
+        prevRating: 4.3,
+        complaints: "-5%",
+      },
+    ];
+
+    const compareData = [
+      { metric: "Avg Rating", before: 4.5, after: 3.8 },
+      { metric: "Sentiment", before: 78, after: 42 },
+      { metric: "Load Time", before: 1.2, after: 2.8 },
+      { metric: "Crash Rate", before: 0.2, after: 1.5 },
+    ];
+
+    const trendData = [
+      { day: "-3", rating: 4.5, complaints: 45 * multiplier },
+      { day: "-2", rating: 4.4, complaints: 52 * multiplier },
+      { day: "-1", rating: 4.5, complaints: 48 * multiplier },
+      { day: "Release", rating: 3.8, complaints: 240 * multiplier },
+      { day: "+1", rating: 3.5, complaints: 380 * multiplier },
+      { day: "+2", rating: 3.2, complaints: 420 * multiplier },
+      { day: "+3", rating: 3.6, complaints: 310 * multiplier },
+    ];
+
+    return { releases, compareData, trendData };
+  }, [filters]);
+
   return (
     <DashboardLayout
       title="Release Impact Analysis"
       subtitle="Monitor how new application versions affect customer experience metrics"
     >
+      <InlineFilters />
+
       <div className="grid gap-6 lg:grid-cols-3 mb-6">
         <Panel title="Active Release" className="lg:col-span-1">
           <div className="flex items-center gap-3 mb-6">
-            <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
+            <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center shadow-sm">
               <Rocket className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <div className="text-xl font-bold">v5.2.1</div>
+              <div className="text-xl font-bold text-foreground">v5.2.1</div>
               <div className="text-xs text-muted-foreground">
                 Released 3 days ago
               </div>
@@ -146,7 +159,7 @@ function ReleaseImpact() {
           className="lg:col-span-2"
         >
           <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={compareData}>
+            <BarChart data={data.compareData}>
               <CartesianGrid
                 strokeDasharray="3 3"
                 stroke="oklch(0.3 0.03 255 / 0.4)"
@@ -186,7 +199,7 @@ function ReleaseImpact() {
         className="mb-6"
       >
         <ResponsiveContainer width="100%" height={350}>
-          <LineChart data={trendData}>
+          <LineChart data={data.trendData}>
             <CartesianGrid
               strokeDasharray="3 3"
               stroke="oklch(0.3 0.03 255 / 0.4)"
@@ -239,11 +252,13 @@ function ReleaseImpact() {
                 <th className="px-4 py-3">Status</th>
                 <th className="px-4 py-3">Avg Rating</th>
                 <th className="px-4 py-3">Complaint Trend</th>
-                <th className="px-4 py-3 text-right">Actions</th>
+                <th className="px-4 py-3 text-right text-foreground">
+                  Actions
+                </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/50">
-              {releases.map((r) => (
+            <tbody className="divide-y divide-border/50 text-foreground">
+              {data.releases.map((r) => (
                 <tr key={r.version} className="hover:bg-muted/20">
                   <td className="px-4 py-3 font-semibold">{r.version}</td>
                   <td className="px-4 py-3 text-muted-foreground">{r.date}</td>

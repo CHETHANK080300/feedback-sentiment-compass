@@ -11,6 +11,9 @@ import {
   Meh,
   Frown,
 } from "lucide-react";
+import { InlineFilters } from "@/components/dashboard/InlineFilters";
+import { useFilters } from "@/hooks/useFilters";
+import { useMemo } from "react";
 
 export const Route = createFileRoute("/customer-feedback")({
   head: () => ({
@@ -35,6 +38,8 @@ const feedbackItems = [
     channel: "Mobile App",
     tags: ["Authentication", "UI/UX"],
     time: "10m ago",
+    app: "retail",
+    country: "malaysia",
   },
   {
     id: 2,
@@ -45,6 +50,8 @@ const feedbackItems = [
     channel: "Web App",
     tags: ["Transfers", "Bug"],
     time: "25m ago",
+    app: "corporate",
+    country: "singapore",
   },
   {
     id: 3,
@@ -55,6 +62,8 @@ const feedbackItems = [
     channel: "Email",
     tags: ["Feature Request", "UI/UX"],
     time: "1h ago",
+    app: "corporate",
+    country: "global",
   },
   {
     id: 4,
@@ -65,6 +74,8 @@ const feedbackItems = [
     channel: "Play Store",
     tags: ["Payments", "Urgent"],
     time: "2h ago",
+    app: "retail",
+    country: "india",
   },
 ];
 
@@ -75,11 +86,25 @@ const sentimentIcons = {
 };
 
 function CustomerFeedback() {
+  const { filters } = useFilters();
+
+  const filteredItems = useMemo(() => {
+    return feedbackItems.filter((item) => {
+      const appMatch =
+        filters.application === "all" || item.app === filters.application;
+      const countryMatch =
+        filters.country === "global" || item.country === filters.country;
+      return appMatch && countryMatch;
+    });
+  }, [filters]);
+
   return (
     <DashboardLayout
       title="Customer Feedback"
       subtitle="Unified feedback stream with AI-powered sentiment analysis and tagging"
     >
+      <InlineFilters />
+
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Sidebar Filters */}
         <aside className="w-full lg:w-64 shrink-0 space-y-6">
@@ -93,11 +118,11 @@ function CustomerFeedback() {
                   {["Positive", "Neutral", "Negative"].map((s) => (
                     <label
                       key={s}
-                      className="flex items-center gap-2 text-sm cursor-pointer hover:text-primary transition-colors"
+                      className="flex items-center gap-2 text-sm cursor-pointer hover:text-primary transition-colors text-foreground"
                     >
                       <input
                         type="checkbox"
-                        className="rounded border-border"
+                        className="rounded border-border bg-background"
                       />
                       {s}
                     </label>
@@ -118,11 +143,11 @@ function CustomerFeedback() {
                   ].map((c) => (
                     <label
                       key={c}
-                      className="flex items-center gap-2 text-sm cursor-pointer hover:text-primary transition-colors"
+                      className="flex items-center gap-2 text-sm cursor-pointer hover:text-primary transition-colors text-foreground"
                     >
                       <input
                         type="checkbox"
-                        className="rounded border-border"
+                        className="rounded border-border bg-background"
                       />
                       {c}
                     </label>
@@ -156,69 +181,82 @@ function CustomerFeedback() {
 
         {/* Feedback List */}
         <div className="flex-1 space-y-4">
-          <header className="flex flex-col sm:flex-row items-center gap-3 bg-card border border-border p-3 rounded-xl">
+          <header className="flex flex-col sm:flex-row items-center gap-3 bg-card border border-border p-3 rounded-xl shadow-sm">
             <div className="relative flex-1 w-full">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <input
                 placeholder="Search feedback content..."
-                className="w-full bg-transparent border-none outline-none pl-9 text-sm"
+                className="w-full bg-transparent border-none outline-none pl-9 text-sm text-foreground placeholder:text-muted-foreground"
               />
             </div>
-            <button className="flex items-center gap-2 px-3 py-1.5 bg-muted rounded-lg text-xs font-medium hover:bg-muted/70 transition-colors">
+            <button className="flex items-center gap-2 px-3 py-1.5 bg-muted rounded-lg text-xs font-medium hover:bg-muted/70 transition-colors text-foreground">
               <Filter className="h-3.5 w-3.5" /> Filter
             </button>
           </header>
 
           <div className="space-y-3">
-            {feedbackItems.map((item) => (
-              <div
-                key={item.id}
-                className="bg-card border border-border rounded-xl p-4 hover:border-primary/30 transition-all group"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="h-9 w-9 rounded-full bg-gradient-primary flex items-center justify-center font-bold text-xs">
-                      {item.user
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold">{item.user}</div>
-                      <div className="text-[10px] text-muted-foreground">
-                        {item.channel} · {item.time}
+            {filteredItems.length > 0 ? (
+              filteredItems.map((item) => (
+                <div
+                  key={item.id}
+                  className="bg-card border border-border rounded-xl p-4 hover:border-primary/30 transition-all group shadow-sm"
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className="h-9 w-9 rounded-full bg-gradient-primary flex items-center justify-center font-bold text-xs text-primary-foreground">
+                        {item.user
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")}
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-foreground">
+                          {item.user}
+                        </div>
+                        <div className="text-[10px] text-muted-foreground">
+                          {item.channel} · {item.time}
+                        </div>
                       </div>
                     </div>
+                    <div className="flex items-center gap-2">
+                      {
+                        sentimentIcons[
+                          item.sentiment as keyof typeof sentimentIcons
+                        ]
+                      }
+                      <button className="p-1 hover:bg-muted rounded text-muted-foreground transition-colors">
+                        <MoreHorizontal className="h-4 w-4" />
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    {
-                      sentimentIcons[
-                        item.sentiment as keyof typeof sentimentIcons
-                      ]
-                    }
-                    <button className="p-1 hover:bg-muted rounded text-muted-foreground">
-                      <MoreHorizontal className="h-4 w-4" />
+                  <p className="text-sm leading-relaxed mb-4 text-foreground/90">
+                    "{item.content}"
+                  </p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Tag className="h-3 w-3 text-muted-foreground" />
+                    {item.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 py-0.5 bg-muted rounded text-[10px] font-medium border border-border/50 text-muted-foreground"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                    <div className="flex-1" />
+                    <button className="text-[10px] font-bold uppercase tracking-wider text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                      View Thread
                     </button>
                   </div>
                 </div>
-                <p className="text-sm leading-relaxed mb-4">"{item.content}"</p>
-                <div className="flex flex-wrap items-center gap-2">
-                  <Tag className="h-3 w-3 text-muted-foreground" />
-                  {item.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2 py-0.5 bg-muted rounded text-[10px] font-medium border border-border/50"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                  <div className="flex-1" />
-                  <button className="text-[10px] font-bold uppercase tracking-wider text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                    View Thread
-                  </button>
-                </div>
+              ))
+            ) : (
+              <div className="bg-card border border-dashed border-border rounded-xl p-12 text-center">
+                <MessageSquare className="h-8 w-8 text-muted-foreground/30 mx-auto mb-3" />
+                <p className="text-sm text-muted-foreground">
+                  No feedback matches the current filters.
+                </p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>

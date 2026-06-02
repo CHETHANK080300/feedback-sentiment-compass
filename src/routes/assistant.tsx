@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { Panel } from "@/components/dashboard/Panel";
 import {
   Bot,
   Send,
@@ -11,6 +10,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { useState } from "react";
+import { InlineFilters } from "@/components/dashboard/InlineFilters";
 
 export const Route = createFileRoute("/assistant")({
   head: () => ({
@@ -67,31 +67,33 @@ function AIAssistant() {
       title="AI Intelligence Assistant"
       subtitle="Conversational interface to query and visualize customer experience data"
     >
-      <div className="flex flex-col h-[calc(100vh-280px)] max-w-4xl mx-auto bg-card border border-border rounded-2xl overflow-hidden">
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+      <InlineFilters />
+
+      <div className="flex flex-col h-[calc(100vh-220px)] max-w-5xl mx-auto bg-card border border-border rounded-2xl overflow-hidden shadow-elevated">
+        <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar bg-muted/5">
           {messages.map((msg, i) => (
             <div
               key={i}
               className={`flex gap-4 ${msg.role === "user" ? "flex-row-reverse" : ""}`}
             >
               <div
-                className={`h-8 w-8 rounded-lg shrink-0 flex items-center justify-center ${
+                className={`h-10 w-10 rounded-xl shrink-0 flex items-center justify-center shadow-sm ${
                   msg.role === "assistant"
                     ? "bg-gradient-primary shadow-glow"
-                    : "bg-muted border border-border"
+                    : "bg-card border border-border"
                 }`}
               >
                 {msg.role === "assistant" ? (
-                  <Bot className="h-5 w-5 text-primary-foreground" />
+                  <Bot className="h-6 w-6 text-primary-foreground" />
                 ) : (
-                  <User className="h-5 w-5 text-muted-foreground" />
+                  <User className="h-6 w-6 text-muted-foreground" />
                 )}
               </div>
-              <div className={`max-w-[80%] space-y-4`}>
+              <div className={`max-w-[85%] space-y-4`}>
                 <div
-                  className={`p-4 rounded-2xl text-sm leading-relaxed ${
+                  className={`p-4 rounded-2xl text-sm leading-relaxed shadow-sm ${
                     msg.role === "assistant"
-                      ? "bg-muted/40 border border-border/50"
+                      ? "bg-card border border-border/50 text-foreground"
                       : "bg-primary text-primary-foreground font-medium"
                   }`}
                 >
@@ -99,28 +101,29 @@ function AIAssistant() {
                 </div>
 
                 {msg.hasChart && (
-                  <div className="p-4 bg-muted/20 border border-dashed border-border rounded-xl">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                        <BarChart2 className="h-4 w-4" /> Version Comparison
+                  <div className="p-6 bg-card border border-dashed border-border rounded-2xl shadow-sm">
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                        <BarChart2 className="h-4 w-4 text-primary" /> Version
+                        Comparison
                       </div>
-                      <button className="text-[10px] font-bold text-primary flex items-center gap-1">
+                      <button className="text-[10px] font-bold text-primary flex items-center gap-1 uppercase tracking-widest hover:opacity-80 transition-opacity">
                         Full Dashboard <ExternalLink className="h-3 w-3" />
                       </button>
                     </div>
-                    <div className="h-32 flex items-end gap-2 px-4">
-                      <div className="flex-1 bg-primary/20 h-[40%] rounded-t-md relative group">
-                        <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-bold opacity-0 group-hover:opacity-100">
+                    <div className="h-48 flex items-end gap-4 px-4">
+                      <div className="flex-1 bg-primary/20 h-[40%] rounded-t-lg relative group transition-all hover:bg-primary/30 cursor-help">
+                        <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-card border border-border px-2 py-1 rounded shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
                           v5.1
                         </div>
                       </div>
-                      <div className="flex-1 bg-primary h-[90%] rounded-t-md relative group">
-                        <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-bold opacity-0 group-hover:opacity-100">
+                      <div className="flex-1 bg-primary h-[90%] rounded-t-lg relative group transition-all hover:opacity-90 cursor-help shadow-glow">
+                        <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-card border border-border px-2 py-1 rounded shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
                           v5.2
                         </div>
                       </div>
-                      <div className="flex-1 bg-primary/40 h-[65%] rounded-t-md relative group">
-                        <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-bold opacity-0 group-hover:opacity-100">
+                      <div className="flex-1 bg-primary/40 h-[65%] rounded-t-lg relative group transition-all hover:bg-primary/50 cursor-help">
+                        <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-card border border-border px-2 py-1 rounded shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
                           v5.2.1
                         </div>
                       </div>
@@ -132,13 +135,13 @@ function AIAssistant() {
           ))}
         </div>
 
-        <div className="p-4 bg-muted/30 border-t border-border">
-          <div className="flex flex-wrap gap-2 mb-4">
+        <div className="p-6 bg-card border-t border-border shadow-inner">
+          <div className="flex flex-wrap gap-2 mb-6">
             {exampleQueries.map((q) => (
               <button
                 key={q}
                 onClick={() => setInput(q)}
-                className="px-3 py-1.5 bg-card border border-border rounded-full text-xs hover:border-primary/50 hover:bg-muted/50 transition-all"
+                className="px-4 py-2 bg-muted/50 border border-border rounded-full text-xs text-foreground hover:border-primary hover:bg-primary/5 transition-all shadow-sm"
               >
                 {q}
               </button>
@@ -150,21 +153,21 @@ function AIAssistant() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
               placeholder="Ask a question about your customer experience data..."
-              className="w-full bg-card border border-border rounded-xl py-4 pl-6 pr-14 text-sm focus:border-primary outline-none shadow-sm"
+              className="w-full bg-muted/30 border border-border rounded-2xl py-5 pl-8 pr-16 text-sm text-foreground focus:border-primary focus:bg-card outline-none shadow-sm transition-all"
             />
             <button
               onClick={handleSend}
-              className="absolute right-3 top-1/2 -translate-y-1/2 h-10 w-10 bg-primary text-primary-foreground rounded-lg flex items-center justify-center shadow-glow hover:opacity-90"
+              className="absolute right-3 top-1/2 -translate-y-1/2 h-12 w-12 bg-primary text-primary-foreground rounded-xl flex items-center justify-center shadow-glow hover:opacity-90 transition-all"
             >
-              <Send className="h-5 w-5" />
+              <Send className="h-6 w-6" />
             </button>
           </div>
-          <div className="mt-3 flex items-center justify-center gap-4 text-[10px] text-muted-foreground uppercase font-bold tracking-widest">
-            <span className="flex items-center gap-1.5">
-              <Sparkles className="h-3 w-3 text-primary" /> GPT-4o Powered
+          <div className="mt-4 flex items-center justify-center gap-6 text-[10px] text-muted-foreground uppercase font-bold tracking-widest">
+            <span className="flex items-center gap-2 transition-colors hover:text-foreground cursor-default">
+              <Sparkles className="h-4 w-4 text-primary" /> GPT-4o Powered
             </span>
-            <span className="flex items-center gap-1.5">
-              <Table className="h-3 w-3 text-primary" /> Real-time Data Access
+            <span className="flex items-center gap-2 transition-colors hover:text-foreground cursor-default">
+              <Table className="h-4 w-4 text-primary" /> Real-time Data Access
             </span>
           </div>
         </div>

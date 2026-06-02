@@ -12,6 +12,9 @@ import {
   Cell,
 } from "recharts";
 import { Star, MessageCircle, ArrowUpRight, Search } from "lucide-react";
+import { InlineFilters } from "@/components/dashboard/InlineFilters";
+import { useFilters } from "@/hooks/useFilters";
+import { useMemo } from "react";
 
 export const Route = createFileRoute("/ratings")({
   head: () => ({
@@ -27,25 +30,6 @@ export const Route = createFileRoute("/ratings")({
   component: RatingsAndReviews,
 });
 
-const distribution = [
-  { star: 5, count: 24500, color: "oklch(0.72 0.18 155)" },
-  { star: 4, count: 12000, color: "oklch(0.78 0.16 195)" },
-  { star: 3, count: 4500, color: "oklch(0.78 0.16 80)" },
-  { star: 2, count: 2100, color: "oklch(0.7 0.17 230)" },
-  { star: 1, count: 5100, color: "oklch(0.65 0.25 18)" },
-];
-
-const keywords = [
-  { word: "Login", count: 1842, type: "negative" },
-  { word: "Fast", count: 1560, type: "positive" },
-  { word: "Easy", count: 1420, type: "positive" },
-  { word: "Crash", count: 980, type: "negative" },
-  { word: "UI", count: 850, type: "positive" },
-  { word: "Timeout", count: 720, type: "negative" },
-  { word: "OTP", count: 650, type: "negative" },
-  { word: "Secure", count: 540, type: "positive" },
-];
-
 const chartTooltipStyle = {
   contentStyle: {
     background: "oklch(0.22 0.028 250)",
@@ -57,50 +41,109 @@ const chartTooltipStyle = {
 };
 
 function RatingsAndReviews() {
-  const totalRatings = distribution.reduce((acc, curr) => acc + curr.count, 0);
-  const avgRating = (
-    distribution.reduce((acc, curr) => acc + curr.star * curr.count, 0) /
-    totalRatings
-  ).toFixed(1);
+  const { filters } = useFilters();
+
+  const data = useMemo(() => {
+    let multiplier =
+      filters.application === "retail"
+        ? 0.8
+        : filters.application === "corporate"
+          ? 0.3
+          : filters.application === "wealth"
+            ? 0.2
+            : 1.0;
+    if (filters.country !== "global") multiplier *= 0.5;
+
+    const distribution = [
+      {
+        star: 5,
+        count: Math.round(24500 * multiplier),
+        color: "oklch(0.72 0.18 155)",
+      },
+      {
+        star: 4,
+        count: Math.round(12000 * multiplier),
+        color: "oklch(0.78 0.16 195)",
+      },
+      {
+        star: 3,
+        count: Math.round(4500 * multiplier),
+        color: "oklch(0.78 0.16 80)",
+      },
+      {
+        star: 2,
+        count: Math.round(2100 * multiplier),
+        color: "oklch(0.7 0.17 230)",
+      },
+      {
+        star: 1,
+        count: Math.round(5100 * multiplier),
+        color: "oklch(0.65 0.25 18)",
+      },
+    ];
+
+    const keywords = [
+      { word: "Login", count: Math.round(1842 * multiplier), type: "negative" },
+      { word: "Fast", count: Math.round(1560 * multiplier), type: "positive" },
+      { word: "Easy", count: Math.round(1420 * multiplier), type: "positive" },
+      { word: "Crash", count: Math.round(980 * multiplier), type: "negative" },
+      { word: "UI", count: Math.round(850 * multiplier), type: "positive" },
+    ];
+
+    const totalRatings = distribution.reduce(
+      (acc, curr) => acc + curr.count,
+      0,
+    );
+    const avgRating = (
+      distribution.reduce((acc, curr) => acc + curr.star * curr.count, 0) /
+      (totalRatings || 1)
+    ).toFixed(1);
+
+    return { distribution, keywords, totalRatings, avgRating };
+  }, [filters]);
 
   return (
     <DashboardLayout
       title="Ratings & Reviews"
       subtitle="Detailed analysis of App Store, Play Store and Web ratings"
     >
+      <InlineFilters />
+
       <div className="grid gap-6 lg:grid-cols-3">
         <Panel title="Rating Summary" className="lg:col-span-1">
           <div className="text-center py-6">
-            <div className="text-6xl font-bold tracking-tighter mb-2">
-              {avgRating}
+            <div className="text-6xl font-bold tracking-tighter mb-2 text-foreground">
+              {data.avgRating}
             </div>
             <div className="flex justify-center gap-1 mb-4">
               {[1, 2, 3, 4, 5].map((i) => (
                 <Star
                   key={i}
-                  className={`h-6 w-6 ${i <= Math.round(Number(avgRating)) ? "fill-warning text-warning" : "text-muted-foreground"}`}
+                  className={`h-6 w-6 ${i <= Math.round(Number(data.avgRating)) ? "fill-warning text-warning" : "text-muted-foreground/30"}`}
                 />
               ))}
             </div>
             <div className="text-sm text-muted-foreground">
-              Based on {totalRatings.toLocaleString()} reviews
+              Based on {data.totalRatings.toLocaleString()} reviews
             </div>
           </div>
           <div className="space-y-3 mt-4">
-            {distribution.map((d) => (
+            {data.distribution.map((d) => (
               <div key={d.star} className="flex items-center gap-3">
-                <span className="text-xs font-medium w-4">{d.star}</span>
+                <span className="text-xs font-medium w-4 text-foreground">
+                  {d.star}
+                </span>
                 <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
                   <div
                     className="h-full rounded-full"
                     style={{
-                      width: `${(d.count / totalRatings) * 100}%`,
+                      width: `${(d.count / (data.totalRatings || 1)) * 100}%`,
                       backgroundColor: d.color,
                     }}
                   />
                 </div>
                 <span className="text-xs text-muted-foreground w-10 text-right">
-                  {((d.count / totalRatings) * 100).toFixed(0)}%
+                  {((d.count / (data.totalRatings || 1)) * 100).toFixed(0)}%
                 </span>
               </div>
             ))}
@@ -113,7 +156,7 @@ function RatingsAndReviews() {
           className="lg:col-span-2"
         >
           <div className="flex flex-wrap gap-3 p-4">
-            {keywords.map((kw) => (
+            {data.keywords.map((kw) => (
               <button
                 key={kw.word}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl border transition-all ${
@@ -160,7 +203,7 @@ function RatingsAndReviews() {
           ].map((r, i) => (
             <div
               key={i}
-              className="p-4 rounded-xl border border-border bg-muted/10 group hover:border-critical/30 transition-all"
+              className="p-4 rounded-xl border border-border bg-muted/10 group hover:border-critical/30 transition-all shadow-sm"
             >
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
@@ -172,7 +215,9 @@ function RatingsAndReviews() {
                       />
                     ))}
                   </div>
-                  <span className="text-xs font-semibold">{r.user}</span>
+                  <span className="text-xs font-semibold text-foreground">
+                    {r.user}
+                  </span>
                   <span className="text-[10px] text-muted-foreground">
                     · {r.store}
                   </span>
@@ -181,12 +226,12 @@ function RatingsAndReviews() {
                   <span className="text-[10px] text-muted-foreground">
                     {r.time}
                   </span>
-                  <button className="text-[10px] uppercase font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+                  <button className="text-[10px] font-bold uppercase text-primary opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
                     Respond <ArrowUpRight className="h-3 w-3" />
                   </button>
                 </div>
               </div>
-              <p className="text-sm">"{r.content}"</p>
+              <p className="text-sm text-foreground/80">"{r.content}"</p>
             </div>
           ))}
         </div>

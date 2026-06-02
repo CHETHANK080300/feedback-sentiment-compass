@@ -11,18 +11,18 @@ import {
   ResponsiveContainer,
   BarChart,
   Bar,
-  Cell,
 } from "recharts";
 import {
   Facebook,
   Twitter,
   Instagram,
   Linkedin,
-  MessageSquare,
   ThumbsUp,
   Share2,
-  TrendingUp,
 } from "lucide-react";
+import { InlineFilters } from "@/components/dashboard/InlineFilters";
+import { useFilters } from "@/hooks/useFilters";
+import { useMemo } from "react";
 
 export const Route = createFileRoute("/social")({
   head: () => ({
@@ -38,55 +38,6 @@ export const Route = createFileRoute("/social")({
   component: SocialMonitoring,
 });
 
-const socialStats = [
-  {
-    platform: "Twitter/X",
-    icon: Twitter,
-    color: "#1DA1F2",
-    mentions: 1240,
-    change: "+12%",
-  },
-  {
-    platform: "Facebook",
-    icon: Facebook,
-    color: "#4267B2",
-    mentions: 850,
-    change: "+5%",
-  },
-  {
-    platform: "Instagram",
-    icon: Instagram,
-    color: "#E1306C",
-    mentions: 620,
-    change: "+8%",
-  },
-  {
-    platform: "LinkedIn",
-    icon: Linkedin,
-    color: "#0077B5",
-    mentions: 120,
-    change: "-2%",
-  },
-];
-
-const buzzScore = [
-  { d: "Mon", score: 45 },
-  { d: "Tue", score: 52 },
-  { d: "Wed", score: 48 },
-  { d: "Thu", score: 75 },
-  { d: "Fri", score: 82 },
-  { d: "Sat", score: 65 },
-  { d: "Sun", score: 58 },
-];
-
-const classification = [
-  { type: "Complaint", value: 450, color: "oklch(0.65 0.25 18)" },
-  { type: "Suggestion", value: 280, color: "oklch(0.7 0.17 230)" },
-  { type: "Praise", value: 320, color: "oklch(0.72 0.18 155)" },
-  { type: "Question", value: 150, color: "oklch(0.78 0.16 80)" },
-  { type: "Bug Report", value: 120, color: "oklch(0.65 0.24 22)" },
-];
-
 const chartTooltipStyle = {
   contentStyle: {
     background: "oklch(0.22 0.028 250)",
@@ -98,16 +49,103 @@ const chartTooltipStyle = {
 };
 
 function SocialMonitoring() {
+  const { filters } = useFilters();
+
+  const data = useMemo(() => {
+    let multiplier =
+      filters.application === "retail"
+        ? 0.9
+        : filters.application === "corporate"
+          ? 0.3
+          : filters.application === "wealth"
+            ? 0.2
+            : 1.0;
+    if (filters.country !== "global") multiplier *= 0.5;
+
+    const socialStats = [
+      {
+        platform: "Twitter/X",
+        icon: Twitter,
+        color: "#1DA1F2",
+        mentions: Math.round(1240 * multiplier),
+        change: "+12%",
+      },
+      {
+        platform: "Facebook",
+        icon: Facebook,
+        color: "#4267B2",
+        mentions: Math.round(850 * multiplier),
+        change: "+5%",
+      },
+      {
+        platform: "Instagram",
+        icon: Instagram,
+        color: "#E1306C",
+        mentions: Math.round(620 * multiplier),
+        change: "+8%",
+      },
+      {
+        platform: "LinkedIn",
+        icon: Linkedin,
+        color: "#0077B5",
+        mentions: Math.round(120 * multiplier),
+        change: "-2%",
+      },
+    ];
+
+    const buzzScore = [
+      { d: "Mon", score: 45 },
+      { d: "Tue", score: 52 },
+      { d: "Wed", score: 48 },
+      { d: "Thu", score: 75 * multiplier },
+      { d: "Fri", score: 82 * multiplier },
+      { d: "Sat", score: 65 },
+      { d: "Sun", score: 58 },
+    ];
+
+    const classification = [
+      {
+        type: "Complaint",
+        value: Math.round(450 * multiplier),
+        color: "oklch(0.65 0.25 18)",
+      },
+      {
+        type: "Suggestion",
+        value: Math.round(280 * multiplier),
+        color: "oklch(0.7 0.17 230)",
+      },
+      {
+        type: "Praise",
+        value: Math.round(320 * multiplier),
+        color: "oklch(0.72 0.18 155)",
+      },
+      {
+        type: "Question",
+        value: Math.round(150 * multiplier),
+        color: "oklch(0.78 0.16 80)",
+      },
+      {
+        type: "Bug Report",
+        value: Math.round(120 * multiplier),
+        color: "oklch(0.65 0.24 22)",
+      },
+    ];
+
+    return { socialStats, buzzScore, classification };
+  }, [filters]);
+
   return (
     <DashboardLayout
       title="Social Monitoring"
       subtitle="Track brand mentions and customer sentiment across social platforms"
     >
+      <InlineFilters />
+
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 mb-6">
-        {socialStats.map((s) => (
+        {data.socialStats.map((s) => (
           <div
             key={s.platform}
-            className="bg-card border border-border rounded-xl p-5"
+            className="bg-card border border-border rounded-xl p-5 shadow-sm"
           >
             <div className="flex items-center justify-between mb-4">
               <div
@@ -129,11 +167,11 @@ function SocialMonitoring() {
             <div className="text-[10px] uppercase font-bold text-muted-foreground">
               {s.platform}
             </div>
-            <div className="text-2xl font-bold mt-1 tracking-tight">
+            <div className="text-2xl font-bold mt-1 tracking-tight text-foreground">
               {s.mentions.toLocaleString()}
             </div>
             <div className="text-[10px] text-muted-foreground mt-1">
-              Mentions this week
+              Mentions this period
             </div>
           </div>
         ))}
@@ -146,7 +184,7 @@ function SocialMonitoring() {
           className="lg:col-span-2"
         >
           <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={buzzScore}>
+            <LineChart data={data.buzzScore}>
               <CartesianGrid
                 strokeDasharray="3 3"
                 stroke="oklch(0.3 0.03 255 / 0.4)"
@@ -170,9 +208,9 @@ function SocialMonitoring() {
           subtitle="Automated categorization of social posts"
         >
           <div className="space-y-4 pt-4">
-            {classification.map((c) => (
+            {data.classification.map((c) => (
               <div key={c.type}>
-                <div className="flex justify-between text-xs mb-1.5">
+                <div className="flex justify-between text-xs mb-1.5 text-foreground">
                   <span className="font-medium">{c.type}</span>
                   <span className="text-muted-foreground">{c.value} posts</span>
                 </div>
@@ -180,7 +218,7 @@ function SocialMonitoring() {
                   <div
                     className="h-full rounded-full"
                     style={{
-                      width: `${(c.value / 450) * 100}%`,
+                      width: `${(c.value / (Math.max(...data.classification.map((x) => x.value)) || 1)) * 100}%`,
                       backgroundColor: c.color,
                     }}
                   />
@@ -213,11 +251,13 @@ function SocialMonitoring() {
           ].map((post, i) => (
             <div
               key={i}
-              className="p-4 rounded-xl border border-border bg-muted/10"
+              className="p-4 rounded-xl border border-border bg-muted/10 shadow-sm"
             >
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-bold">{post.user}</span>
+                  <span className="text-sm font-bold text-foreground">
+                    {post.user}
+                  </span>
                   <span className="text-[10px] text-muted-foreground px-2 py-0.5 bg-muted rounded-full">
                     {post.platform}
                   </span>
@@ -228,7 +268,9 @@ function SocialMonitoring() {
                   {post.sentiment}
                 </div>
               </div>
-              <p className="text-sm mb-4">"{post.content}"</p>
+              <p className="text-sm mb-4 text-foreground/80">
+                "{post.content}"
+              </p>
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <ThumbsUp className="h-3.5 w-3.5" /> {post.metrics.likes}
