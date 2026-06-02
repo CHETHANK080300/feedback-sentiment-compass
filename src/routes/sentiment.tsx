@@ -46,11 +46,11 @@ function SentimentAnalysis() {
 
   const data = useMemo(() => {
     let multiplier =
-      filters.application === "retail"
+      filters.application === "retail_banking"
         ? 0.9
-        : filters.application === "corporate"
+        : filters.application === "corporate_banking"
           ? 1.2
-          : filters.application === "wealth"
+          : filters.application === "retail_onboarding"
             ? 1.1
             : 1.0;
     if (filters.country === "malaysia") multiplier *= 0.6; // Malaysian regression

@@ -47,11 +47,11 @@ function CustomerCareAnalytics() {
 
   const data = useMemo(() => {
     let multiplier =
-      filters.application === "retail"
+      filters.application === "retail_banking"
         ? 0.8
-        : filters.application === "corporate"
+        : filters.application === "corporate_banking"
           ? 0.3
-          : filters.application === "wealth"
+          : filters.application === "retail_onboarding"
             ? 0.2
             : 1.0;
     if (filters.country !== "global") multiplier *= 0.5;

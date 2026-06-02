@@ -47,11 +47,11 @@ function ReleaseImpact() {
 
   const data = useMemo(() => {
     const multiplier =
-      filters.application === "retail"
+      filters.application === "retail_banking"
         ? 1.0
-        : filters.application === "corporate"
+        : filters.application === "corporate_banking"
           ? 0.4
-          : filters.application === "wealth"
+          : filters.application === "retail_onboarding"
             ? 0.3
             : 1.0;
 

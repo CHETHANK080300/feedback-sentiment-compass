@@ -7,7 +7,12 @@ export type DateRange =
   | "30d"
   | "quarter"
   | "custom";
-export type Application = "retail" | "corporate" | "wealth" | "all";
+export type Application =
+  | "retail_banking"
+  | "retail_onboarding"
+  | "corporate_banking"
+  | "corporate_onboarding"
+  | "all";
 export type Country = "india" | "malaysia" | "singapore" | "global";
 export type Channel =
   | "mobile"

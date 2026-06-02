@@ -220,10 +220,10 @@ export function DashboardLayout({
         <div className="sticky bottom-0 z-10 border-t border-sidebar-border bg-sidebar p-4">
           <div className="flex items-center gap-3 rounded-lg bg-sidebar-accent/50 p-2">
             <div className="grid h-8 w-8 place-items-center rounded-full bg-gradient-accent text-xs font-semibold">
-              AS
+              CK
             </div>
             <div className="flex-1 leading-tight min-w-0">
-              <div className="text-xs font-medium truncate">Aarav Singh</div>
+              <div className="text-xs font-medium truncate">Chethan K</div>
               <div className="text-[10px] text-muted-foreground truncate">
                 Product Director
               </div>

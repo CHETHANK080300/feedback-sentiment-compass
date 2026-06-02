@@ -38,7 +38,7 @@ const clustersData = [
     status: "Active",
     description:
       "Users unable to authenticate after 5.2 update, primarily biometric fallback issues.",
-    app: "retail",
+    app: "retail_banking",
     country: "malaysia",
   },
   {
@@ -50,7 +50,7 @@ const clustersData = [
     status: "Investigating",
     description:
       "Payment gateway timeouts during peak hours (19:00-21:00 IST).",
-    app: "retail",
+    app: "retail_banking",
     country: "india",
   },
   {
@@ -62,7 +62,7 @@ const clustersData = [
     status: "Fixing",
     description:
       "Cold start crash on Android 14 devices related to analytics SDK init.",
-    app: "retail",
+    app: "retail_banking",
     country: "india",
   },
   {
@@ -73,7 +73,7 @@ const clustersData = [
     trend: "+8%",
     status: "Active",
     description: "Latency regression in account aggregation API endpoint.",
-    app: "corporate",
+    app: "corporate_banking",
     country: "singapore",
   },
 ];

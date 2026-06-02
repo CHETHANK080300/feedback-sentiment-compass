@@ -28,9 +28,10 @@ export function InlineFilters() {
   };
 
   const appLabels: Record<Application, string> = {
-    retail: "Retail Banking",
-    corporate: "Corporate Banking",
-    wealth: "Wealth Banking",
+    retail_banking: "Retail Banking",
+    retail_onboarding: "Retail Onboarding",
+    corporate_banking: "Corporate Banking",
+    corporate_onboarding: "Corporate Onboarding",
     all: "All Applications",
   };
 
@@ -51,7 +52,7 @@ export function InlineFilters() {
       </div>
 
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:border-primary/50 transition-all">
+        <DropdownMenuTrigger className="flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:border-primary/50 transition-all shadow-sm">
           <span className="text-muted-foreground mr-1">Period:</span>
           {dateLabels[filters.dateRange]}
           <ChevronDown className="h-3 w-3 text-muted-foreground" />
@@ -75,7 +76,7 @@ export function InlineFilters() {
       </DropdownMenu>
 
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:border-primary/50 transition-all">
+        <DropdownMenuTrigger className="flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:border-primary/50 transition-all shadow-sm">
           <span className="text-muted-foreground mr-1">App:</span>
           {appLabels[filters.application]}
           <ChevronDown className="h-3 w-3 text-muted-foreground" />
@@ -99,7 +100,7 @@ export function InlineFilters() {
       </DropdownMenu>
 
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:border-primary/50 transition-all">
+        <DropdownMenuTrigger className="flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:border-primary/50 transition-all shadow-sm">
           <span className="text-muted-foreground mr-1">Region:</span>
           {countryLabels[filters.country]}
           <ChevronDown className="h-3 w-3 text-muted-foreground" />

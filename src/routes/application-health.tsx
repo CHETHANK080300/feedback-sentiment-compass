@@ -29,7 +29,7 @@ export const Route = createFileRoute("/application-health")({
 
 const appsData = [
   {
-    id: "retail",
+    id: "retail_banking",
     name: "Retail Banking",
     score: 78,
     feedback: 4500,
@@ -37,7 +37,7 @@ const appsData = [
     issues: 5,
   },
   {
-    id: "corporate",
+    id: "corporate_banking",
     name: "Corporate Banking",
     score: 92,
     feedback: 1200,
@@ -45,7 +45,7 @@ const appsData = [
     issues: 1,
   },
   {
-    id: "wealth",
+    id: "retail_onboarding",
     name: "Wealth Banking",
     score: 85,
     feedback: 850,

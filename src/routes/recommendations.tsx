@@ -43,7 +43,7 @@ function AIRecommendations() {
         color: "text-critical",
         bgColor: "bg-critical/10",
         action: "Roll back service v5.2",
-        app: "retail",
+        app: "retail_banking",
       },
       {
         id: 2,
@@ -56,7 +56,7 @@ function AIRecommendations() {
         color: "text-warning",
         bgColor: "bg-warning/10",
         action: "Add to Roadmap",
-        app: "retail",
+        app: "retail_banking",
       },
       {
         id: 3,
@@ -69,7 +69,7 @@ function AIRecommendations() {
         color: "text-primary",
         bgColor: "bg-primary/10",
         action: "View Heat Map",
-        app: "corporate",
+        app: "corporate_banking",
       },
       {
         id: 4,
@@ -82,7 +82,7 @@ function AIRecommendations() {
         color: "text-info",
         bgColor: "bg-info/10",
         action: "Analyze Trace",
-        app: "retail",
+        app: "retail_banking",
       },
     ];
 

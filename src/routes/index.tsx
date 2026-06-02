@@ -166,9 +166,10 @@ function ExecutiveOverview() {
   const filteredKPIs = useMemo(() => {
     // Basic reactive filtering logic
     let multiplier = 1.0;
-    if (filters.application === "retail") multiplier = 0.7;
-    if (filters.application === "corporate") multiplier = 0.2;
-    if (filters.application === "wealth") multiplier = 0.1;
+    if (filters.application === "retail_banking") multiplier = 0.7;
+    if (filters.application === "corporate_banking") multiplier = 0.2;
+    if (filters.application === "retail_onboarding") multiplier = 0.05;
+    if (filters.application === "corporate_onboarding") multiplier = 0.05;
 
     if (filters.country === "india") multiplier *= 0.6;
     if (filters.country === "malaysia") multiplier *= 0.2;
@@ -180,7 +181,8 @@ function ExecutiveOverview() {
       nps:
         "+" +
         Math.round(
-          58 * multiplier + (filters.application === "corporate" ? 20 : 0),
+          58 * multiplier +
+            (filters.application === "corporate_banking" ? 20 : 0),
         ),
       csat: Math.round(88 + (multiplier * 5 - 2.5)) + "%",
       criticalOpen: Math.round(23 * multiplier),
@@ -504,7 +506,9 @@ function ExecutiveOverview() {
               return (
                 <div key={a.label}>
                   <div className="mb-1.5 flex items-center justify-between text-sm">
-                    <span className="font-medium">{a.label}</span>
+                    <span className="font-medium text-foreground">
+                      {a.label}
+                    </span>
                     <span className="text-xs text-muted-foreground">
                       {Math.round(
                         a.count *
@@ -525,7 +529,7 @@ function ExecutiveOverview() {
               <div className="flex items-center gap-2 text-xs font-semibold text-accent">
                 <Activity className="h-3.5 w-3.5" /> AI INSIGHT
               </div>
-              <p className="mt-1 text-sm">
+              <p className="mt-1 text-sm text-foreground">
                 Appreciation for <strong>Biometric Login</strong> surged 42%
                 after release 5.3. Consider highlighting this in store
                 descriptions.
@@ -545,7 +549,7 @@ function ExecutiveOverview() {
             <div className="text-xs font-semibold uppercase tracking-widest text-primary">
               AI Executive Briefing · 06:00 IST
             </div>
-            <h3 className="mt-1 font-display text-xl font-bold">
+            <h3 className="mt-1 font-display text-xl font-bold text-foreground">
               Login failures up 72% in Retail Banking after release 5.2 —
               Malaysia & Singapore most affected
             </h3>
@@ -565,10 +569,10 @@ function ExecutiveOverview() {
               >
                 Open Issue Cluster
               </Link>
-              <button className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium hover:border-primary/40">
+              <button className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:border-primary/40">
                 View Affected Versions
               </button>
-              <button className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium hover:border-primary/40">
+              <button className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-foreground hover:border-primary/40">
                 Notify On-call
               </button>
             </div>

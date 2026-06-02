@@ -38,7 +38,7 @@ const feedbackItems = [
     channel: "Mobile App",
     tags: ["Authentication", "UI/UX"],
     time: "10m ago",
-    app: "retail",
+    app: "retail_banking",
     country: "malaysia",
   },
   {
@@ -50,7 +50,7 @@ const feedbackItems = [
     channel: "Web App",
     tags: ["Transfers", "Bug"],
     time: "25m ago",
-    app: "corporate",
+    app: "corporate_banking",
     country: "singapore",
   },
   {
@@ -62,7 +62,7 @@ const feedbackItems = [
     channel: "Email",
     tags: ["Feature Request", "UI/UX"],
     time: "1h ago",
-    app: "corporate",
+    app: "corporate_banking",
     country: "global",
   },
   {
@@ -74,7 +74,7 @@ const feedbackItems = [
     channel: "Play Store",
     tags: ["Payments", "Urgent"],
     time: "2h ago",
-    app: "retail",
+    app: "retail_banking",
     country: "india",
   },
 ];
