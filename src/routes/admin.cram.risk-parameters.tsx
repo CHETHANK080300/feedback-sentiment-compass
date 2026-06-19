@@ -6,7 +6,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
+  TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -23,7 +23,7 @@ import {
   X,
   Save,
   CheckCircle2,
-  Clock
+  Clock,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -41,7 +41,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -85,27 +85,55 @@ export const Route = createFileRoute("/admin/cram/risk-parameters")({
 
 const getRiskLevelBadge = (level: RiskLevel) => {
   switch (level) {
-    case "Low": return <Badge className="bg-success/10 text-success border-success/20">Low</Badge>;
-    case "Medium": return <Badge className="bg-warning/10 text-warning border-warning/20">Medium</Badge>;
-    case "High": return <Badge className="bg-critical/10 text-critical border-critical/20">High</Badge>;
-    case "Very High": return <Badge className="bg-critical/20 text-critical border-critical/30">Very High</Badge>;
-    default: return <Badge>{level}</Badge>;
+    case "Low":
+      return (
+        <Badge className="bg-success/10 text-success border-success/20">
+          Low
+        </Badge>
+      );
+    case "Medium":
+      return (
+        <Badge className="bg-warning/10 text-warning border-warning/20">
+          Medium
+        </Badge>
+      );
+    case "High":
+      return (
+        <Badge className="bg-critical/10 text-critical border-critical/20">
+          High
+        </Badge>
+      );
+    case "Very High":
+      return (
+        <Badge className="bg-critical/20 text-critical border-critical/30">
+          Very High
+        </Badge>
+      );
+    default:
+      return <Badge>{level}</Badge>;
   }
 };
 
 const getStatusBadge = (status: Status) => {
   switch (status) {
-    case "Active": return <Badge className="bg-success text-white">Active</Badge>;
-    case "Inactive": return <Badge variant="secondary">Inactive</Badge>;
-    case "Pending Approval": return <Badge className="bg-warning text-white">Pending Approval</Badge>;
-    case "Draft": return <Badge variant="outline">Draft</Badge>;
-    default: return <Badge>{status}</Badge>;
+    case "Active":
+      return <Badge className="bg-success text-white">Active</Badge>;
+    case "Inactive":
+      return <Badge variant="secondary">Inactive</Badge>;
+    case "Pending Approval":
+      return <Badge className="bg-warning text-white">Pending Approval</Badge>;
+    case "Draft":
+      return <Badge variant="outline">Draft</Badge>;
+    default:
+      return <Badge>{status}</Badge>;
   }
 };
 
 function RiskParameters() {
   const [isAddOpen, setIsAddOpen] = useState(false);
-  const [selectedParam, setSelectedParam] = useState<RiskParameter | null>(null);
+  const [selectedParam, setSelectedParam] = useState<RiskParameter | null>(
+    null,
+  );
   const [viewDetailsOpen, setViewDetailsOpen] = useState(false);
 
   const form = useForm<z.infer<typeof parameterSchema>>({
@@ -143,7 +171,11 @@ function RiskParameters() {
             />
           </div>
           <div className="flex gap-2 w-full sm:w-auto">
-            <Button variant="outline" size="sm" className="flex-1 sm:flex-none gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex-1 sm:flex-none gap-2"
+            >
               <Filter className="h-4 w-4" /> Filter
             </Button>
 
@@ -157,12 +189,16 @@ function RiskParameters() {
                 <DialogHeader>
                   <DialogTitle>Add Risk Parameter</DialogTitle>
                   <DialogDescription>
-                    Configure a new risk factor for customer assessment. All changes require approval.
+                    Configure a new risk factor for customer assessment. All
+                    changes require approval.
                   </DialogDescription>
                 </DialogHeader>
 
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-4">
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-4 py-4"
+                  >
                     <FormField
                       control={form.control}
                       name="name"
@@ -170,7 +206,10 @@ function RiskParameters() {
                         <FormItem>
                           <FormLabel>Parameter Name *</FormLabel>
                           <FormControl>
-                            <Input placeholder="e.g. Geographic Risk - Middle East" {...field} />
+                            <Input
+                              placeholder="e.g. Geographic Risk - Middle East"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -202,7 +241,10 @@ function RiskParameters() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Risk Level</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <Select
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                            >
                               <FormControl>
                                 <SelectTrigger>
                                   <SelectValue placeholder="Select level" />
@@ -212,7 +254,9 @@ function RiskParameters() {
                                 <SelectItem value="Low">Low</SelectItem>
                                 <SelectItem value="Medium">Medium</SelectItem>
                                 <SelectItem value="High">High</SelectItem>
-                                <SelectItem value="Very High">Very High</SelectItem>
+                                <SelectItem value="Very High">
+                                  Very High
+                                </SelectItem>
                               </SelectContent>
                             </Select>
                             <FormMessage />
@@ -229,7 +273,9 @@ function RiskParameters() {
                             <FormControl>
                               <Input type="number" {...field} />
                             </FormControl>
-                            <FormDescription>Higher score means higher risk.</FormDescription>
+                            <FormDescription>
+                              Higher score means higher risk.
+                            </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -272,7 +318,10 @@ function RiskParameters() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Initial Status</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select status" />
@@ -290,10 +339,18 @@ function RiskParameters() {
                     />
 
                     <DialogFooter className="pt-4">
-                      <Button type="button" variant="outline" onClick={() => setIsAddOpen(false)}>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setIsAddOpen(false)}
+                      >
                         Cancel
                       </Button>
-                      <Button type="button" variant="secondary" onClick={() => toast.info("Draft saved")}>
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={() => toast.info("Draft saved")}
+                      >
                         <Save className="mr-2 h-4 w-4" /> Save Draft
                       </Button>
                       <Button type="submit">
@@ -323,20 +380,29 @@ function RiskParameters() {
             </TableHeader>
             <TableBody>
               {mockRiskParameters.map((param) => (
-                <TableRow key={param.id} className="hover:bg-muted/30 transition-colors">
+                <TableRow
+                  key={param.id}
+                  className="hover:bg-muted/30 transition-colors"
+                >
                   <TableCell className="font-medium">
                     <div>
                       <div className="text-foreground">{param.name}</div>
-                      <div className="text-[10px] text-muted-foreground line-clamp-1">{param.description}</div>
+                      <div className="text-[10px] text-muted-foreground line-clamp-1">
+                        {param.description}
+                      </div>
                     </div>
                   </TableCell>
                   <TableCell>{getRiskLevelBadge(param.riskLevel)}</TableCell>
                   <TableCell>
-                    <span className="font-mono font-bold text-primary">{param.score}</span>
+                    <span className="font-mono font-bold text-primary">
+                      {param.score}
+                    </span>
                   </TableCell>
                   <TableCell>{getStatusBadge(param.status)}</TableCell>
                   <TableCell>
-                    <Badge variant="outline" className="font-mono">v{param.version}</Badge>
+                    <Badge variant="outline" className="font-mono">
+                      v{param.version}
+                    </Badge>
                   </TableCell>
                   <TableCell className="text-muted-foreground text-xs">
                     {new Date(param.lastModified).toLocaleDateString()}
@@ -350,10 +416,13 @@ function RiskParameters() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-48">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem className="gap-2" onClick={() => {
-                          setSelectedParam(param);
-                          setViewDetailsOpen(true);
-                        }}>
+                        <DropdownMenuItem
+                          className="gap-2"
+                          onClick={() => {
+                            setSelectedParam(param);
+                            setViewDetailsOpen(true);
+                          }}
+                        >
                           <Eye className="h-4 w-4" /> View Details
                         </DropdownMenuItem>
                         <DropdownMenuItem className="gap-2">
@@ -384,14 +453,18 @@ function RiskParameters() {
             <DialogHeader>
               <div className="flex justify-between items-start">
                 <div>
-                  <DialogTitle className="text-xl">{selectedParam?.name}</DialogTitle>
+                  <DialogTitle className="text-xl">
+                    {selectedParam?.name}
+                  </DialogTitle>
                   <DialogDescription className="mt-1">
                     Parameter ID: {selectedParam?.id}
                   </DialogDescription>
                 </div>
                 <div className="flex gap-2">
                   {selectedParam && getStatusBadge(selectedParam.status)}
-                  <Badge variant="outline" className="font-mono">v{selectedParam?.version}</Badge>
+                  <Badge variant="outline" className="font-mono">
+                    v{selectedParam?.version}
+                  </Badge>
                 </div>
               </div>
             </DialogHeader>
@@ -406,45 +479,82 @@ function RiskParameters() {
               <TabsContent value="overview" className="space-y-4 mt-4">
                 <div className="grid grid-cols-2 gap-6 bg-muted/30 p-4 rounded-lg">
                   <div>
-                    <div className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Risk Level</div>
+                    <div className="text-[10px] uppercase font-bold text-muted-foreground mb-1">
+                      Risk Level
+                    </div>
                     <div className="flex items-center gap-2">
-                      {selectedParam && getRiskLevelBadge(selectedParam.riskLevel)}
+                      {selectedParam &&
+                        getRiskLevelBadge(selectedParam.riskLevel)}
                     </div>
                   </div>
                   <div>
-                    <div className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Risk Score</div>
-                    <div className="text-2xl font-mono font-bold text-primary">{selectedParam?.score}</div>
+                    <div className="text-[10px] uppercase font-bold text-muted-foreground mb-1">
+                      Risk Score
+                    </div>
+                    <div className="text-2xl font-mono font-bold text-primary">
+                      {selectedParam?.score}
+                    </div>
                   </div>
                   <div className="col-span-2">
-                    <div className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Description</div>
-                    <p className="text-sm text-foreground leading-relaxed">{selectedParam?.description}</p>
+                    <div className="text-[10px] uppercase font-bold text-muted-foreground mb-1">
+                      Description
+                    </div>
+                    <p className="text-sm text-foreground leading-relaxed">
+                      {selectedParam?.description}
+                    </p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="border border-border rounded-lg p-3">
-                    <div className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Metadata</div>
+                    <div className="text-[10px] uppercase font-bold text-muted-foreground mb-1">
+                      Metadata
+                    </div>
                     <div className="space-y-2 mt-2">
                       <div className="flex justify-between text-xs">
-                        <span className="text-muted-foreground">Created By:</span>
-                        <span className="font-medium">{selectedParam?.createdBy}</span>
+                        <span className="text-muted-foreground">
+                          Created By:
+                        </span>
+                        <span className="font-medium">
+                          {selectedParam?.createdBy}
+                        </span>
                       </div>
                       <div className="flex justify-between text-xs">
-                        <span className="text-muted-foreground">Created Date:</span>
-                        <span className="font-medium">{selectedParam && new Date(selectedParam.createdDate).toLocaleDateString()}</span>
+                        <span className="text-muted-foreground">
+                          Created Date:
+                        </span>
+                        <span className="font-medium">
+                          {selectedParam &&
+                            new Date(
+                              selectedParam.createdDate,
+                            ).toLocaleDateString()}
+                        </span>
                       </div>
                     </div>
                   </div>
                   <div className="border border-border rounded-lg p-3">
-                    <div className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Last Update</div>
+                    <div className="text-[10px] uppercase font-bold text-muted-foreground mb-1">
+                      Last Update
+                    </div>
                     <div className="space-y-2 mt-2">
                       <div className="flex justify-between text-xs">
-                        <span className="text-muted-foreground">Updated By:</span>
-                        <span className="font-medium">{selectedParam?.updatedBy}</span>
+                        <span className="text-muted-foreground">
+                          Updated By:
+                        </span>
+                        <span className="font-medium">
+                          {selectedParam?.updatedBy}
+                        </span>
                       </div>
                       <div className="flex justify-between text-xs">
-                        <span className="text-muted-foreground">Updated Date:</span>
-                        <span className="font-medium">{selectedParam && new Date(selectedParam.updatedDate).toLocaleDateString()}</span>
+                        <span className="text-muted-foreground">
+                          Updated Date:
+                        </span>
+                        <span className="font-medium">
+                          {selectedParam &&
+                            new Date(
+                              selectedParam.updatedDate,
+                            ).toLocaleDateString()}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -454,18 +564,45 @@ function RiskParameters() {
               <TabsContent value="history" className="mt-4">
                 <div className="space-y-4">
                   {[
-                    { v: 3, user: "ComplianceHead", date: "2024-02-01", action: "Increased score from 85 to 95" },
-                    { v: 2, user: "RiskManager", date: "2023-08-15", action: "Updated description for clarity" },
-                    { v: 1, user: "ComplianceAdmin", date: "2023-01-15", action: "Initial Creation" }
+                    {
+                      v: 3,
+                      user: "ComplianceHead",
+                      date: "2024-02-01",
+                      action: "Increased score from 85 to 95",
+                    },
+                    {
+                      v: 2,
+                      user: "RiskManager",
+                      date: "2023-08-15",
+                      action: "Updated description for clarity",
+                    },
+                    {
+                      v: 1,
+                      user: "ComplianceAdmin",
+                      date: "2023-01-15",
+                      action: "Initial Creation",
+                    },
                   ].map((hist, i) => (
-                    <div key={i} className="flex gap-4 border-l-2 border-muted pl-4 py-2 relative">
+                    <div
+                      key={i}
+                      className="flex gap-4 border-l-2 border-muted pl-4 py-2 relative"
+                    >
                       <div className="absolute -left-[9px] top-3 h-4 w-4 rounded-full bg-muted border-4 border-background" />
                       <div className="flex-1">
                         <div className="flex justify-between items-center mb-1">
-                          <span className="text-sm font-bold">Version {hist.v}</span>
-                          <span className="text-xs text-muted-foreground">{hist.date}</span>
+                          <span className="text-sm font-bold">
+                            Version {hist.v}
+                          </span>
+                          <span className="text-xs text-muted-foreground">
+                            {hist.date}
+                          </span>
                         </div>
-                        <div className="text-xs text-muted-foreground mb-1">by <span className="text-foreground font-medium">{hist.user}</span></div>
+                        <div className="text-xs text-muted-foreground mb-1">
+                          by{" "}
+                          <span className="text-foreground font-medium">
+                            {hist.user}
+                          </span>
+                        </div>
                         <p className="text-xs text-foreground">{hist.action}</p>
                       </div>
                     </div>
@@ -477,24 +614,29 @@ function RiskParameters() {
                 <div className="rounded-lg border border-border p-4 text-center">
                   <CheckCircle2 className="h-8 w-8 text-success mx-auto mb-2 opacity-50" />
                   <h4 className="font-bold text-sm">Approved</h4>
-                  <p className="text-xs text-muted-foreground mt-1">This version was approved by Compliance Head on Feb 1, 2024.</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    This version was approved by Compliance Head on Feb 1, 2024.
+                  </p>
 
                   <div className="mt-4 pt-4 border-t border-border space-y-3">
                     <div className="flex items-center justify-between text-xs">
                       <div className="flex items-center gap-2 text-muted-foreground">
-                        <div className="h-2 w-2 rounded-full bg-success" /> Maker
+                        <div className="h-2 w-2 rounded-full bg-success" />{" "}
+                        Maker
                       </div>
                       <span className="font-medium">Compliance Admin</span>
                     </div>
                     <div className="flex items-center justify-between text-xs">
                       <div className="flex items-center gap-2 text-muted-foreground">
-                        <div className="h-2 w-2 rounded-full bg-success" /> Checker
+                        <div className="h-2 w-2 rounded-full bg-success" />{" "}
+                        Checker
                       </div>
                       <span className="font-medium">Compliance Manager</span>
                     </div>
                     <div className="flex items-center justify-between text-xs">
                       <div className="flex items-center gap-2 text-muted-foreground">
-                        <div className="h-2 w-2 rounded-full bg-success" /> Approver
+                        <div className="h-2 w-2 rounded-full bg-success" />{" "}
+                        Approver
                       </div>
                       <span className="font-medium">Compliance Head</span>
                     </div>
@@ -504,7 +646,12 @@ function RiskParameters() {
             </Tabs>
 
             <DialogFooter className="mt-6 border-t border-border pt-4">
-              <Button variant="outline" onClick={() => setViewDetailsOpen(false)}>Close</Button>
+              <Button
+                variant="outline"
+                onClick={() => setViewDetailsOpen(false)}
+              >
+                Close
+              </Button>
               <Button>Edit Version</Button>
             </DialogFooter>
           </DialogContent>
@@ -513,12 +660,23 @@ function RiskParameters() {
         {/* Pagination placeholder */}
         <div className="flex items-center justify-between px-2">
           <div className="text-xs text-muted-foreground">
-            Showing <b>1</b> to <b>{mockRiskParameters.length}</b> of <b>{mockRiskParameters.length}</b> parameters
+            Showing <b>1</b> to <b>{mockRiskParameters.length}</b> of{" "}
+            <b>{mockRiskParameters.length}</b> parameters
           </div>
           <div className="flex gap-1">
-            <Button variant="outline" size="sm" disabled>Previous</Button>
-            <Button variant="outline" size="sm" className="bg-primary/10 border-primary/20 text-primary">1</Button>
-            <Button variant="outline" size="sm" disabled>Next</Button>
+            <Button variant="outline" size="sm" disabled>
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="bg-primary/10 border-primary/20 text-primary"
+            >
+              1
+            </Button>
+            <Button variant="outline" size="sm" disabled>
+              Next
+            </Button>
           </div>
         </div>
       </div>

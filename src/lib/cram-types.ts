@@ -1,5 +1,5 @@
-export type RiskLevel = 'Low' | 'Medium' | 'High' | 'Very High';
-export type Status = 'Active' | 'Inactive' | 'Pending Approval' | 'Draft';
+export type RiskLevel = "Low" | "Medium" | "High" | "Very High";
+export type Status = "Active" | "Inactive" | "Pending Approval" | "Draft";
 
 export interface RiskParameter {
   id: string;
@@ -34,7 +34,7 @@ export interface RiskRating {
   rating: RiskLevel;
 }
 
-export type DecisionType = 'Approve' | 'Review' | 'Reject' | 'Escalate';
+export type DecisionType = "Approve" | "Review" | "Reject" | "Escalate";
 
 export interface DecisionMatrixEntry {
   id: string;
@@ -54,7 +54,7 @@ export interface CustomerRiskAssessment {
   id: string;
   customerId: string;
   customerName: string;
-  customerType: 'Individual' | 'Corporate';
+  customerType: "Individual" | "Corporate";
   segment: string;
   industry: string;
   geography: string;
@@ -62,7 +62,7 @@ export interface CustomerRiskAssessment {
   rating: RiskLevel;
   decision: DecisionType;
   assessmentDate: string;
-  status: 'Completed' | 'Pending';
+  status: "Completed" | "Pending";
   breakdown: RiskBreakdownItem[];
   history: {
     date: string;
@@ -78,13 +78,13 @@ export interface AuditLog {
   userName: string;
   action: string;
   module: string;
-  oldValue: any;
-  newValue: any;
+  oldValue: Record<string, unknown> | string | number | boolean | null;
+  newValue: Record<string, unknown> | string | number | boolean | null;
   ipAddress: string;
   sessionId: string;
 }
 
-export type PermissionLevel = 'None' | 'Read' | 'Write' | 'Admin';
+export type PermissionLevel = "None" | "Read" | "Write" | "Admin";
 
 export interface Role {
   id: string;

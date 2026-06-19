@@ -96,7 +96,7 @@ function LoginScreen() {
     setLoading(true);
     setTimeout(() => {
       login();
-      navigate({ to: "/" });
+      navigate({ to: "/admin/cram" });
     }, 800);
   };
 

@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import {
   Area,
   AreaChart,
@@ -38,6 +38,9 @@ import { useFilters } from "@/hooks/useFilters";
 import { useMemo } from "react";
 
 export const Route = createFileRoute("/")({
+  beforeLoad: () => {
+    throw redirect({ to: "/admin/cram", replace: true });
+  },
   head: () => ({
     meta: [
       { title: "Executive Overview" },

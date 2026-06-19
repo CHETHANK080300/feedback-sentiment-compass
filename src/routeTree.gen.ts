@@ -25,6 +25,7 @@ import { Route as AssistantRouteImport } from './routes/assistant'
 import { Route as ApplicationHealthRouteImport } from './routes/application-health'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as IssuesIssueIdRouteImport } from './routes/issues.$issueId'
 import { Route as AdminCramRouteImport } from './routes/admin.cram'
 import { Route as AdminCramIndexRouteImport } from './routes/admin.cram.index'
@@ -117,6 +118,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const IssuesIssueIdRoute = IssuesIssueIdRouteImport.update({
   id: '/$issueId',
   path: '/$issueId',
@@ -193,6 +199,7 @@ export interface FileRoutesByFullPath {
   '/surveys': typeof SurveysRoute
   '/admin/cram': typeof AdminCramRouteWithChildren
   '/issues/$issueId': typeof IssuesIssueIdRoute
+  '/admin/': typeof AdminIndexRoute
   '/admin/cram/audit-logs': typeof AdminCramAuditLogsRoute
   '/admin/cram/customer-assessments': typeof AdminCramCustomerAssessmentsRoute
   '/admin/cram/decision-matrix': typeof AdminCramDecisionMatrixRoute
@@ -205,7 +212,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
   '/application-health': typeof ApplicationHealthRoute
   '/assistant': typeof AssistantRoute
   '/customer-care': typeof CustomerCareRoute
@@ -221,6 +227,7 @@ export interface FileRoutesByTo {
   '/social': typeof SocialRoute
   '/surveys': typeof SurveysRoute
   '/issues/$issueId': typeof IssuesIssueIdRoute
+  '/admin': typeof AdminIndexRoute
   '/admin/cram/audit-logs': typeof AdminCramAuditLogsRoute
   '/admin/cram/customer-assessments': typeof AdminCramCustomerAssessmentsRoute
   '/admin/cram/decision-matrix': typeof AdminCramDecisionMatrixRoute
@@ -251,6 +258,7 @@ export interface FileRoutesById {
   '/surveys': typeof SurveysRoute
   '/admin/cram': typeof AdminCramRouteWithChildren
   '/issues/$issueId': typeof IssuesIssueIdRoute
+  '/admin/': typeof AdminIndexRoute
   '/admin/cram/audit-logs': typeof AdminCramAuditLogsRoute
   '/admin/cram/customer-assessments': typeof AdminCramCustomerAssessmentsRoute
   '/admin/cram/decision-matrix': typeof AdminCramDecisionMatrixRoute
@@ -282,6 +290,7 @@ export interface FileRouteTypes {
     | '/surveys'
     | '/admin/cram'
     | '/issues/$issueId'
+    | '/admin/'
     | '/admin/cram/audit-logs'
     | '/admin/cram/customer-assessments'
     | '/admin/cram/decision-matrix'
@@ -294,7 +303,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/application-health'
     | '/assistant'
     | '/customer-care'
@@ -310,6 +318,7 @@ export interface FileRouteTypes {
     | '/social'
     | '/surveys'
     | '/issues/$issueId'
+    | '/admin'
     | '/admin/cram/audit-logs'
     | '/admin/cram/customer-assessments'
     | '/admin/cram/decision-matrix'
@@ -339,6 +348,7 @@ export interface FileRouteTypes {
     | '/surveys'
     | '/admin/cram'
     | '/issues/$issueId'
+    | '/admin/'
     | '/admin/cram/audit-logs'
     | '/admin/cram/customer-assessments'
     | '/admin/cram/decision-matrix'
@@ -483,6 +493,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/issues/$issueId': {
       id: '/issues/$issueId'
       path: '/$issueId'
@@ -593,10 +610,12 @@ const AdminCramRouteWithChildren = AdminCramRoute._addFileChildren(
 
 interface AdminRouteChildren {
   AdminCramRoute: typeof AdminCramRouteWithChildren
+  AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminCramRoute: AdminCramRouteWithChildren,
+  AdminIndexRoute: AdminIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)

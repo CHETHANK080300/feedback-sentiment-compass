@@ -6,8 +6,14 @@ import {
   mockAssessments,
   mockAuditLogs,
   mockRoles,
-  mockWorkflows
-} from './cram-mock-data';
+  mockWorkflows,
+} from "./cram-mock-data";
+import {
+  DecisionMatrixEntry,
+  RiskParameter,
+  RiskRating,
+  RiskWeight,
+} from "./cram-types";
 
 /**
  * CRAM API Layer (Simulation)
@@ -21,14 +27,14 @@ export const cramApi = {
     return mockRiskParameters;
   },
 
-  createRiskParameter: async (data: any) => {
-    console.log('POST /risk-parameters', data);
-    return { ...data, id: `rp-${Math.random()}`, status: 'Pending Approval' };
+  createRiskParameter: async (data: Partial<RiskParameter>) => {
+    console.log("POST /risk-parameters", data);
+    return { ...data, id: `rp-${Math.random()}`, status: "Pending Approval" };
   },
 
-  updateRiskParameter: async (id: string, data: any) => {
+  updateRiskParameter: async (id: string, data: Partial<RiskParameter>) => {
     console.log(`PUT /risk-parameters/${id}`, data);
-    return { ...data, id, status: 'Pending Approval' };
+    return { ...data, id, status: "Pending Approval" };
   },
 
   // Risk Weights
@@ -36,8 +42,8 @@ export const cramApi = {
     return mockRiskWeights;
   },
 
-  updateRiskWeights: async (weights: any[]) => {
-    console.log('POST /risk-weights', weights);
+  updateRiskWeights: async (weights: RiskWeight[]) => {
+    console.log("POST /risk-weights", weights);
     return weights;
   },
 
@@ -46,8 +52,8 @@ export const cramApi = {
     return mockRiskRatings;
   },
 
-  updateRiskRatings: async (ratings: any[]) => {
-    console.log('POST /risk-ratings', ratings);
+  updateRiskRatings: async (ratings: RiskRating[]) => {
+    console.log("POST /risk-ratings", ratings);
     return ratings;
   },
 
@@ -56,18 +62,20 @@ export const cramApi = {
     return mockDecisionMatrix;
   },
 
-  updateDecisionMatrix: async (matrix: any[]) => {
-    console.log('POST /decision-matrix', matrix);
+  updateDecisionMatrix: async (matrix: DecisionMatrixEntry[]) => {
+    console.log("POST /decision-matrix", matrix);
     return matrix;
   },
 
   // Risk Assessments
-  getAssessments: async (filters?: any) => {
+  getAssessments: async (
+    filters?: Record<string, string | number | boolean>,
+  ) => {
     return mockAssessments;
   },
 
   getAssessmentById: async (id: string) => {
-    return mockAssessments.find(a => a.id === id);
+    return mockAssessments.find((a) => a.id === id);
   },
 
   // Workflows
@@ -83,5 +91,5 @@ export const cramApi = {
   // Role Management
   getRoles: async () => {
     return mockRoles;
-  }
+  },
 };

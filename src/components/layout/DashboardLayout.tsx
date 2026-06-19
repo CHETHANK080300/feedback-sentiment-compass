@@ -138,7 +138,11 @@ const cramNav = [
   { to: "/admin/cram/risk-parameters", label: "Risk Parameters", icon: Zap },
   { to: "/admin/cram/risk-weights", label: "Risk Weights", icon: Scale },
   { to: "/admin/cram/risk-ratings", label: "Risk Ratings", icon: Star },
-  { to: "/admin/cram/decision-matrix", label: "Decision Matrix", icon: LayoutGrid },
+  {
+    to: "/admin/cram/decision-matrix",
+    label: "Decision Matrix",
+    icon: LayoutGrid,
+  },
   {
     to: "/admin/cram/customer-assessments",
     label: "Risk Assessments",
@@ -177,25 +181,25 @@ export function DashboardLayout({
         </div>
 
         <nav className="flex-1 overflow-y-auto p-3 custom-scrollbar">
-          <div className="mb-1">
+          <div className="mb-4">
             <button
-              onClick={() => setFeedbackOpen(!feedbackOpen)}
+              onClick={() => setCramOpen(!cramOpen)}
               className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold text-sidebar-foreground hover:bg-sidebar-accent/50"
             >
               <div className="flex items-center gap-3">
-                <MessageSquare className="h-4 w-4 text-primary" />
-                <span>Feedback Survey</span>
+                <ShieldCheck className="h-4 w-4 text-primary" />
+                <span>Risk Management</span>
               </div>
-              {feedbackOpen ? (
+              {cramOpen ? (
                 <ChevronDown className="h-3 w-3" />
               ) : (
                 <ChevronRight className="h-3 w-3" />
               )}
             </button>
 
-            {feedbackOpen && (
+            {cramOpen && (
               <div className="mt-1 ml-4 space-y-1 border-l border-sidebar-border/50 pl-2">
-                {nav.map((item) => {
+                {cramNav.map((item) => {
                   const Icon = item.icon;
                   const active = pathname === item.to;
                   return (
@@ -220,27 +224,24 @@ export function DashboardLayout({
           </div>
 
           <div className="mt-4 pt-4 border-t border-sidebar-border/30">
-            <div className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-              CRAM Administration
-            </div>
             <button
-              onClick={() => setCramOpen(!cramOpen)}
+              onClick={() => setFeedbackOpen(!feedbackOpen)}
               className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold text-sidebar-foreground hover:bg-sidebar-accent/50"
             >
               <div className="flex items-center gap-3">
-                <ShieldCheck className="h-4 w-4 text-primary" />
-                <span>Risk Management</span>
+                <MessageSquare className="h-4 w-4 text-primary" />
+                <span>Feedback Survey</span>
               </div>
-              {cramOpen ? (
+              {feedbackOpen ? (
                 <ChevronDown className="h-3 w-3" />
               ) : (
                 <ChevronRight className="h-3 w-3" />
               )}
             </button>
 
-            {cramOpen && (
+            {feedbackOpen && (
               <div className="mt-1 ml-4 space-y-1 border-l border-sidebar-border/50 pl-2">
-                {cramNav.map((item) => {
+                {nav.map((item) => {
                   const Icon = item.icon;
                   const active = pathname === item.to;
                   return (
