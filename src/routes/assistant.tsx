@@ -15,7 +15,7 @@ import { InlineFilters } from "@/components/dashboard/InlineFilters";
 export const Route = createFileRoute("/assistant")({
   head: () => ({
     meta: [
-      { title: "AI Assistant · CXIP" },
+      { title: "AI Assistant" },
       {
         name: "description",
         content:

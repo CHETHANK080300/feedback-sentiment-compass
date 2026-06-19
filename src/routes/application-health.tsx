@@ -16,7 +16,7 @@ import { useMemo } from "react";
 export const Route = createFileRoute("/application-health")({
   head: () => ({
     meta: [
-      { title: "Application Health · CXIP" },
+      { title: "Application Health" },
       {
         name: "description",
         content:

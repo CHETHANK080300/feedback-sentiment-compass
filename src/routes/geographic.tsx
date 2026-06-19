@@ -9,7 +9,7 @@ import { useMemo } from "react";
 export const Route = createFileRoute("/geographic")({
   head: () => ({
     meta: [
-      { title: "Geographic Analytics · CXIP" },
+      { title: "Geographic Analytics" },
       {
         name: "description",
         content:

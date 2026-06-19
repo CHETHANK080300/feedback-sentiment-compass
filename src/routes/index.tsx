@@ -40,7 +40,7 @@ import { useMemo } from "react";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Executive Overview · CXIP" },
+      { title: "Executive Overview" },
       {
         name: "description",
         content:

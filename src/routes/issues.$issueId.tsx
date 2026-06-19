@@ -35,7 +35,7 @@ export const Route = createFileRoute("/issues/$issueId")({
   },
   head: ({ loaderData }) => ({
     meta: [
-      { title: `${loaderData?.title ?? "Issue"} · Drill-down · CXIP` },
+      { title: `${loaderData?.title ?? "Issue"} · Drill-down` },
       {
         name: "description",
         content: `Drill-down analytics for ${loaderData?.title ?? "this issue"}: comments, affected versions, modules and related tickets.`,

@@ -14,7 +14,7 @@ import { InlineFilters } from "@/components/dashboard/InlineFilters";
 export const Route = createFileRoute("/reports")({
   head: () => ({
     meta: [
-      { title: "Reports · CXIP" },
+      { title: "Reports" },
       {
         name: "description",
         content:

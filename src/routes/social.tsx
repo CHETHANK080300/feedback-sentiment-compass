@@ -27,7 +27,7 @@ import { useMemo } from "react";
 export const Route = createFileRoute("/social")({
   head: () => ({
     meta: [
-      { title: "Social Monitoring · CXIP" },
+      { title: "Social Monitoring" },
       {
         name: "description",
         content:
