@@ -26,6 +26,16 @@ import { Route as ApplicationHealthRouteImport } from './routes/application-heal
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as IssuesIssueIdRouteImport } from './routes/issues.$issueId'
+import { Route as AdminCramRouteImport } from './routes/admin.cram'
+import { Route as AdminCramIndexRouteImport } from './routes/admin.cram.index'
+import { Route as AdminCramWorkflowsRouteImport } from './routes/admin.cram.workflows'
+import { Route as AdminCramRolesRouteImport } from './routes/admin.cram.roles'
+import { Route as AdminCramRiskWeightsRouteImport } from './routes/admin.cram.risk-weights'
+import { Route as AdminCramRiskRatingsRouteImport } from './routes/admin.cram.risk-ratings'
+import { Route as AdminCramRiskParametersRouteImport } from './routes/admin.cram.risk-parameters'
+import { Route as AdminCramDecisionMatrixRouteImport } from './routes/admin.cram.decision-matrix'
+import { Route as AdminCramCustomerAssessmentsRouteImport } from './routes/admin.cram.customer-assessments'
+import { Route as AdminCramAuditLogsRouteImport } from './routes/admin.cram.audit-logs'
 
 const SurveysRoute = SurveysRouteImport.update({
   id: '/surveys',
@@ -112,10 +122,61 @@ const IssuesIssueIdRoute = IssuesIssueIdRouteImport.update({
   path: '/$issueId',
   getParentRoute: () => IssuesRoute,
 } as any)
+const AdminCramRoute = AdminCramRouteImport.update({
+  id: '/cram',
+  path: '/cram',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCramIndexRoute = AdminCramIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminCramRoute,
+} as any)
+const AdminCramWorkflowsRoute = AdminCramWorkflowsRouteImport.update({
+  id: '/workflows',
+  path: '/workflows',
+  getParentRoute: () => AdminCramRoute,
+} as any)
+const AdminCramRolesRoute = AdminCramRolesRouteImport.update({
+  id: '/roles',
+  path: '/roles',
+  getParentRoute: () => AdminCramRoute,
+} as any)
+const AdminCramRiskWeightsRoute = AdminCramRiskWeightsRouteImport.update({
+  id: '/risk-weights',
+  path: '/risk-weights',
+  getParentRoute: () => AdminCramRoute,
+} as any)
+const AdminCramRiskRatingsRoute = AdminCramRiskRatingsRouteImport.update({
+  id: '/risk-ratings',
+  path: '/risk-ratings',
+  getParentRoute: () => AdminCramRoute,
+} as any)
+const AdminCramRiskParametersRoute = AdminCramRiskParametersRouteImport.update({
+  id: '/risk-parameters',
+  path: '/risk-parameters',
+  getParentRoute: () => AdminCramRoute,
+} as any)
+const AdminCramDecisionMatrixRoute = AdminCramDecisionMatrixRouteImport.update({
+  id: '/decision-matrix',
+  path: '/decision-matrix',
+  getParentRoute: () => AdminCramRoute,
+} as any)
+const AdminCramCustomerAssessmentsRoute =
+  AdminCramCustomerAssessmentsRouteImport.update({
+    id: '/customer-assessments',
+    path: '/customer-assessments',
+    getParentRoute: () => AdminCramRoute,
+  } as any)
+const AdminCramAuditLogsRoute = AdminCramAuditLogsRouteImport.update({
+  id: '/audit-logs',
+  path: '/audit-logs',
+  getParentRoute: () => AdminCramRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/application-health': typeof ApplicationHealthRoute
   '/assistant': typeof AssistantRoute
   '/customer-care': typeof CustomerCareRoute
@@ -130,11 +191,21 @@ export interface FileRoutesByFullPath {
   '/sentiment': typeof SentimentRoute
   '/social': typeof SocialRoute
   '/surveys': typeof SurveysRoute
+  '/admin/cram': typeof AdminCramRouteWithChildren
   '/issues/$issueId': typeof IssuesIssueIdRoute
+  '/admin/cram/audit-logs': typeof AdminCramAuditLogsRoute
+  '/admin/cram/customer-assessments': typeof AdminCramCustomerAssessmentsRoute
+  '/admin/cram/decision-matrix': typeof AdminCramDecisionMatrixRoute
+  '/admin/cram/risk-parameters': typeof AdminCramRiskParametersRoute
+  '/admin/cram/risk-ratings': typeof AdminCramRiskRatingsRoute
+  '/admin/cram/risk-weights': typeof AdminCramRiskWeightsRoute
+  '/admin/cram/roles': typeof AdminCramRolesRoute
+  '/admin/cram/workflows': typeof AdminCramWorkflowsRoute
+  '/admin/cram/': typeof AdminCramIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/application-health': typeof ApplicationHealthRoute
   '/assistant': typeof AssistantRoute
   '/customer-care': typeof CustomerCareRoute
@@ -150,11 +221,20 @@ export interface FileRoutesByTo {
   '/social': typeof SocialRoute
   '/surveys': typeof SurveysRoute
   '/issues/$issueId': typeof IssuesIssueIdRoute
+  '/admin/cram/audit-logs': typeof AdminCramAuditLogsRoute
+  '/admin/cram/customer-assessments': typeof AdminCramCustomerAssessmentsRoute
+  '/admin/cram/decision-matrix': typeof AdminCramDecisionMatrixRoute
+  '/admin/cram/risk-parameters': typeof AdminCramRiskParametersRoute
+  '/admin/cram/risk-ratings': typeof AdminCramRiskRatingsRoute
+  '/admin/cram/risk-weights': typeof AdminCramRiskWeightsRoute
+  '/admin/cram/roles': typeof AdminCramRolesRoute
+  '/admin/cram/workflows': typeof AdminCramWorkflowsRoute
+  '/admin/cram': typeof AdminCramIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/application-health': typeof ApplicationHealthRoute
   '/assistant': typeof AssistantRoute
   '/customer-care': typeof CustomerCareRoute
@@ -169,7 +249,17 @@ export interface FileRoutesById {
   '/sentiment': typeof SentimentRoute
   '/social': typeof SocialRoute
   '/surveys': typeof SurveysRoute
+  '/admin/cram': typeof AdminCramRouteWithChildren
   '/issues/$issueId': typeof IssuesIssueIdRoute
+  '/admin/cram/audit-logs': typeof AdminCramAuditLogsRoute
+  '/admin/cram/customer-assessments': typeof AdminCramCustomerAssessmentsRoute
+  '/admin/cram/decision-matrix': typeof AdminCramDecisionMatrixRoute
+  '/admin/cram/risk-parameters': typeof AdminCramRiskParametersRoute
+  '/admin/cram/risk-ratings': typeof AdminCramRiskRatingsRoute
+  '/admin/cram/risk-weights': typeof AdminCramRiskWeightsRoute
+  '/admin/cram/roles': typeof AdminCramRolesRoute
+  '/admin/cram/workflows': typeof AdminCramWorkflowsRoute
+  '/admin/cram/': typeof AdminCramIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -190,7 +280,17 @@ export interface FileRouteTypes {
     | '/sentiment'
     | '/social'
     | '/surveys'
+    | '/admin/cram'
     | '/issues/$issueId'
+    | '/admin/cram/audit-logs'
+    | '/admin/cram/customer-assessments'
+    | '/admin/cram/decision-matrix'
+    | '/admin/cram/risk-parameters'
+    | '/admin/cram/risk-ratings'
+    | '/admin/cram/risk-weights'
+    | '/admin/cram/roles'
+    | '/admin/cram/workflows'
+    | '/admin/cram/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -210,6 +310,15 @@ export interface FileRouteTypes {
     | '/social'
     | '/surveys'
     | '/issues/$issueId'
+    | '/admin/cram/audit-logs'
+    | '/admin/cram/customer-assessments'
+    | '/admin/cram/decision-matrix'
+    | '/admin/cram/risk-parameters'
+    | '/admin/cram/risk-ratings'
+    | '/admin/cram/risk-weights'
+    | '/admin/cram/roles'
+    | '/admin/cram/workflows'
+    | '/admin/cram'
   id:
     | '__root__'
     | '/'
@@ -228,12 +337,22 @@ export interface FileRouteTypes {
     | '/sentiment'
     | '/social'
     | '/surveys'
+    | '/admin/cram'
     | '/issues/$issueId'
+    | '/admin/cram/audit-logs'
+    | '/admin/cram/customer-assessments'
+    | '/admin/cram/decision-matrix'
+    | '/admin/cram/risk-parameters'
+    | '/admin/cram/risk-ratings'
+    | '/admin/cram/risk-weights'
+    | '/admin/cram/roles'
+    | '/admin/cram/workflows'
+    | '/admin/cram/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   ApplicationHealthRoute: typeof ApplicationHealthRoute
   AssistantRoute: typeof AssistantRoute
   CustomerCareRoute: typeof CustomerCareRoute
@@ -371,8 +490,116 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IssuesIssueIdRouteImport
       parentRoute: typeof IssuesRoute
     }
+    '/admin/cram': {
+      id: '/admin/cram'
+      path: '/cram'
+      fullPath: '/admin/cram'
+      preLoaderRoute: typeof AdminCramRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/cram/': {
+      id: '/admin/cram/'
+      path: '/'
+      fullPath: '/admin/cram/'
+      preLoaderRoute: typeof AdminCramIndexRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
+    '/admin/cram/workflows': {
+      id: '/admin/cram/workflows'
+      path: '/workflows'
+      fullPath: '/admin/cram/workflows'
+      preLoaderRoute: typeof AdminCramWorkflowsRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
+    '/admin/cram/roles': {
+      id: '/admin/cram/roles'
+      path: '/roles'
+      fullPath: '/admin/cram/roles'
+      preLoaderRoute: typeof AdminCramRolesRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
+    '/admin/cram/risk-weights': {
+      id: '/admin/cram/risk-weights'
+      path: '/risk-weights'
+      fullPath: '/admin/cram/risk-weights'
+      preLoaderRoute: typeof AdminCramRiskWeightsRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
+    '/admin/cram/risk-ratings': {
+      id: '/admin/cram/risk-ratings'
+      path: '/risk-ratings'
+      fullPath: '/admin/cram/risk-ratings'
+      preLoaderRoute: typeof AdminCramRiskRatingsRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
+    '/admin/cram/risk-parameters': {
+      id: '/admin/cram/risk-parameters'
+      path: '/risk-parameters'
+      fullPath: '/admin/cram/risk-parameters'
+      preLoaderRoute: typeof AdminCramRiskParametersRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
+    '/admin/cram/decision-matrix': {
+      id: '/admin/cram/decision-matrix'
+      path: '/decision-matrix'
+      fullPath: '/admin/cram/decision-matrix'
+      preLoaderRoute: typeof AdminCramDecisionMatrixRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
+    '/admin/cram/customer-assessments': {
+      id: '/admin/cram/customer-assessments'
+      path: '/customer-assessments'
+      fullPath: '/admin/cram/customer-assessments'
+      preLoaderRoute: typeof AdminCramCustomerAssessmentsRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
+    '/admin/cram/audit-logs': {
+      id: '/admin/cram/audit-logs'
+      path: '/audit-logs'
+      fullPath: '/admin/cram/audit-logs'
+      preLoaderRoute: typeof AdminCramAuditLogsRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
   }
 }
+
+interface AdminCramRouteChildren {
+  AdminCramAuditLogsRoute: typeof AdminCramAuditLogsRoute
+  AdminCramCustomerAssessmentsRoute: typeof AdminCramCustomerAssessmentsRoute
+  AdminCramDecisionMatrixRoute: typeof AdminCramDecisionMatrixRoute
+  AdminCramRiskParametersRoute: typeof AdminCramRiskParametersRoute
+  AdminCramRiskRatingsRoute: typeof AdminCramRiskRatingsRoute
+  AdminCramRiskWeightsRoute: typeof AdminCramRiskWeightsRoute
+  AdminCramRolesRoute: typeof AdminCramRolesRoute
+  AdminCramWorkflowsRoute: typeof AdminCramWorkflowsRoute
+  AdminCramIndexRoute: typeof AdminCramIndexRoute
+}
+
+const AdminCramRouteChildren: AdminCramRouteChildren = {
+  AdminCramAuditLogsRoute: AdminCramAuditLogsRoute,
+  AdminCramCustomerAssessmentsRoute: AdminCramCustomerAssessmentsRoute,
+  AdminCramDecisionMatrixRoute: AdminCramDecisionMatrixRoute,
+  AdminCramRiskParametersRoute: AdminCramRiskParametersRoute,
+  AdminCramRiskRatingsRoute: AdminCramRiskRatingsRoute,
+  AdminCramRiskWeightsRoute: AdminCramRiskWeightsRoute,
+  AdminCramRolesRoute: AdminCramRolesRoute,
+  AdminCramWorkflowsRoute: AdminCramWorkflowsRoute,
+  AdminCramIndexRoute: AdminCramIndexRoute,
+}
+
+const AdminCramRouteWithChildren = AdminCramRoute._addFileChildren(
+  AdminCramRouteChildren,
+)
+
+interface AdminRouteChildren {
+  AdminCramRoute: typeof AdminCramRouteWithChildren
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminCramRoute: AdminCramRouteWithChildren,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface IssuesRouteChildren {
   IssuesIssueIdRoute: typeof IssuesIssueIdRoute
@@ -387,7 +614,7 @@ const IssuesRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   ApplicationHealthRoute: ApplicationHealthRoute,
   AssistantRoute: AssistantRoute,
   CustomerCareRoute: CustomerCareRoute,

@@ -22,6 +22,14 @@ import {
   LogOut,
   Sun,
   Moon,
+  ShieldCheck,
+  Zap,
+  Scale,
+  LayoutGrid,
+  Users,
+  History,
+  FileSearch,
+  Workflow,
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { useAuth } from "@/hooks/useAuth";
@@ -125,6 +133,26 @@ const otherNav = [
   { to: "/admin", label: "Administration", icon: Settings },
 ] as const;
 
+const cramNav = [
+  { to: "/admin/cram", label: "CRAM Dashboard", icon: LayoutDashboard },
+  { to: "/admin/cram/risk-parameters", label: "Risk Parameters", icon: Zap },
+  { to: "/admin/cram/risk-weights", label: "Risk Weights", icon: Scale },
+  { to: "/admin/cram/risk-ratings", label: "Risk Ratings", icon: Star },
+  { to: "/admin/cram/decision-matrix", label: "Decision Matrix", icon: LayoutGrid },
+  {
+    to: "/admin/cram/customer-assessments",
+    label: "Risk Assessments",
+    icon: FileSearch,
+  },
+  {
+    to: "/admin/cram/workflows",
+    label: "Workflow Config",
+    icon: Workflow,
+  },
+  { to: "/admin/cram/audit-logs", label: "Audit Logs", icon: History },
+  { to: "/admin/cram/roles", label: "Role Management", icon: Users },
+] as const;
+
 export function DashboardLayout({
   children,
   title,
@@ -138,6 +166,7 @@ export function DashboardLayout({
   const { logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [feedbackOpen, setFeedbackOpen] = useState(true);
+  const [cramOpen, setCramOpen] = useState(pathname.includes("/admin/cram"));
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
@@ -167,6 +196,51 @@ export function DashboardLayout({
             {feedbackOpen && (
               <div className="mt-1 ml-4 space-y-1 border-l border-sidebar-border/50 pl-2">
                 {nav.map((item) => {
+                  const Icon = item.icon;
+                  const active = pathname === item.to;
+                  return (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      className={`group flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all ${
+                        active
+                          ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-sm relative before:absolute before:left-[-9px] before:h-4 before:w-1 before:bg-primary before:rounded-r"
+                          : "text-sidebar-foreground hover:bg-sidebar-accent/50"
+                      }`}
+                    >
+                      <Icon
+                        className={`h-4 w-4 ${active ? "text-primary" : "text-muted-foreground group-hover:text-foreground"}`}
+                      />
+                      <span className="truncate">{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          <div className="mt-4 pt-4 border-t border-sidebar-border/30">
+            <div className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+              CRAM Administration
+            </div>
+            <button
+              onClick={() => setCramOpen(!cramOpen)}
+              className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold text-sidebar-foreground hover:bg-sidebar-accent/50"
+            >
+              <div className="flex items-center gap-3">
+                <ShieldCheck className="h-4 w-4 text-primary" />
+                <span>Risk Management</span>
+              </div>
+              {cramOpen ? (
+                <ChevronDown className="h-3 w-3" />
+              ) : (
+                <ChevronRight className="h-3 w-3" />
+              )}
+            </button>
+
+            {cramOpen && (
+              <div className="mt-1 ml-4 space-y-1 border-l border-sidebar-border/50 pl-2">
+                {cramNav.map((item) => {
                   const Icon = item.icon;
                   const active = pathname === item.to;
                   return (
