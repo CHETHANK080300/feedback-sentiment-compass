@@ -39,7 +39,7 @@ import { useMemo } from "react";
 
 export const Route = createFileRoute("/")({
   beforeLoad: () => {
-    throw redirect({ to: "/admin/cram", replace: true });
+    throw redirect({ to: "/login", replace: true });
   },
   head: () => ({
     meta: [
