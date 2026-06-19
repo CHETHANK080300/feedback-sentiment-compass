@@ -1,5 +1,9 @@
 import type { LucideIcon } from "lucide-react";
-import { ArrowDownRight, ArrowUpRight, ArrowUpRight as ExternalArrow } from "lucide-react";
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  ArrowUpRight as ExternalArrow,
+} from "lucide-react";
 import { Link } from "@tanstack/react-router";
 
 interface KpiCardProps {
@@ -21,7 +25,15 @@ const toneMap = {
   accent: { bg: "bg-accent/10", text: "text-accent", glow: "" },
 };
 
-export function KpiCard({ label, value, delta, icon: Icon, tone = "primary", sparkline, drillTo }: KpiCardProps) {
+export function KpiCard({
+  label,
+  value,
+  delta,
+  icon: Icon,
+  tone = "primary",
+  sparkline,
+  drillTo,
+}: KpiCardProps) {
   const t = toneMap[tone];
   const positive = (delta ?? 0) >= 0;
   const interactive = !!drillTo;
@@ -35,17 +47,29 @@ export function KpiCard({ label, value, delta, icon: Icon, tone = "primary", spa
       )}
       <div className="flex items-start justify-between">
         <div>
-          <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{label}</div>
-          <div className="mt-2 font-display text-3xl font-bold tracking-tight">{value}</div>
+          <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            {label}
+          </div>
+          <div className="mt-2 font-display text-3xl font-bold tracking-tight">
+            {value}
+          </div>
         </div>
-        <div className={`grid h-10 w-10 place-items-center rounded-lg ${t.bg} ${t.text}`}>
+        <div
+          className={`grid h-10 w-10 place-items-center rounded-lg ${t.bg} ${t.text}`}
+        >
           <Icon className="h-5 w-5" />
         </div>
       </div>
       <div className="mt-3 flex items-center justify-between">
         {delta !== undefined && (
-          <div className={`flex items-center gap-1 text-xs font-medium ${positive ? "text-success" : "text-critical"}`}>
-            {positive ? <ArrowUpRight className="h-3.5 w-3.5" /> : <ArrowDownRight className="h-3.5 w-3.5" />}
+          <div
+            className={`flex items-center gap-1 text-xs font-medium ${positive ? "text-success" : "text-critical"}`}
+          >
+            {positive ? (
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            ) : (
+              <ArrowDownRight className="h-3.5 w-3.5" />
+            )}
             {Math.abs(delta)}% vs last week
           </div>
         )}
@@ -76,7 +100,11 @@ export function KpiCard({ label, value, delta, icon: Icon, tone = "primary", spa
 
   if (drillTo) {
     return (
-      <Link to="/issues/$issueId" params={{ issueId: drillTo }} className={className + " block"}>
+      <Link
+        to="/issues/$issueId"
+        params={{ issueId: drillTo }}
+        className={className + " block"}
+      >
         {inner}
       </Link>
     );

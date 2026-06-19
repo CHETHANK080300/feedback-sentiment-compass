@@ -16,6 +16,7 @@ import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as ReleasesRouteImport } from './routes/releases'
 import { Route as RecommendationsRouteImport } from './routes/recommendations'
 import { Route as RatingsRouteImport } from './routes/ratings'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as IssuesRouteImport } from './routes/issues'
 import { Route as GeographicRouteImport } from './routes/geographic'
 import { Route as CustomerFeedbackRouteImport } from './routes/customer-feedback'
@@ -59,6 +60,11 @@ const RecommendationsRoute = RecommendationsRouteImport.update({
 const RatingsRoute = RatingsRouteImport.update({
   id: '/ratings',
   path: '/ratings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IssuesRoute = IssuesRouteImport.update({
@@ -116,6 +122,7 @@ export interface FileRoutesByFullPath {
   '/customer-feedback': typeof CustomerFeedbackRoute
   '/geographic': typeof GeographicRoute
   '/issues': typeof IssuesRouteWithChildren
+  '/login': typeof LoginRoute
   '/ratings': typeof RatingsRoute
   '/recommendations': typeof RecommendationsRoute
   '/releases': typeof ReleasesRoute
@@ -134,6 +141,7 @@ export interface FileRoutesByTo {
   '/customer-feedback': typeof CustomerFeedbackRoute
   '/geographic': typeof GeographicRoute
   '/issues': typeof IssuesRouteWithChildren
+  '/login': typeof LoginRoute
   '/ratings': typeof RatingsRoute
   '/recommendations': typeof RecommendationsRoute
   '/releases': typeof ReleasesRoute
@@ -153,6 +161,7 @@ export interface FileRoutesById {
   '/customer-feedback': typeof CustomerFeedbackRoute
   '/geographic': typeof GeographicRoute
   '/issues': typeof IssuesRouteWithChildren
+  '/login': typeof LoginRoute
   '/ratings': typeof RatingsRoute
   '/recommendations': typeof RecommendationsRoute
   '/releases': typeof ReleasesRoute
@@ -173,6 +182,7 @@ export interface FileRouteTypes {
     | '/customer-feedback'
     | '/geographic'
     | '/issues'
+    | '/login'
     | '/ratings'
     | '/recommendations'
     | '/releases'
@@ -191,6 +201,7 @@ export interface FileRouteTypes {
     | '/customer-feedback'
     | '/geographic'
     | '/issues'
+    | '/login'
     | '/ratings'
     | '/recommendations'
     | '/releases'
@@ -209,6 +220,7 @@ export interface FileRouteTypes {
     | '/customer-feedback'
     | '/geographic'
     | '/issues'
+    | '/login'
     | '/ratings'
     | '/recommendations'
     | '/releases'
@@ -228,6 +240,7 @@ export interface RootRouteChildren {
   CustomerFeedbackRoute: typeof CustomerFeedbackRoute
   GeographicRoute: typeof GeographicRoute
   IssuesRoute: typeof IssuesRouteWithChildren
+  LoginRoute: typeof LoginRoute
   RatingsRoute: typeof RatingsRoute
   RecommendationsRoute: typeof RecommendationsRoute
   ReleasesRoute: typeof ReleasesRoute
@@ -286,6 +299,13 @@ declare module '@tanstack/react-router' {
       path: '/ratings'
       fullPath: '/ratings'
       preLoaderRoute: typeof RatingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/issues': {
@@ -374,6 +394,7 @@ const rootRouteChildren: RootRouteChildren = {
   CustomerFeedbackRoute: CustomerFeedbackRoute,
   GeographicRoute: GeographicRoute,
   IssuesRoute: IssuesRouteWithChildren,
+  LoginRoute: LoginRoute,
   RatingsRoute: RatingsRoute,
   RecommendationsRoute: RecommendationsRoute,
   ReleasesRoute: ReleasesRoute,
@@ -385,3 +406,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
