@@ -1,57 +1,48 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { KpiCard } from "@/components/dashboard/KpiCard";
 import { Panel } from "@/components/dashboard/Panel";
 import {
   Zap,
-  Scale,
-  Star,
-  ShieldCheck,
-  AlertTriangle,
-  CheckCircle2,
-  History,
-  Clock,
-  ArrowUpRight,
-  ArrowDownRight,
+  Globe2,
+  Package,
+  ShieldAlert,
   Users,
-  LayoutGrid,
-  ArrowRight,
+  History,
+  TrendingUp,
+  Activity,
+  CheckCircle2,
+  AlertCircle,
 } from "lucide-react";
 import {
-  ResponsiveContainer,
   BarChart,
   Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
+  ResponsiveContainer,
   Cell,
-  LineChart,
-  Line,
-  AreaChart,
-  Area,
+  PieChart,
+  Pie,
 } from "recharts";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { mockAuditLogs } from "@/lib/cram-mock-data";
 
 export const Route = createFileRoute("/admin/cram/")({
   component: CramDashboard,
 });
 
 const riskDistData = [
-  { name: "Low", value: 1450, color: "#10B981" },
-  { name: "Medium", value: 840, color: "#F59E0B" },
-  { name: "High", value: 320, color: "#EF4444" },
-  { name: "Very High", value: 95, color: "#991B1B" },
+  { name: "Low", value: 1420, color: "var(--success)" },
+  { name: "Medium", value: 840, color: "var(--warning)" },
+  { name: "High", value: 320, color: "var(--critical)" },
 ];
 
-const activityData = [
-  { day: "Mon", count: 12 },
-  { day: "Tue", count: 18 },
-  { day: "Wed", count: 15 },
-  { day: "Thu", count: 24 },
-  { day: "Fri", count: 21 },
-  { day: "Sat", count: 8 },
-  { day: "Sun", count: 5 },
+const factorBreakdownData = [
+  { name: "Customer Type", value: 35 },
+  { name: "Geography", value: 25 },
+  { name: "Product", value: 30 },
+  { name: "Channel", value: 10 },
 ];
 
 function CramDashboard() {
@@ -60,314 +51,163 @@ function CramDashboard() {
       title="CRAM Administration"
       subtitle="Operational dashboard for customer risk assessment engine"
     >
-      <div className="grid gap-6">
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[
-            {
-              label: "Active Parameters",
-              value: "24",
-              icon: Zap,
-              color: "text-primary",
-              bg: "bg-primary/10",
-              to: "/admin/cram/risk-parameters",
-            },
-            {
-              label: "Pending Approvals",
-              value: "03",
-              icon: AlertTriangle,
-              color: "text-warning",
-              bg: "bg-warning/10",
-              to: "/admin/cram/audit-logs",
-            },
-            {
-              label: "Active Workflows",
-              value: "05",
-              icon: ShieldCheck,
-              color: "text-success",
-              bg: "bg-success/10",
-              to: "/admin/cram/workflows",
-            },
-            {
-              label: "Risk Assessments",
-              value: "2,410",
-              icon: History,
-              color: "text-muted-foreground",
-              bg: "bg-muted",
-              to: "/admin/cram/customer-assessments",
-            },
-          ].map((stat, i) => (
-            <Link
-              key={i}
-              to={stat.to}
-              className="bg-card border border-border rounded-2xl p-5 shadow-sm hover:border-primary/40 transition-all group"
-            >
-              <div className="flex justify-between items-start mb-4">
-                <div
-                  className={`p-3 ${stat.bg} rounded-xl ${stat.color} group-hover:bg-primary group-hover:text-white transition-colors`}
-                >
-                  <stat.icon className="h-5 w-5" />
-                </div>
-                <Badge variant="outline" className="text-[10px] font-bold">
-                  LIVE
-                </Badge>
-              </div>
-              <div className="text-2xl font-bold group-hover:text-primary transition-colors">
-                {stat.value}
-              </div>
-              <div className="text-xs text-muted-foreground mt-1">
-                {stat.label}
-              </div>
-            </Link>
-          ))}
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+        <Link
+          to="/admin/cram/risk-model"
+          className="block transition-transform hover:scale-[1.02]"
+        >
+          <KpiCard
+            label="Risk Model Version"
+            value="v2.4"
+            icon={Zap}
+            tone="primary"
+            delta={0}
+          />
+        </Link>
+        <Link
+          to="/admin/cram/risk-model"
+          className="block transition-transform hover:scale-[1.02]"
+        >
+          <KpiCard
+            label="Total Parameters"
+            value="42"
+            icon={Activity}
+            tone="accent"
+            delta={2}
+          />
+        </Link>
+        <Link
+          to="/admin/cram/geography"
+          className="block transition-transform hover:scale-[1.02]"
+        >
+          <KpiCard
+            label="Countries Configured"
+            value="198"
+            icon={Globe2}
+            tone="success"
+            delta={0}
+          />
+        </Link>
+        <Link
+          to="/admin/cram/product"
+          className="block transition-transform hover:scale-[1.02]"
+        >
+          <KpiCard
+            label="Products Configured"
+            value="24"
+            icon={Package}
+            tone="info"
+            delta={1}
+          />
+        </Link>
+        <Link
+          to="/admin/cram/workflows"
+          className="block transition-transform hover:scale-[1.02]"
+        >
+          <KpiCard
+            label="Pending Approvals"
+            value="03"
+            icon={AlertCircle}
+            tone="warning"
+            delta={-1}
+          />
+        </Link>
+      </div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
-          {/* Main Charts */}
-          <div className="lg:col-span-2 space-y-6">
-            <Panel title="Customer Risk Distribution">
-              <div className="h-[300px] w-full pt-4">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={riskDistData}>
-                    <CartesianGrid
-                      strokeDasharray="3 3"
-                      vertical={false}
-                      stroke="rgba(255,255,255,0.05)"
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <Panel title="Risk Distribution" subtitle="High / Medium / Low split">
+          <div className="h-[260px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={riskDistData}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                  {riskDistData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </Panel>
+
+        <Panel title="Risk Factor Breakdown" subtitle="Weightage by factor">
+          <div className="h-[260px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={factorBreakdownData}
+                  innerRadius={60}
+                  outerRadius={80}
+                  paddingAngle={5}
+                  dataKey="value"
+                >
+                  {factorBreakdownData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={`var(--chart-${index + 1})`}
                     />
-                    <XAxis
-                      dataKey="name"
-                      axisLine={false}
-                      tickLine={false}
-                      tick={{
-                        fontSize: 12,
-                        fill: "var(--color-muted-foreground)",
-                      }}
-                    />
-                    <YAxis
-                      axisLine={false}
-                      tickLine={false}
-                      tick={{
-                        fontSize: 12,
-                        fill: "var(--color-muted-foreground)",
-                      }}
-                    />
-                    <Tooltip
-                      cursor={{ fill: "rgba(0,0,0,0.05)" }}
-                      contentStyle={{
-                        backgroundColor: "#1F2937",
-                        border: "none",
-                        borderRadius: "8px",
-                        color: "#fff",
-                      }}
-                    />
-                    <Bar dataKey="value" radius={[6, 6, 0, 0]}>
-                      {riskDistData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="grid grid-cols-2 gap-2 mt-4">
+            {factorBreakdownData.map((item, i) => (
+              <div key={item.name} className="flex items-center gap-2 text-xs">
+                <div
+                  className={`h-2 w-2 rounded-full bg-[var(--chart-${i + 1})]`}
+                />
+                <span className="text-muted-foreground">{item.name}</span>
+                <span className="font-bold">{item.value}%</span>
               </div>
-              <div className="flex justify-center gap-6 mt-4">
-                {riskDistData.map((d, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    <div
-                      className="h-2 w-2 rounded-full"
-                      style={{ backgroundColor: d.color }}
-                    />
-                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                      {d.name}
+            ))}
+          </div>
+        </Panel>
+
+        <Panel
+          title="Recent Activities"
+          subtitle="Latest configuration changes"
+        >
+          <div className="space-y-4">
+            {mockAuditLogs.map((log) => (
+              <div
+                key={log.id}
+                className="flex gap-3 pb-3 border-b border-border last:border-0"
+              >
+                <div className="mt-1">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                    <History className="h-4 w-4 text-primary" />
+                  </div>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between items-start">
+                    <p className="text-sm font-medium">{log.action}</p>
+                    <span className="text-[10px] text-muted-foreground">
+                      {new Date(log.timestamp).toLocaleTimeString()}
                     </span>
                   </div>
-                ))}
+                  <p className="text-xs text-muted-foreground truncate">
+                    {log.details}
+                  </p>
+                  <div className="mt-1 text-[10px] font-bold text-primary uppercase">
+                    {log.user}
+                  </div>
+                </div>
               </div>
-            </Panel>
-
-            <Panel title="System Activity (Assessments/Day)">
-              <div className="h-[250px] w-full pt-4">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={activityData}>
-                    <defs>
-                      <linearGradient
-                        id="colorCount"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                      >
-                        <stop
-                          offset="5%"
-                          stopColor="#3B82F6"
-                          stopOpacity={0.3}
-                        />
-                        <stop
-                          offset="95%"
-                          stopColor="#3B82F6"
-                          stopOpacity={0}
-                        />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid
-                      strokeDasharray="3 3"
-                      vertical={false}
-                      stroke="rgba(255,255,255,0.05)"
-                    />
-                    <XAxis
-                      dataKey="day"
-                      axisLine={false}
-                      tickLine={false}
-                      tick={{
-                        fontSize: 12,
-                        fill: "var(--color-muted-foreground)",
-                      }}
-                    />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "#1F2937",
-                        border: "none",
-                        borderRadius: "8px",
-                        color: "#fff",
-                      }}
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="count"
-                      stroke="#3B82F6"
-                      strokeWidth={2}
-                      fillOpacity={1}
-                      fill="url(#colorCount)"
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
-            </Panel>
+            ))}
+            <Link
+              to="/admin/cram/audit-logs"
+              className="block text-center text-xs text-primary font-bold hover:underline mt-2"
+            >
+              View All Logs
+            </Link>
           </div>
-
-          {/* Right Sidebar */}
-          <aside className="space-y-6">
-            <Panel title="Pending Actions">
-              <div className="space-y-4 pt-2">
-                {[
-                  {
-                    title: "Risk Weight Update",
-                    desc: "v2.2 requires approval",
-                    type: "Checker",
-                    time: "2h ago",
-                  },
-                  {
-                    title: "New Industry Parameter",
-                    desc: "Added by Compliance Admin",
-                    type: "Approver",
-                    time: "5h ago",
-                  },
-                  {
-                    title: "Decision Matrix Change",
-                    desc: "v1.5 draft needs review",
-                    type: "Maker",
-                    time: "1d ago",
-                  },
-                ].map((action, i) => (
-                  <div
-                    key={i}
-                    className="p-3 bg-muted/20 border border-border/50 rounded-xl hover:border-primary/30 transition-colors cursor-pointer"
-                  >
-                    <div className="flex justify-between items-start mb-1">
-                      <h4 className="text-xs font-bold">{action.title}</h4>
-                      <Badge variant="secondary" className="text-[8px]">
-                        {action.type}
-                      </Badge>
-                    </div>
-                    <p className="text-[10px] text-muted-foreground">
-                      {action.desc}
-                    </p>
-                    <div className="mt-2 flex items-center justify-between">
-                      <span className="text-[9px] text-muted-foreground flex items-center gap-1">
-                        <Clock className="h-2.5 w-2.5" /> {action.time}
-                      </span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-6 text-[9px] font-bold uppercase tracking-widest text-primary"
-                      >
-                        Review
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Panel>
-
-            <Panel title="Configuration Overview">
-              <div className="space-y-3">
-                <Link
-                  to="/admin/cram/risk-parameters"
-                  className="flex items-center justify-between text-xs p-2 rounded hover:bg-muted/30 cursor-pointer group"
-                >
-                  <div className="flex items-center gap-3">
-                    <Zap className="h-4 w-4 text-primary" />
-                    <span>Risk Parameters</span>
-                  </div>
-                  <ChevronRight className="h-3 w-3 opacity-0 group-hover:opacity-100" />
-                </Link>
-                <Link
-                  to="/admin/cram/risk-weights"
-                  className="flex items-center justify-between text-xs p-2 rounded hover:bg-muted/30 cursor-pointer group"
-                >
-                  <div className="flex items-center gap-3">
-                    <Scale className="h-4 w-4 text-primary" />
-                    <span>Risk Weights</span>
-                  </div>
-                  <ChevronRight className="h-3 w-3 opacity-0 group-hover:opacity-100" />
-                </Link>
-                <Link
-                  to="/admin/cram/risk-ratings"
-                  className="flex items-center justify-between text-xs p-2 rounded hover:bg-muted/30 cursor-pointer group"
-                >
-                  <div className="flex items-center gap-3">
-                    <Star className="h-4 w-4 text-primary" />
-                    <span>Risk Ratings</span>
-                  </div>
-                  <ChevronRight className="h-3 w-3 opacity-0 group-hover:opacity-100" />
-                </Link>
-                <Link
-                  to="/admin/cram/decision-matrix"
-                  className="flex items-center justify-between text-xs p-2 rounded hover:bg-muted/30 cursor-pointer group"
-                >
-                  <div className="flex items-center gap-3">
-                    <LayoutGrid className="h-4 w-4 text-primary" />
-                    <span>Decision Matrix</span>
-                  </div>
-                  <ChevronRight className="h-3 w-3 opacity-0 group-hover:opacity-100" />
-                </Link>
-                <Link
-                  to="/admin/cram/roles"
-                  className="flex items-center justify-between text-xs p-2 rounded hover:bg-muted/30 cursor-pointer group"
-                >
-                  <div className="flex items-center gap-3">
-                    <Users className="h-4 w-4 text-primary" />
-                    <span>Role Management</span>
-                  </div>
-                  <ChevronRight className="h-3 w-3 opacity-0 group-hover:opacity-100" />
-                </Link>
-              </div>
-            </Panel>
-
-            <div className="bg-gradient-to-br from-primary/10 to-transparent p-5 rounded-2xl border border-primary/20">
-              <h4 className="font-bold text-sm mb-2 flex items-center gap-2 text-primary">
-                <ShieldCheck className="h-4 w-4" /> Compliance Guard
-              </h4>
-              <p className="text-[11px] text-muted-foreground leading-relaxed">
-                All changes are currently following the 2-level approval policy.
-                Audit logs are being streamed to the Central Security Vault.
-              </p>
-            </div>
-          </aside>
-        </div>
+        </Panel>
       </div>
     </DashboardLayout>
   );
-}
-
-function ChevronRight({ className }: { className?: string }) {
-  return <ArrowRight className={className} />;
 }

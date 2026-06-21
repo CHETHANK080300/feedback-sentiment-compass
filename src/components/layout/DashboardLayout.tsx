@@ -30,6 +30,10 @@ import {
   History,
   FileSearch,
   Workflow,
+  Package,
+  ShieldAlert,
+  PlayCircle,
+  FileText,
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { useAuth } from "@/hooks/useAuth";
@@ -134,27 +138,23 @@ const otherNav = [
 ] as const;
 
 const cramNav = [
-  { to: "/admin/cram", label: "CRAM Dashboard", icon: LayoutDashboard },
-  { to: "/admin/cram/risk-parameters", label: "Risk Parameters", icon: Zap },
-  { to: "/admin/cram/risk-weights", label: "Risk Weights", icon: Scale },
-  { to: "/admin/cram/risk-ratings", label: "Risk Ratings", icon: Star },
+  { to: "/admin/cram", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/admin/cram/risk-model", label: "Risk Model Config", icon: Zap },
   {
-    to: "/admin/cram/decision-matrix",
-    label: "Decision Matrix",
-    icon: LayoutGrid,
+    to: "/admin/cram/geography",
+    label: "Geography Risk Master",
+    icon: Globe2,
   },
+  { to: "/admin/cram/product", label: "Product Risk Master", icon: Package },
   {
-    to: "/admin/cram/customer-assessments",
-    label: "Risk Assessments",
-    icon: FileSearch,
+    to: "/admin/cram/override-rules",
+    label: "Override Rules",
+    icon: ShieldAlert,
   },
-  {
-    to: "/admin/cram/workflows",
-    label: "Workflow Config",
-    icon: Workflow,
-  },
+  { to: "/admin/cram/workflows", label: "Workflow Config", icon: Workflow },
+  { to: "/admin/cram/roles", label: "User & Role Mgmt", icon: Users },
+  { to: "/admin/cram/simulator", label: "Risk Simulator", icon: PlayCircle },
   { to: "/admin/cram/audit-logs", label: "Audit Logs", icon: History },
-  { to: "/admin/cram/roles", label: "Role Management", icon: Users },
 ] as const;
 
 export function DashboardLayout({

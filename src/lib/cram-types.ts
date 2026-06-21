@@ -1,111 +1,98 @@
-export type RiskLevel = "Low" | "Medium" | "High" | "Very High";
-export type Status = "Active" | "Inactive" | "Pending Approval" | "Draft";
+export type RiskLevel = "Low" | "Medium" | "High" | "Prohibited";
+export type Status = "Active" | "Inactive" | "Pending Approval";
 
-export interface RiskParameter {
+export interface RiskFactor {
   id: string;
   name: string;
-  description: string;
-  riskLevel: RiskLevel;
-  score: number;
+  weightage: number;
   status: Status;
-  version: number;
-  lastModified: string;
-  createdBy: string;
-  createdDate: string;
-  updatedBy: string;
-  updatedDate: string;
-  effectiveDate?: string;
-  expiryDate?: string;
 }
 
-export interface RiskWeight {
+export interface CustomerParameter {
   id: string;
-  factorName: string;
-  weightPercentage: number;
-  status: Status;
-  version: number;
-  lastModified: string;
-}
-
-export interface RiskRating {
-  id: string;
-  minScore: number;
-  maxScore: number;
-  rating: RiskLevel;
-}
-
-export type DecisionType = "Approve" | "Review" | "Reject" | "Escalate";
-
-export interface DecisionMatrixEntry {
-  id: string;
-  rating: RiskLevel;
-  decision: DecisionType;
-  advancedRules?: string;
-}
-
-export interface RiskBreakdownItem {
   parameterName: string;
-  score: number;
-  weight: number;
-  weightedScore: number;
+  value: string;
+  riskScore: number;
+  override: string;
 }
 
-export interface CustomerRiskAssessment {
+export interface GeographyRisk {
   id: string;
-  customerId: string;
-  customerName: string;
-  customerType: "Individual" | "Corporate";
-  segment: string;
-  industry: string;
-  geography: string;
-  finalScore: number;
-  rating: RiskLevel;
-  decision: DecisionType;
-  assessmentDate: string;
-  status: "Completed" | "Pending";
-  breakdown: RiskBreakdownItem[];
-  history: {
-    date: string;
+  country: string;
+  fatf: "Low" | "High" | "Medium";
+  baselIndex: number;
+  sanctions: "Yes" | "No";
+  cpi: number;
+  calculatedRating: RiskLevel;
+  finalRating: RiskLevel;
+  overrideReason?: string;
+}
+
+export interface ProductRisk {
+  id: string;
+  product: string;
+  liquidity: number; // 1-3
+  crossBorder: number; // 1-3
+  anonymity: number; // 1-3
+  fatfRisk: number; // 1-3
+  finalRisk: number;
+}
+
+export interface OverrideRule {
+  id: string;
+  name: string;
+  condition: string;
+  outcome: RiskLevel;
+  reason: string;
+  status: Status;
+}
+
+export interface WorkflowStage {
+  id: string;
+  name: string;
+  role: string;
+  slaDays: number;
+  autoEscalation: string;
+}
+
+export interface Workflow {
+  id: string;
+  type: "New Customer Onboarding" | "Periodic Review" | "Trigger Event Review";
+  stages: WorkflowStage[];
+}
+
+export interface SimulationResult {
+  factors: {
+    name: string;
     score: number;
-    rating: RiskLevel;
+    weight: number;
+    weightedScore: number;
   }[];
+  overridesApplied: string[];
+  overallScore: number;
+  finalRating: RiskLevel;
 }
 
 export interface AuditLog {
   id: string;
   timestamp: string;
-  userId: string;
-  userName: string;
-  action: string;
+  user: string;
   module: string;
-  oldValue: Record<string, unknown> | string | number | boolean | null;
-  newValue: Record<string, unknown> | string | number | boolean | null;
-  ipAddress: string;
-  sessionId: string;
+  action: string;
+  details?: string;
 }
 
-export type PermissionLevel = "None" | "Read" | "Write" | "Admin";
+export type PermissionLevel = "View" | "Create" | "Edit" | "Approve" | "Delete";
 
 export interface Role {
   id: string;
   name: string;
-  description: string;
-  status: Status;
-  permissions: Record<string, PermissionLevel>;
+  permissions: PermissionLevel[];
 }
 
-export interface WorkflowStep {
-  level: number;
-  role: string;
-  approverName?: string;
-}
-
-export interface Workflow {
+export interface User {
   id: string;
   name: string;
-  module: string;
-  approvalLevels: number;
-  escalationTime: number; // in hours
+  role: string;
   status: Status;
-  steps: WorkflowStep[];
 }
