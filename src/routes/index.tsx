@@ -38,9 +38,6 @@ import { useFilters } from "@/hooks/useFilters";
 import { useMemo } from "react";
 
 export const Route = createFileRoute("/")({
-  beforeLoad: () => {
-    throw redirect({ to: "/login", replace: true });
-  },
   head: () => ({
     meta: [
       { title: "Executive Overview" },

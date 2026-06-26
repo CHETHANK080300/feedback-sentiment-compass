@@ -1,18 +1,18 @@
 import {
-  mockRiskParameters,
-  mockRiskWeights,
+  mockCustomerParameters,
+  mockRiskFactors,
   mockRiskRatings,
   mockDecisionMatrix,
-  mockAssessments,
+  mockCustomerAssessments,
   mockAuditLogs,
   mockRoles,
   mockWorkflows,
 } from "./cram-mock-data";
 import {
-  DecisionMatrixEntry,
-  RiskParameter,
+  DecisionMatrix,
+  CustomerParameter,
   RiskRating,
-  RiskWeight,
+  RiskFactor,
 } from "./cram-types";
 
 /**
@@ -24,25 +24,25 @@ import {
 export const cramApi = {
   // Risk Parameters
   getRiskParameters: async () => {
-    return mockRiskParameters;
+    return mockCustomerParameters;
   },
 
-  createRiskParameter: async (data: Partial<RiskParameter>) => {
+  createRiskParameter: async (data: Partial<CustomerParameter>) => {
     console.log("POST /risk-parameters", data);
     return { ...data, id: `rp-${Math.random()}`, status: "Pending Approval" };
   },
 
-  updateRiskParameter: async (id: string, data: Partial<RiskParameter>) => {
+  updateRiskParameter: async (id: string, data: Partial<CustomerParameter>) => {
     console.log(`PUT /risk-parameters/${id}`, data);
     return { ...data, id, status: "Pending Approval" };
   },
 
   // Risk Weights
   getRiskWeights: async () => {
-    return mockRiskWeights;
+    return mockRiskFactors;
   },
 
-  updateRiskWeights: async (weights: RiskWeight[]) => {
+  updateRiskWeights: async (weights: RiskFactor[]) => {
     console.log("POST /risk-weights", weights);
     return weights;
   },
@@ -62,20 +62,20 @@ export const cramApi = {
     return mockDecisionMatrix;
   },
 
-  updateDecisionMatrix: async (matrix: DecisionMatrixEntry[]) => {
+  updateDecisionMatrix: async (matrix: DecisionMatrix[]) => {
     console.log("POST /decision-matrix", matrix);
     return matrix;
   },
 
   // Risk Assessments
   getAssessments: async (
-    filters?: Record<string, string | number | boolean>,
+    _filters?: Record<string, string | number | boolean>,
   ) => {
-    return mockAssessments;
+    return mockCustomerAssessments;
   },
 
   getAssessmentById: async (id: string) => {
-    return mockAssessments.find((a) => a.id === id);
+    return mockCustomerAssessments.find((a) => a.id === id);
   },
 
   // Workflows

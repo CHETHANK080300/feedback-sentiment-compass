@@ -8,6 +8,9 @@ import {
   AuditLog,
   Role,
   User,
+  RiskRating,
+  DecisionMatrix,
+  CustomerAssessment,
 } from "./cram-types";
 
 export const mockRiskFactors: RiskFactor[] = [
@@ -245,5 +248,99 @@ export const mockAuditLogs: AuditLog[] = [
     module: "Override Rules",
     action: "Rule Modified",
     details: "Foreign PEP rule updated",
+  },
+];
+
+export const mockRiskRatings: RiskRating[] = [
+  { id: "1", minScore: 0, maxScore: 30, rating: "Low", color: "bg-success" },
+  {
+    id: "2",
+    minScore: 31,
+    maxScore: 60,
+    rating: "Medium",
+    color: "bg-warning",
+  },
+  { id: "3", minScore: 61, maxScore: 80, rating: "High", color: "bg-critical" },
+  {
+    id: "4",
+    minScore: 81,
+    maxScore: 100,
+    rating: "Very High",
+    color: "bg-black",
+  },
+];
+
+export const mockDecisionMatrix: DecisionMatrix[] = [
+  {
+    id: "1",
+    rating: "Low",
+    decision: "Approve",
+    conditions: "Standard Onboarding",
+  },
+  {
+    id: "2",
+    rating: "Medium",
+    decision: "Approve",
+    conditions: "Standard Onboarding",
+  },
+  {
+    id: "3",
+    rating: "High",
+    decision: "Review",
+    conditions: "Enhanced Due Diligence Required",
+  },
+  {
+    id: "4",
+    rating: "Very High",
+    decision: "Reject",
+    conditions: "Outside Risk Appetite",
+  },
+];
+
+export const mockCustomerAssessments: CustomerAssessment[] = [
+  {
+    id: "AST-1001",
+    customerId: "CUST-8821",
+    cifNumber: "CIF00921",
+    name: "Ahmad Abdullah",
+    customerType: "Individual",
+    segment: "Retail",
+    industry: "Salaried",
+    geography: "UAE",
+    finalScore: 24,
+    riskRating: "Low",
+    decision: "Approve",
+    assessmentDate: "2024-05-10",
+    status: "Completed",
+  },
+  {
+    id: "AST-1002",
+    customerId: "CUST-4412",
+    cifNumber: "CIF00122",
+    name: "Global Trading LLC",
+    customerType: "Corporate",
+    segment: "Commercial",
+    industry: "Logistics",
+    geography: "Singapore",
+    finalScore: 52,
+    riskRating: "Medium",
+    decision: "Approve",
+    assessmentDate: "2024-05-12",
+    status: "Completed",
+  },
+  {
+    id: "AST-1003",
+    customerId: "CUST-9921",
+    cifNumber: "CIF00551",
+    name: "Mikhail Volkov",
+    customerType: "Individual",
+    segment: "HNI",
+    industry: "Real Estate",
+    geography: "Russia",
+    finalScore: 88,
+    riskRating: "Very High",
+    decision: "Reject",
+    assessmentDate: "2024-05-14",
+    status: "Flagged",
   },
 ];

@@ -96,3 +96,34 @@ export interface User {
   role: string;
   status: Status;
 }
+
+export interface RiskRating {
+  id: string;
+  minScore: number;
+  maxScore: number;
+  rating: string;
+  color: string;
+}
+
+export interface DecisionMatrix {
+  id: string;
+  rating: string;
+  decision: "Approve" | "Review" | "Reject" | "Escalate";
+  conditions: string;
+}
+
+export interface CustomerAssessment {
+  id: string;
+  customerId: string;
+  cifNumber: string;
+  name: string;
+  customerType: string;
+  segment: string;
+  industry: string;
+  geography: string;
+  finalScore: number;
+  riskRating: string;
+  decision: string;
+  assessmentDate: string;
+  status: "Completed" | "Pending" | "Flagged";
+}

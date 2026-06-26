@@ -34,6 +34,9 @@ import {
   ShieldAlert,
   PlayCircle,
   FileText,
+  BarChart3,
+  TrendingUp,
+  AlertCircle,
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { useAuth } from "@/hooks/useAuth";
@@ -139,22 +142,61 @@ const otherNav = [
 
 const cramNav = [
   { to: "/admin/cram", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/admin/cram/risk-model", label: "Risk Model Config", icon: Zap },
+  { to: "/admin/cram/risk-model", label: "Risk Parameters", icon: Zap },
+  { to: "/admin/cram/ratings", label: "Risk Ratings", icon: Scale },
+  {
+    to: "/admin/cram/decision-matrix",
+    label: "Decision Matrix",
+    icon: FileText,
+  },
+  {
+    to: "/admin/cram/assessments",
+    label: "Customer Assessments",
+    icon: FileSearch,
+  },
   {
     to: "/admin/cram/geography",
-    label: "Geography Risk Master",
+    label: "Geography Master",
     icon: Globe2,
   },
-  { to: "/admin/cram/product", label: "Product Risk Master", icon: Package },
+  { to: "/admin/cram/product", label: "Product Master", icon: Package },
   {
     to: "/admin/cram/override-rules",
     label: "Override Rules",
     icon: ShieldAlert,
   },
   { to: "/admin/cram/workflows", label: "Workflow Config", icon: Workflow },
-  { to: "/admin/cram/roles", label: "User & Role Mgmt", icon: Users },
+  { to: "/admin/cram/roles", label: "Role Management", icon: Users },
   { to: "/admin/cram/simulator", label: "Risk Simulator", icon: PlayCircle },
   { to: "/admin/cram/audit-logs", label: "Audit Logs", icon: History },
+] as const;
+
+const transactionNav = [
+  {
+    to: "/transaction-analyzer",
+    label: "Overview",
+    icon: LayoutDashboard,
+  },
+  {
+    to: "/transaction-analyzer",
+    label: "Transaction Trends",
+    icon: TrendingUp,
+  },
+  {
+    to: "/transaction-analyzer",
+    label: "Channel Analytics",
+    icon: LayoutGrid,
+  },
+  {
+    to: "/transaction-analyzer",
+    label: "Geographical Distribution",
+    icon: Globe2,
+  },
+  {
+    to: "/transaction-analyzer",
+    label: "Alerts & Risk Flags",
+    icon: AlertCircle,
+  },
 ] as const;
 
 export function DashboardLayout({
@@ -171,6 +213,9 @@ export function DashboardLayout({
   const { theme, toggleTheme } = useTheme();
   const [feedbackOpen, setFeedbackOpen] = useState(true);
   const [cramOpen, setCramOpen] = useState(pathname.includes("/admin/cram"));
+  const [transactionOpen, setTransactionOpen] = useState(
+    pathname.includes("/transaction-analyzer"),
+  );
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
@@ -206,6 +251,48 @@ export function DashboardLayout({
                     <Link
                       key={item.to}
                       to={item.to}
+                      className={`group flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all ${
+                        active
+                          ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-sm relative before:absolute before:left-[-9px] before:h-4 before:w-1 before:bg-primary before:rounded-r"
+                          : "text-sidebar-foreground hover:bg-sidebar-accent/50"
+                      }`}
+                    >
+                      <Icon
+                        className={`h-4 w-4 ${active ? "text-primary" : "text-muted-foreground group-hover:text-foreground"}`}
+                      />
+                      <span className="truncate">{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          <div className="mt-4 pt-4 border-t border-sidebar-border/30">
+            <button
+              onClick={() => setTransactionOpen(!transactionOpen)}
+              className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold text-sidebar-foreground hover:bg-sidebar-accent/50"
+            >
+              <div className="flex items-center gap-3">
+                <BarChart3 className="h-4 w-4 text-primary" />
+                <span>Transaction Analyzer</span>
+              </div>
+              {transactionOpen ? (
+                <ChevronDown className="h-3 w-3" />
+              ) : (
+                <ChevronRight className="h-3 w-3" />
+              )}
+            </button>
+
+            {transactionOpen && (
+              <div className="mt-1 ml-4 space-y-1 border-l border-sidebar-border/50 pl-2">
+                {transactionNav.map((item, idx) => {
+                  const Icon = item.icon;
+                  const active = pathname === item.to;
+                  return (
+                    <Link
+                      key={`${item.to}-${idx}`}
+                      to="/transaction-analyzer"
                       className={`group flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all ${
                         active
                           ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-sm relative before:absolute before:left-[-9px] before:h-4 before:w-1 before:bg-primary before:rounded-r"
