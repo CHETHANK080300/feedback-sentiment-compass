@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TransactionAnalyzerRouteImport } from './routes/transaction-analyzer'
 import { Route as SurveysRouteImport } from './routes/surveys'
 import { Route as SocialRouteImport } from './routes/social'
 import { Route as SentimentRouteImport } from './routes/sentiment'
@@ -25,8 +26,27 @@ import { Route as AssistantRouteImport } from './routes/assistant'
 import { Route as ApplicationHealthRouteImport } from './routes/application-health'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as IssuesIssueIdRouteImport } from './routes/issues.$issueId'
+import { Route as AdminCramRouteImport } from './routes/admin.cram'
+import { Route as AdminCramIndexRouteImport } from './routes/admin.cram.index'
+import { Route as AdminCramWorkflowsRouteImport } from './routes/admin.cram.workflows'
+import { Route as AdminCramSimulatorRouteImport } from './routes/admin.cram.simulator'
+import { Route as AdminCramRolesRouteImport } from './routes/admin.cram.roles'
+import { Route as AdminCramRiskModelRouteImport } from './routes/admin.cram.risk-model'
+import { Route as AdminCramRatingsRouteImport } from './routes/admin.cram.ratings'
+import { Route as AdminCramProductRouteImport } from './routes/admin.cram.product'
+import { Route as AdminCramOverrideRulesRouteImport } from './routes/admin.cram.override-rules'
+import { Route as AdminCramGeographyRouteImport } from './routes/admin.cram.geography'
+import { Route as AdminCramDecisionMatrixRouteImport } from './routes/admin.cram.decision-matrix'
+import { Route as AdminCramAuditLogsRouteImport } from './routes/admin.cram.audit-logs'
+import { Route as AdminCramAssessmentsRouteImport } from './routes/admin.cram.assessments'
 
+const TransactionAnalyzerRoute = TransactionAnalyzerRouteImport.update({
+  id: '/transaction-analyzer',
+  path: '/transaction-analyzer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SurveysRoute = SurveysRouteImport.update({
   id: '/surveys',
   path: '/surveys',
@@ -107,15 +127,85 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const IssuesIssueIdRoute = IssuesIssueIdRouteImport.update({
   id: '/$issueId',
   path: '/$issueId',
   getParentRoute: () => IssuesRoute,
 } as any)
+const AdminCramRoute = AdminCramRouteImport.update({
+  id: '/cram',
+  path: '/cram',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCramIndexRoute = AdminCramIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminCramRoute,
+} as any)
+const AdminCramWorkflowsRoute = AdminCramWorkflowsRouteImport.update({
+  id: '/workflows',
+  path: '/workflows',
+  getParentRoute: () => AdminCramRoute,
+} as any)
+const AdminCramSimulatorRoute = AdminCramSimulatorRouteImport.update({
+  id: '/simulator',
+  path: '/simulator',
+  getParentRoute: () => AdminCramRoute,
+} as any)
+const AdminCramRolesRoute = AdminCramRolesRouteImport.update({
+  id: '/roles',
+  path: '/roles',
+  getParentRoute: () => AdminCramRoute,
+} as any)
+const AdminCramRiskModelRoute = AdminCramRiskModelRouteImport.update({
+  id: '/risk-model',
+  path: '/risk-model',
+  getParentRoute: () => AdminCramRoute,
+} as any)
+const AdminCramRatingsRoute = AdminCramRatingsRouteImport.update({
+  id: '/ratings',
+  path: '/ratings',
+  getParentRoute: () => AdminCramRoute,
+} as any)
+const AdminCramProductRoute = AdminCramProductRouteImport.update({
+  id: '/product',
+  path: '/product',
+  getParentRoute: () => AdminCramRoute,
+} as any)
+const AdminCramOverrideRulesRoute = AdminCramOverrideRulesRouteImport.update({
+  id: '/override-rules',
+  path: '/override-rules',
+  getParentRoute: () => AdminCramRoute,
+} as any)
+const AdminCramGeographyRoute = AdminCramGeographyRouteImport.update({
+  id: '/geography',
+  path: '/geography',
+  getParentRoute: () => AdminCramRoute,
+} as any)
+const AdminCramDecisionMatrixRoute = AdminCramDecisionMatrixRouteImport.update({
+  id: '/decision-matrix',
+  path: '/decision-matrix',
+  getParentRoute: () => AdminCramRoute,
+} as any)
+const AdminCramAuditLogsRoute = AdminCramAuditLogsRouteImport.update({
+  id: '/audit-logs',
+  path: '/audit-logs',
+  getParentRoute: () => AdminCramRoute,
+} as any)
+const AdminCramAssessmentsRoute = AdminCramAssessmentsRouteImport.update({
+  id: '/assessments',
+  path: '/assessments',
+  getParentRoute: () => AdminCramRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/application-health': typeof ApplicationHealthRoute
   '/assistant': typeof AssistantRoute
   '/customer-care': typeof CustomerCareRoute
@@ -130,11 +220,25 @@ export interface FileRoutesByFullPath {
   '/sentiment': typeof SentimentRoute
   '/social': typeof SocialRoute
   '/surveys': typeof SurveysRoute
+  '/transaction-analyzer': typeof TransactionAnalyzerRoute
+  '/admin/cram': typeof AdminCramRouteWithChildren
   '/issues/$issueId': typeof IssuesIssueIdRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/cram/assessments': typeof AdminCramAssessmentsRoute
+  '/admin/cram/audit-logs': typeof AdminCramAuditLogsRoute
+  '/admin/cram/decision-matrix': typeof AdminCramDecisionMatrixRoute
+  '/admin/cram/geography': typeof AdminCramGeographyRoute
+  '/admin/cram/override-rules': typeof AdminCramOverrideRulesRoute
+  '/admin/cram/product': typeof AdminCramProductRoute
+  '/admin/cram/ratings': typeof AdminCramRatingsRoute
+  '/admin/cram/risk-model': typeof AdminCramRiskModelRoute
+  '/admin/cram/roles': typeof AdminCramRolesRoute
+  '/admin/cram/simulator': typeof AdminCramSimulatorRoute
+  '/admin/cram/workflows': typeof AdminCramWorkflowsRoute
+  '/admin/cram/': typeof AdminCramIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
   '/application-health': typeof ApplicationHealthRoute
   '/assistant': typeof AssistantRoute
   '/customer-care': typeof CustomerCareRoute
@@ -149,12 +253,26 @@ export interface FileRoutesByTo {
   '/sentiment': typeof SentimentRoute
   '/social': typeof SocialRoute
   '/surveys': typeof SurveysRoute
+  '/transaction-analyzer': typeof TransactionAnalyzerRoute
   '/issues/$issueId': typeof IssuesIssueIdRoute
+  '/admin': typeof AdminIndexRoute
+  '/admin/cram/assessments': typeof AdminCramAssessmentsRoute
+  '/admin/cram/audit-logs': typeof AdminCramAuditLogsRoute
+  '/admin/cram/decision-matrix': typeof AdminCramDecisionMatrixRoute
+  '/admin/cram/geography': typeof AdminCramGeographyRoute
+  '/admin/cram/override-rules': typeof AdminCramOverrideRulesRoute
+  '/admin/cram/product': typeof AdminCramProductRoute
+  '/admin/cram/ratings': typeof AdminCramRatingsRoute
+  '/admin/cram/risk-model': typeof AdminCramRiskModelRoute
+  '/admin/cram/roles': typeof AdminCramRolesRoute
+  '/admin/cram/simulator': typeof AdminCramSimulatorRoute
+  '/admin/cram/workflows': typeof AdminCramWorkflowsRoute
+  '/admin/cram': typeof AdminCramIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/application-health': typeof ApplicationHealthRoute
   '/assistant': typeof AssistantRoute
   '/customer-care': typeof CustomerCareRoute
@@ -169,7 +287,22 @@ export interface FileRoutesById {
   '/sentiment': typeof SentimentRoute
   '/social': typeof SocialRoute
   '/surveys': typeof SurveysRoute
+  '/transaction-analyzer': typeof TransactionAnalyzerRoute
+  '/admin/cram': typeof AdminCramRouteWithChildren
   '/issues/$issueId': typeof IssuesIssueIdRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/cram/assessments': typeof AdminCramAssessmentsRoute
+  '/admin/cram/audit-logs': typeof AdminCramAuditLogsRoute
+  '/admin/cram/decision-matrix': typeof AdminCramDecisionMatrixRoute
+  '/admin/cram/geography': typeof AdminCramGeographyRoute
+  '/admin/cram/override-rules': typeof AdminCramOverrideRulesRoute
+  '/admin/cram/product': typeof AdminCramProductRoute
+  '/admin/cram/ratings': typeof AdminCramRatingsRoute
+  '/admin/cram/risk-model': typeof AdminCramRiskModelRoute
+  '/admin/cram/roles': typeof AdminCramRolesRoute
+  '/admin/cram/simulator': typeof AdminCramSimulatorRoute
+  '/admin/cram/workflows': typeof AdminCramWorkflowsRoute
+  '/admin/cram/': typeof AdminCramIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -190,11 +323,25 @@ export interface FileRouteTypes {
     | '/sentiment'
     | '/social'
     | '/surveys'
+    | '/transaction-analyzer'
+    | '/admin/cram'
     | '/issues/$issueId'
+    | '/admin/'
+    | '/admin/cram/assessments'
+    | '/admin/cram/audit-logs'
+    | '/admin/cram/decision-matrix'
+    | '/admin/cram/geography'
+    | '/admin/cram/override-rules'
+    | '/admin/cram/product'
+    | '/admin/cram/ratings'
+    | '/admin/cram/risk-model'
+    | '/admin/cram/roles'
+    | '/admin/cram/simulator'
+    | '/admin/cram/workflows'
+    | '/admin/cram/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/application-health'
     | '/assistant'
     | '/customer-care'
@@ -209,7 +356,21 @@ export interface FileRouteTypes {
     | '/sentiment'
     | '/social'
     | '/surveys'
+    | '/transaction-analyzer'
     | '/issues/$issueId'
+    | '/admin'
+    | '/admin/cram/assessments'
+    | '/admin/cram/audit-logs'
+    | '/admin/cram/decision-matrix'
+    | '/admin/cram/geography'
+    | '/admin/cram/override-rules'
+    | '/admin/cram/product'
+    | '/admin/cram/ratings'
+    | '/admin/cram/risk-model'
+    | '/admin/cram/roles'
+    | '/admin/cram/simulator'
+    | '/admin/cram/workflows'
+    | '/admin/cram'
   id:
     | '__root__'
     | '/'
@@ -228,12 +389,27 @@ export interface FileRouteTypes {
     | '/sentiment'
     | '/social'
     | '/surveys'
+    | '/transaction-analyzer'
+    | '/admin/cram'
     | '/issues/$issueId'
+    | '/admin/'
+    | '/admin/cram/assessments'
+    | '/admin/cram/audit-logs'
+    | '/admin/cram/decision-matrix'
+    | '/admin/cram/geography'
+    | '/admin/cram/override-rules'
+    | '/admin/cram/product'
+    | '/admin/cram/ratings'
+    | '/admin/cram/risk-model'
+    | '/admin/cram/roles'
+    | '/admin/cram/simulator'
+    | '/admin/cram/workflows'
+    | '/admin/cram/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   ApplicationHealthRoute: typeof ApplicationHealthRoute
   AssistantRoute: typeof AssistantRoute
   CustomerCareRoute: typeof CustomerCareRoute
@@ -248,10 +424,18 @@ export interface RootRouteChildren {
   SentimentRoute: typeof SentimentRoute
   SocialRoute: typeof SocialRoute
   SurveysRoute: typeof SurveysRoute
+  TransactionAnalyzerRoute: typeof TransactionAnalyzerRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/transaction-analyzer': {
+      id: '/transaction-analyzer'
+      path: '/transaction-analyzer'
+      fullPath: '/transaction-analyzer'
+      preLoaderRoute: typeof TransactionAnalyzerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/surveys': {
       id: '/surveys'
       path: '/surveys'
@@ -364,6 +548,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/issues/$issueId': {
       id: '/issues/$issueId'
       path: '/$issueId'
@@ -371,8 +562,145 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IssuesIssueIdRouteImport
       parentRoute: typeof IssuesRoute
     }
+    '/admin/cram': {
+      id: '/admin/cram'
+      path: '/cram'
+      fullPath: '/admin/cram'
+      preLoaderRoute: typeof AdminCramRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/cram/': {
+      id: '/admin/cram/'
+      path: '/'
+      fullPath: '/admin/cram/'
+      preLoaderRoute: typeof AdminCramIndexRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
+    '/admin/cram/workflows': {
+      id: '/admin/cram/workflows'
+      path: '/workflows'
+      fullPath: '/admin/cram/workflows'
+      preLoaderRoute: typeof AdminCramWorkflowsRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
+    '/admin/cram/simulator': {
+      id: '/admin/cram/simulator'
+      path: '/simulator'
+      fullPath: '/admin/cram/simulator'
+      preLoaderRoute: typeof AdminCramSimulatorRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
+    '/admin/cram/roles': {
+      id: '/admin/cram/roles'
+      path: '/roles'
+      fullPath: '/admin/cram/roles'
+      preLoaderRoute: typeof AdminCramRolesRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
+    '/admin/cram/risk-model': {
+      id: '/admin/cram/risk-model'
+      path: '/risk-model'
+      fullPath: '/admin/cram/risk-model'
+      preLoaderRoute: typeof AdminCramRiskModelRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
+    '/admin/cram/ratings': {
+      id: '/admin/cram/ratings'
+      path: '/ratings'
+      fullPath: '/admin/cram/ratings'
+      preLoaderRoute: typeof AdminCramRatingsRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
+    '/admin/cram/product': {
+      id: '/admin/cram/product'
+      path: '/product'
+      fullPath: '/admin/cram/product'
+      preLoaderRoute: typeof AdminCramProductRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
+    '/admin/cram/override-rules': {
+      id: '/admin/cram/override-rules'
+      path: '/override-rules'
+      fullPath: '/admin/cram/override-rules'
+      preLoaderRoute: typeof AdminCramOverrideRulesRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
+    '/admin/cram/geography': {
+      id: '/admin/cram/geography'
+      path: '/geography'
+      fullPath: '/admin/cram/geography'
+      preLoaderRoute: typeof AdminCramGeographyRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
+    '/admin/cram/decision-matrix': {
+      id: '/admin/cram/decision-matrix'
+      path: '/decision-matrix'
+      fullPath: '/admin/cram/decision-matrix'
+      preLoaderRoute: typeof AdminCramDecisionMatrixRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
+    '/admin/cram/audit-logs': {
+      id: '/admin/cram/audit-logs'
+      path: '/audit-logs'
+      fullPath: '/admin/cram/audit-logs'
+      preLoaderRoute: typeof AdminCramAuditLogsRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
+    '/admin/cram/assessments': {
+      id: '/admin/cram/assessments'
+      path: '/assessments'
+      fullPath: '/admin/cram/assessments'
+      preLoaderRoute: typeof AdminCramAssessmentsRouteImport
+      parentRoute: typeof AdminCramRoute
+    }
   }
 }
+
+interface AdminCramRouteChildren {
+  AdminCramAssessmentsRoute: typeof AdminCramAssessmentsRoute
+  AdminCramAuditLogsRoute: typeof AdminCramAuditLogsRoute
+  AdminCramDecisionMatrixRoute: typeof AdminCramDecisionMatrixRoute
+  AdminCramGeographyRoute: typeof AdminCramGeographyRoute
+  AdminCramOverrideRulesRoute: typeof AdminCramOverrideRulesRoute
+  AdminCramProductRoute: typeof AdminCramProductRoute
+  AdminCramRatingsRoute: typeof AdminCramRatingsRoute
+  AdminCramRiskModelRoute: typeof AdminCramRiskModelRoute
+  AdminCramRolesRoute: typeof AdminCramRolesRoute
+  AdminCramSimulatorRoute: typeof AdminCramSimulatorRoute
+  AdminCramWorkflowsRoute: typeof AdminCramWorkflowsRoute
+  AdminCramIndexRoute: typeof AdminCramIndexRoute
+}
+
+const AdminCramRouteChildren: AdminCramRouteChildren = {
+  AdminCramAssessmentsRoute: AdminCramAssessmentsRoute,
+  AdminCramAuditLogsRoute: AdminCramAuditLogsRoute,
+  AdminCramDecisionMatrixRoute: AdminCramDecisionMatrixRoute,
+  AdminCramGeographyRoute: AdminCramGeographyRoute,
+  AdminCramOverrideRulesRoute: AdminCramOverrideRulesRoute,
+  AdminCramProductRoute: AdminCramProductRoute,
+  AdminCramRatingsRoute: AdminCramRatingsRoute,
+  AdminCramRiskModelRoute: AdminCramRiskModelRoute,
+  AdminCramRolesRoute: AdminCramRolesRoute,
+  AdminCramSimulatorRoute: AdminCramSimulatorRoute,
+  AdminCramWorkflowsRoute: AdminCramWorkflowsRoute,
+  AdminCramIndexRoute: AdminCramIndexRoute,
+}
+
+const AdminCramRouteWithChildren = AdminCramRoute._addFileChildren(
+  AdminCramRouteChildren,
+)
+
+interface AdminRouteChildren {
+  AdminCramRoute: typeof AdminCramRouteWithChildren
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminCramRoute: AdminCramRouteWithChildren,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface IssuesRouteChildren {
   IssuesIssueIdRoute: typeof IssuesIssueIdRoute
@@ -387,7 +715,7 @@ const IssuesRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   ApplicationHealthRoute: ApplicationHealthRoute,
   AssistantRoute: AssistantRoute,
   CustomerCareRoute: CustomerCareRoute,
@@ -402,6 +730,7 @@ const rootRouteChildren: RootRouteChildren = {
   SentimentRoute: SentimentRoute,
   SocialRoute: SocialRoute,
   SurveysRoute: SurveysRoute,
+  TransactionAnalyzerRoute: TransactionAnalyzerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
