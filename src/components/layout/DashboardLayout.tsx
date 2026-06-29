@@ -174,28 +174,8 @@ const cramNav = [
 const transactionNav = [
   {
     to: "/transaction-analyzer",
-    label: "Overview",
+    label: "Transaction Overview",
     icon: LayoutDashboard,
-  },
-  {
-    to: "/transaction-analyzer",
-    label: "Transaction Trends",
-    icon: TrendingUp,
-  },
-  {
-    to: "/transaction-analyzer",
-    label: "Channel Analytics",
-    icon: LayoutGrid,
-  },
-  {
-    to: "/transaction-analyzer",
-    label: "Geographical Distribution",
-    icon: Globe2,
-  },
-  {
-    to: "/transaction-analyzer",
-    label: "Alerts & Risk Flags",
-    icon: AlertCircle,
   },
 ] as const;
 

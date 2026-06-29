@@ -344,3 +344,98 @@ export const mockCustomerAssessments: CustomerAssessment[] = [
     status: "Flagged",
   },
 ];
+
+export const mockDisputes: Dispute[] = [
+  {
+    id: "DIS-7721",
+    customerName: "Ahmad Abdullah",
+    issueType: "Transaction Error",
+    channel: "Mobile",
+    date: "2024-05-18",
+    status: "Pending",
+  },
+  {
+    id: "DIS-4410",
+    customerName: "Elena Rodriguez",
+    issueType: "Unauthorized Transaction",
+    channel: "ATM",
+    date: "2024-05-17",
+    status: "Under Review",
+  },
+  {
+    id: "DIS-2291",
+    customerName: "Samuel Kwok",
+    issueType: "Double Billing",
+    channel: "POS",
+    date: "2024-05-16",
+    status: "Resolved",
+  },
+];
+
+export const mockChannelDistribution = [
+  { name: "Mobile", value: 45, color: "#0D9488" }, // teal-600
+  { name: "Internet", value: 30, color: "#0F172A" }, // slate-900
+  { name: "ATM", value: 15, color: "#1E293B" }, // slate-800
+  { name: "Branch", value: 7, color: "#334155" }, // slate-700
+  { name: "POS", value: 3, color: "#475569" }, // slate-600
+];
+
+export const mockTxnTypeDistribution = [
+  { name: "Deposits", value: 30, color: "#0D9488" },
+  { name: "Transfers", value: 25, color: "#0F172A" },
+  { name: "Withdrawals", value: 20, color: "#1E293B" },
+  { name: "Loans", value: 15, color: "#334155" },
+  { name: "Bill Pay", value: 10, color: "#475569" },
+];
+
+export const mockVolumeTrend = [
+  {
+    name: "Mon",
+    deposits: 12000,
+    withdrawals: 8000,
+    transfers: 6000,
+    loans: 2000,
+  },
+  {
+    name: "Tue",
+    deposits: 15000,
+    withdrawals: 9000,
+    transfers: 7500,
+    loans: 2500,
+  },
+  {
+    name: "Wed",
+    deposits: 13000,
+    withdrawals: 11000,
+    transfers: 6800,
+    loans: 2200,
+  },
+  {
+    name: "Thu",
+    deposits: 18000,
+    withdrawals: 8500,
+    transfers: 9000,
+    loans: 3000,
+  },
+  {
+    name: "Fri",
+    deposits: 22000,
+    withdrawals: 12000,
+    transfers: 11000,
+    loans: 4000,
+  },
+  {
+    name: "Sat",
+    deposits: 9000,
+    withdrawals: 15000,
+    transfers: 4000,
+    loans: 1500,
+  },
+  {
+    name: "Sun",
+    deposits: 7000,
+    withdrawals: 6000,
+    transfers: 3000,
+    loans: 1000,
+  },
+];

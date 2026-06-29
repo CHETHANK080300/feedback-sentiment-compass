@@ -127,3 +127,25 @@ export interface CustomerAssessment {
   assessmentDate: string;
   status: "Completed" | "Pending" | "Flagged";
 }
+
+export interface Dispute {
+  id: string;
+  customerName: string;
+  issueType: string;
+  channel: string;
+  date: string;
+  status: "Pending" | "Under Review" | "Resolved";
+}
+
+export interface ChannelPerformance {
+  channel: string;
+  volume: number;
+  avgValue: number;
+  successRate: number;
+  avgProcessingTime: number;
+}
+
+export interface Demographics {
+  segment: string;
+  percentage: number;
+}
