@@ -1,0 +1,131 @@
+Analyzing lib...
+
+  error - screens/assessments_screen.dart:2:8 - Target of URI doesn't exist: 'package:lucide_icons_flutter/lucide_icons_flutter.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - screens/assessments_screen.dart:21:28 - Invalid constant value. - invalid_constant
+  error - screens/assessments_screen.dart:21:28 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/audit_logs_screen.dart:2:8 - Target of URI doesn't exist: 'package:lucide_icons_flutter/lucide_icons_flutter.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - screens/audit_logs_screen.dart:21:28 - Invalid constant value. - invalid_constant
+  error - screens/audit_logs_screen.dart:21:28 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/geography_screen.dart:2:8 - Target of URI doesn't exist: 'package:lucide_icons_flutter/lucide_icons_flutter.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - screens/geography_screen.dart:19:28 - Invalid constant value. - invalid_constant
+  error - screens/geography_screen.dart:19:28 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/login_screen.dart:3:8 - Target of URI doesn't exist: 'package:lucide_icons_flutter/lucide_icons_flutter.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - screens/login_screen.dart:28:26 - Invalid constant value. - invalid_constant
+  error - screens/login_screen.dart:28:26 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/override_rules_screen.dart:2:8 - Target of URI doesn't exist: 'package:lucide_icons_flutter/lucide_icons_flutter.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - screens/override_rules_screen.dart:19:28 - Invalid constant value. - invalid_constant
+  error - screens/override_rules_screen.dart:19:28 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/override_rules_screen.dart:48:27 - Invalid constant value. - invalid_constant
+  error - screens/override_rules_screen.dart:48:27 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/products_screen.dart:2:8 - Target of URI doesn't exist: 'package:lucide_icons_flutter/lucide_icons_flutter.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - screens/risk_model_screen.dart:2:8 - Target of URI doesn't exist: 'package:lucide_icons_flutter/lucide_icons_flutter.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - screens/risk_model_screen.dart:34:32 - Invalid constant value. - invalid_constant
+  error - screens/risk_model_screen.dart:34:32 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/risk_model_screen.dart:53:25 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/risk_model_screen.dart:53:52 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/risk_model_screen.dart:109:43 - Invalid constant value. - invalid_constant
+  error - screens/risk_model_screen.dart:109:43 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/risk_model_screen.dart:110:43 - Invalid constant value. - invalid_constant
+  error - screens/risk_model_screen.dart:110:43 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/risk_ratings_screen.dart:2:8 - Target of URI doesn't exist: 'package:lucide_icons_flutter/lucide_icons_flutter.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - screens/risk_ratings_screen.dart:32:26 - Invalid constant value. - invalid_constant
+  error - screens/risk_ratings_screen.dart:32:26 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/risk_simulator_screen.dart:2:8 - Target of URI doesn't exist: 'package:lucide_icons_flutter/lucide_icons_flutter.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - screens/risk_simulator_screen.dart:70:30 - Invalid constant value. - invalid_constant
+  error - screens/risk_simulator_screen.dart:70:30 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/risk_simulator_screen.dart:100:26 - Invalid constant value. - invalid_constant
+  error - screens/risk_simulator_screen.dart:100:26 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/risk_simulator_screen.dart:124:20 - Invalid constant value. - invalid_constant
+  error - screens/risk_simulator_screen.dart:124:20 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/roles_screen.dart:2:8 - Target of URI doesn't exist: 'package:lucide_icons_flutter/lucide_icons_flutter.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - screens/roles_screen.dart:19:28 - Invalid constant value. - invalid_constant
+  error - screens/roles_screen.dart:19:28 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/roles_screen.dart:43:29 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/roles_screen.dart:43:49 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/roles_screen.dart:44:31 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/roles_screen.dart:44:51 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/roles_screen.dart:45:31 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/roles_screen.dart:45:51 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/surveys_screen.dart:2:8 - Target of URI doesn't exist: 'package:lucide_icons_flutter/lucide_icons_flutter.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - screens/surveys_screen.dart:18:109 - Invalid constant value. - invalid_constant
+  error - screens/surveys_screen.dart:18:109 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/surveys_screen.dart:20:118 - Invalid constant value. - invalid_constant
+  error - screens/surveys_screen.dart:20:118 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/surveys_screen.dart:22:114 - Invalid constant value. - invalid_constant
+  error - screens/surveys_screen.dart:22:114 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/surveys_screen.dart:47:23 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/transaction_analyzer_screen.dart:3:8 - Target of URI doesn't exist: 'package:lucide_icons_flutter/lucide_icons_flutter.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - screens/transaction_analyzer_screen.dart:69:30 - Invalid constant value. - invalid_constant
+  error - screens/transaction_analyzer_screen.dart:69:30 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/transaction_analyzer_screen.dart:75:164 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/transaction_analyzer_screen.dart:77:123 - Invalid constant value. - invalid_constant
+  error - screens/transaction_analyzer_screen.dart:77:123 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/transaction_analyzer_screen.dart:79:121 - Invalid constant value. - invalid_constant
+  error - screens/transaction_analyzer_screen.dart:79:121 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/transaction_analyzer_screen.dart:142:24 - Invalid constant value. - invalid_constant
+  error - screens/transaction_analyzer_screen.dart:142:24 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/transaction_analyzer_screen.dart:157:24 - Invalid constant value. - invalid_constant
+  error - screens/transaction_analyzer_screen.dart:157:24 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/transaction_analyzer_screen.dart:169:32 - Invalid constant value. - invalid_constant
+  error - screens/transaction_analyzer_screen.dart:169:32 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/transaction_analyzer_screen.dart:175:32 - Invalid constant value. - invalid_constant
+  error - screens/transaction_analyzer_screen.dart:175:32 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/transaction_analyzer_screen.dart:187:119 - Invalid constant value. - invalid_constant
+  error - screens/transaction_analyzer_screen.dart:187:119 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/transaction_analyzer_screen.dart:189:118 - Invalid constant value. - invalid_constant
+  error - screens/transaction_analyzer_screen.dart:189:118 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/transaction_analyzer_screen.dart:191:116 - Invalid constant value. - invalid_constant
+  error - screens/transaction_analyzer_screen.dart:191:116 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/transaction_analyzer_screen.dart:193:117 - Invalid constant value. - invalid_constant
+  error - screens/transaction_analyzer_screen.dart:193:117 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/transaction_analyzer_screen.dart:301:136 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/transaction_analyzer_screen.dart:303:141 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/transaction_analyzer_screen.dart:305:136 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - screens/transaction_analyzer_screen.dart:347:41 - The getter 'slate' isn't defined for the type 'Colors'. Try importing the library that defines 'slate', correcting the name to the name of an existing getter, or defining a getter or field named 'slate'. - undefined_getter
+  error - screens/workflows_screen.dart:2:8 - Target of URI doesn't exist: 'package:lucide_icons_flutter/lucide_icons_flutter.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - screens/workflows_screen.dart:44:26 - Invalid constant value. - invalid_constant
+  error - screens/workflows_screen.dart:44:26 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - widgets/common_widgets.dart:2:8 - Target of URI doesn't exist: 'package:lucide_icons_flutter/lucide_icons_flutter.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist. - uri_does_not_exist
+  error - widgets/common_widgets.dart:50:30 - Invalid constant value. - invalid_constant
+  error - widgets/common_widgets.dart:50:30 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - widgets/common_widgets.dart:54:30 - Invalid constant value. - invalid_constant
+  error - widgets/common_widgets.dart:54:30 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - widgets/common_widgets.dart:87:22 - Invalid constant value. - invalid_constant
+  error - widgets/common_widgets.dart:87:22 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - widgets/common_widgets.dart:104:54 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - widgets/common_widgets.dart:105:63 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - widgets/common_widgets.dart:106:60 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - widgets/common_widgets.dart:107:58 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - widgets/common_widgets.dart:108:58 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - widgets/common_widgets.dart:109:53 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - widgets/common_widgets.dart:110:59 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - widgets/common_widgets.dart:111:64 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - widgets/common_widgets.dart:112:58 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - widgets/common_widgets.dart:113:54 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - widgets/common_widgets.dart:116:64 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - widgets/common_widgets.dart:117:59 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - widgets/common_widgets.dart:123:33 - Invalid constant value. - invalid_constant
+  error - widgets/common_widgets.dart:123:33 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - widgets/common_widgets.dart:269:32 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+  error - widgets/common_widgets.dart:269:57 - Undefined name 'LucideIcons'. Try correcting the name to one that is defined, or defining the name. - undefined_identifier
+   info - screens/assessments_screen.dart:58:46 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens/assessments_screen.dart:73:46 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens/geography_screen.dart:46:48 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens/login_screen.dart:21:45 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens/override_rules_screen.dart:45:48 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens/risk_model_screen.dart:47:45 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens/risk_model_screen.dart:47:88 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens/risk_model_screen.dart:122:64 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens/risk_model_screen.dart:122:95 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens/risk_ratings_screen.dart:104:22 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens/risk_simulator_screen.dart:141:43 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens/surveys_screen.dart:33:37 - Unnecessary use of multiple underscores. Try using '_'. - unnecessary_underscores
+   info - screens/transaction_analyzer_screen.dart:260:79 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens/transaction_analyzer_screen.dart:315:22 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens/transaction_analyzer_screen.dart:316:41 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - screens/transaction_analyzer_screen.dart:324:52 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - utils/app_theme.dart:25:9 - 'background' is deprecated and shouldn't be used. Use surface instead. This feature was deprecated after v3.18.0-0.1.pre. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - widgets/common_widgets.dart:146:39 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - widgets/common_widgets.dart:206:17 - Use the null-aware marker '?' rather than a null check via an 'if'. Try using '?'. - use_null_aware_elements
+
+127 issues found.

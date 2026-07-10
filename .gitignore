@@ -39,3 +39,16 @@ yarn-error.log*
 
 # TanStack Router
 src/routeTree.gen.ts
+
+# Flutter
+cram_flutter/build/
+cram_flutter/.dart_tool/
+cram_flutter/.flutter-plugins
+cram_flutter/.flutter-plugins-dependencies
+cram_flutter/.packages
+cram_flutter/pubspec.lock
+cram_flutter/linux/
+cram_flutter/macos/
+cram_flutter/windows/
+cram_flutter/web/
+cram_flutter/test/
