@@ -11,7 +11,7 @@ interface KpiCardProps {
   value: string;
   delta?: number;
   icon: LucideIcon;
-  tone?: "primary" | "success" | "warning" | "critical" | "accent";
+  tone?: "primary" | "success" | "warning" | "critical" | "accent" | "info";
   sparkline?: number[];
   /** Drill-down target. Currently routes to /issues/$issueId. */
   drillTo?: string;
@@ -23,6 +23,7 @@ const toneMap = {
   warning: { bg: "bg-warning/10", text: "text-warning", glow: "" },
   critical: { bg: "bg-critical/10", text: "text-critical", glow: "" },
   accent: { bg: "bg-accent/10", text: "text-accent", glow: "" },
+  info: { bg: "bg-info/10", text: "text-info", glow: "" },
 };
 
 export function KpiCard({

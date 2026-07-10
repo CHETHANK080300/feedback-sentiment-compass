@@ -145,6 +145,10 @@ function AuthGuard({ children }: { children: ReactNode }) {
   const location = useLocation();
 
   useEffect(() => {
+    console.log("AuthGuard check:", {
+      isAuthenticated,
+      pathname: location.pathname,
+    });
     if (!isAuthenticated && location.pathname !== "/login") {
       navigate({ to: "/login" });
     }
