@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../widgets/common_widgets.dart';
 import '../utils/app_theme.dart';
-import '../models/cram_models.dart';
-import '../services/mock_data.dart';
 
 class RiskRatingsScreen extends StatelessWidget {
   const RiskRatingsScreen({super.key});
@@ -15,79 +13,75 @@ class RiskRatingsScreen extends StatelessWidget {
       subtitle: 'Define score thresholds and corresponding onboarding outcomes',
       body: Column(
         children: [
-          _buildRatingsPanel(),
+          Panel(
+            title: 'Score Thresholds',
+            subtitle: 'Map final score ranges to risk levels',
+            action: ElevatedButton.icon(onPressed: () {}, icon: const Icon(LucideIcons.save, size: 14), label: const Text('Save Changes', style: TextStyle(fontSize: 12)), style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primaryColor, foregroundColor: Colors.white)),
+            child: _buildRatingsTable(),
+          ),
           const SizedBox(height: 24),
-          _buildDecisionMatrixPanel(),
+          Panel(
+            title: 'Decision Matrix',
+            subtitle: 'Automated policy outcomes based on risk rating',
+            child: _buildDecisionTable(),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildRatingsPanel() {
-    return Panel(
-      title: 'Score Thresholds',
-      subtitle: 'Map final score ranges to risk levels',
-      trailing: ElevatedButton.icon(
-        onPressed: () {},
-        icon: const Icon(LucideIcons.save, size: 16),
-        label: const Text('Save Changes'),
-      ),
+  Widget _buildRatingsTable() {
+    final ratings = [
+      {'min': 0, 'max': 30, 'label': 'Low', 'color': AppTheme.successColor},
+      {'min': 31, 'max': 60, 'label': 'Medium', 'color': AppTheme.warningColor},
+      {'min': 61, 'max': 80, 'label': 'High', 'color': AppTheme.criticalColor},
+      {'min': 81, 'max': 100, 'label': 'Very High', 'color': Colors.black},
+    ];
+
+    return SizedBox(
+      width: double.infinity,
       child: DataTable(
-        columnSpacing: 100,
+        headingRowColor: WidgetStateProperty.all(AppTheme.backgroundColor),
         columns: const [
-          DataColumn(label: Text('Min Score')),
-          DataColumn(label: Text('Max Score')),
-          DataColumn(label: Text('Rating')),
-          DataColumn(label: Text('Visual')),
+          DataColumn(label: Text('MIN SCORE', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold))),
+          DataColumn(label: Text('MAX SCORE', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold))),
+          DataColumn(label: Text('RATING', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold))),
+          DataColumn(label: Text('VISUAL INDICATOR', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold))),
         ],
-        rows: MockData.riskRatings.map((rating) {
-          return DataRow(cells: [
-            DataCell(Text(rating.minScore.toStringAsFixed(0))),
-            DataCell(Text(rating.maxScore.toStringAsFixed(0))),
-            DataCell(Text(rating.rating, style: const TextStyle(fontWeight: FontWeight.bold))),
-            DataCell(Container(
-              width: 100,
-              height: 8,
-              decoration: BoxDecoration(
-                color: _getColor(rating.color),
-                borderRadius: BorderRadius.circular(4),
-              ),
-            )),
-          ]);
-        }).toList(),
+        rows: ratings.map((r) => DataRow(cells: [
+          DataCell(Text('${r['min']}')),
+          DataCell(Text('${r['max']}')),
+          DataCell(Text(r['label'] as String, style: const TextStyle(fontWeight: FontWeight.bold))),
+          DataCell(Container(width: 120, height: 8, decoration: BoxDecoration(color: (r['color'] as Color).withValues(alpha: 0.2), borderRadius: BorderRadius.circular(4)), child: FractionallySizedBox(alignment: Alignment.centerLeft, widthFactor: 0.6, child: Container(decoration: BoxDecoration(color: r['color'] as Color, borderRadius: BorderRadius.circular(4)))))),
+        ])).toList(),
       ),
     );
   }
 
-  Widget _buildDecisionMatrixPanel() {
-    return Panel(
-      title: 'Decision Matrix',
-      subtitle: 'Automated policy outcomes',
+  Widget _buildDecisionTable() {
+    final matrix = [
+      {'rating': 'Low', 'decision': 'Approve', 'condition': 'Standard Onboarding'},
+      {'rating': 'Medium', 'decision': 'Approve', 'condition': 'Standard Onboarding'},
+      {'rating': 'High', 'decision': 'Review', 'condition': 'Enhanced Due Diligence'},
+      {'rating': 'Very High', 'decision': 'Reject', 'condition': 'Outside Risk Appetite'},
+    ];
+
+    return SizedBox(
+      width: double.infinity,
       child: DataTable(
-        columnSpacing: 100,
+        headingRowColor: WidgetStateProperty.all(AppTheme.backgroundColor),
         columns: const [
-          DataColumn(label: Text('Risk Rating')),
-          DataColumn(label: Text('Decision')),
-          DataColumn(label: Text('Policy Condition')),
+          DataColumn(label: Text('RISK RATING', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold))),
+          DataColumn(label: Text('DECISION', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold))),
+          DataColumn(label: Text('POLICY CONDITION', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold))),
         ],
-        rows: MockData.decisionMatrix.map((item) {
-          return DataRow(cells: [
-            DataCell(Text(item.rating, style: const TextStyle(fontWeight: FontWeight.bold))),
-            DataCell(_buildDecisionBadge(item.decision)),
-            DataCell(Text(item.conditions, style: const TextStyle(color: AppTheme.mutedTextColor))),
-          ]);
-        }).toList(),
+        rows: matrix.map((m) => DataRow(cells: [
+          DataCell(Text(m['rating']!, style: const TextStyle(fontWeight: FontWeight.bold))),
+          DataCell(_buildDecisionBadge(m['decision']!)),
+          DataCell(Text(m['condition']!, style: const TextStyle(color: AppTheme.mutedTextColor))),
+        ])).toList(),
       ),
     );
-  }
-
-  Color _getColor(String color) {
-    switch (color) {
-      case 'success': return AppTheme.successColor;
-      case 'warning': return AppTheme.warningColor;
-      case 'critical': return AppTheme.criticalColor;
-      default: return Colors.black;
-    }
   }
 
   Widget _buildDecisionBadge(String decision) {
@@ -100,14 +94,8 @@ class RiskRatingsScreen extends StatelessWidget {
     }
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Text(
-        decision.toUpperCase(),
-        style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: color),
-      ),
+      decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12)),
+      child: Text(decision.toUpperCase(), style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: color)),
     );
   }
 }

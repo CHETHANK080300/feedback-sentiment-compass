@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../widgets/common_widgets.dart';
 import '../utils/app_theme.dart';
-import '../models/cram_models.dart';
-import '../services/mock_data.dart';
 
 class AssessmentsScreen extends StatelessWidget {
   const AssessmentsScreen({super.key});
@@ -16,62 +14,47 @@ class AssessmentsScreen extends StatelessWidget {
       body: Panel(
         title: 'Assessment History',
         subtitle: 'Showing recent risk evaluations',
-        trailing: OutlinedButton.icon(
-          onPressed: () {},
-          icon: const Icon(LucideIcons.search, size: 16),
-          label: const Text('Search Customers'),
-        ),
-        child: DataTable(
-          columnSpacing: 60,
-          columns: const [
-            DataColumn(label: Text('Assessment ID')),
-            DataColumn(label: Text('Customer Name')),
-            DataColumn(label: Text('Risk Rating')),
-            DataColumn(label: Text('Decision')),
-            DataColumn(label: Text('Date')),
+        action: Row(
+          children: [
+            OutlinedButton.icon(onPressed: () {}, icon: const Icon(LucideIcons.search, size: 14), label: const Text('Search', style: TextStyle(fontSize: 12))),
+            const SizedBox(width: 8),
+            OutlinedButton.icon(onPressed: () {}, icon: const Icon(LucideIcons.download, size: 14), label: const Text('Export', style: TextStyle(fontSize: 12))),
           ],
-          rows: MockData.assessments.map((ast) {
-            return DataRow(cells: [
-              DataCell(Text(ast.id, style: const TextStyle(fontFamily: 'monospace', fontSize: 12, fontWeight: FontWeight.bold))),
-              DataCell(Text(ast.name, style: const TextStyle(fontWeight: FontWeight.bold))),
-              DataCell(_buildRatingBadge(ast.riskRating)),
-              DataCell(_buildDecisionBadge(ast.decision)),
-              DataCell(Text(ast.assessmentDate)),
-            ]);
-          }).toList(),
+        ),
+        child: SizedBox(
+          width: double.infinity,
+          child: DataTable(
+            headingRowColor: WidgetStateProperty.all(AppTheme.backgroundColor),
+            columns: const [
+              DataColumn(label: Text('ASSESSMENT ID', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold))),
+              DataColumn(label: Text('CUSTOMER NAME', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold))),
+              DataColumn(label: Text('RISK RATING', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold))),
+              DataColumn(label: Text('DECISION', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold))),
+              DataColumn(label: Text('DATE', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold))),
+            ],
+            rows: [
+              _buildRow('AST-1001', 'Ahmad Abdullah', 'Low', 'APPROVE', '2024-05-10', AppTheme.successColor),
+              _buildRow('AST-1002', 'Global Trading LLC', 'Medium', 'APPROVE', '2024-05-12', AppTheme.warningColor),
+              _buildRow('AST-1003', 'Mikhail Volkov', 'Very High', 'REJECT', '2024-05-14', Colors.black),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildRatingBadge(String rating) {
-    Color color;
-    switch (rating) {
-      case 'Low': color = AppTheme.successColor; break;
-      case 'Medium': color = AppTheme.warningColor; break;
-      case 'High': color = AppTheme.criticalColor; break;
-      case 'Very High': color = Colors.black; break;
-      default: color = AppTheme.primaryColor;
-    }
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-      decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(4)),
-      child: Text(rating, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: color)),
-    );
+  DataRow _buildRow(String id, String name, String rating, String dec, String date, Color color) {
+    return DataRow(cells: [
+      DataCell(Text(id, style: const TextStyle(fontFamily: 'monospace', fontSize: 12, fontWeight: FontWeight.bold))),
+      DataCell(Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13))),
+      DataCell(Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2), decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)), child: Text(rating, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: color)))),
+      DataCell(_buildDecisionBadge(dec)),
+      DataCell(Text(date, style: const TextStyle(fontSize: 12))),
+    ]);
   }
 
   Widget _buildDecisionBadge(String decision) {
-    Color color;
-    switch (decision) {
-      case 'Approve': color = AppTheme.successColor; break;
-      case 'Review': color = AppTheme.warningColor; break;
-      case 'Reject': color = AppTheme.criticalColor; break;
-      default: color = AppTheme.primaryColor;
-    }
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
-      child: Text(decision.toUpperCase(), style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: color)),
-    );
+    Color color = decision == 'REJECT' ? AppTheme.criticalColor : AppTheme.successColor;
+    return Container(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2), decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12)), child: Text(decision, style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: color)));
   }
 }

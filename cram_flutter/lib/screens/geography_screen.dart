@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../widgets/common_widgets.dart';
-import '../utils/app_theme.dart';
 
 class GeographyScreen extends StatelessWidget {
   const GeographyScreen({super.key});
@@ -14,7 +13,7 @@ class GeographyScreen extends StatelessWidget {
       body: Panel(
         title: 'Country Risk Levels',
         subtitle: 'FATF and Basel index based classifications',
-        trailing: ElevatedButton.icon(
+        action: ElevatedButton.icon(
           onPressed: () {},
           icon: const Icon(LucideIcons.plus, size: 16),
           label: const Text('Add Country'),
@@ -27,9 +26,9 @@ class GeographyScreen extends StatelessWidget {
             DataColumn(label: Text('Risk Rating')),
           ],
           rows: [
-            _buildRow('UAE', 'Low', '4.2', 'Low', AppTheme.successColor),
-            _buildRow('Afghanistan', 'High', '8.1', 'High', AppTheme.criticalColor),
-            _buildRow('Bahrain', 'Medium', '5.1', 'Medium', AppTheme.warningColor),
+            _buildRow('UAE', 'Low', '4.2', 'Low', const Color(0xFF10B981)),
+            _buildRow('Afghanistan', 'High', '8.1', 'High', const Color(0xFFEF4444)),
+            _buildRow('Bahrain', 'Medium', '5.1', 'Medium', const Color(0xFFF59E0B)),
           ],
         ),
       ),
@@ -43,7 +42,7 @@ class GeographyScreen extends StatelessWidget {
       DataCell(Text(basel)),
       DataCell(Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-        decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(4)),
+        decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
         child: Text(rating, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: color)),
       )),
     ]);

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../widgets/common_widgets.dart';
-import '../utils/app_theme.dart';
 
 class OverrideRulesScreen extends StatelessWidget {
   const OverrideRulesScreen({super.key});
@@ -14,7 +13,7 @@ class OverrideRulesScreen extends StatelessWidget {
       body: Panel(
         title: 'Active Rules',
         subtitle: 'Priority-based rule execution',
-        trailing: ElevatedButton.icon(
+        action: ElevatedButton.icon(
           onPressed: () {},
           icon: const Icon(LucideIcons.plus, size: 16),
           label: const Text('Add Rule'),
@@ -27,9 +26,9 @@ class OverrideRulesScreen extends StatelessWidget {
             DataColumn(label: Text('Status')),
           ],
           rows: [
-            _buildRow('Foreign PEP', 'PEP Status = Foreign', 'High Risk', AppTheme.criticalColor),
+            _buildRow('Foreign PEP', 'PEP Status = Foreign', 'High Risk', const Color(0xFFEF4444)),
             _buildRow('Virtual Currency', 'Industry = Crypto', 'Prohibited', Colors.black),
-            _buildRow('STR Filed', 'STR = Yes', 'High Risk', AppTheme.criticalColor),
+            _buildRow('STR Filed', 'STR = Yes', 'High Risk', const Color(0xFFEF4444)),
           ],
         ),
       ),
@@ -42,10 +41,10 @@ class OverrideRulesScreen extends StatelessWidget {
       DataCell(Text(cond, style: const TextStyle(fontFamily: 'monospace', fontSize: 12))),
       DataCell(Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-        decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(4)),
+        decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
         child: Text(outcome, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: color)),
       )),
-      const DataCell(Icon(LucideIcons.toggleRight, color: AppTheme.accentColor)),
+      const DataCell(Icon(LucideIcons.toggleRight, color: Color(0xFF0D9488))),
     ]);
   }
 }

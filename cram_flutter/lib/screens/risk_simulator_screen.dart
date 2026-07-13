@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../widgets/common_widgets.dart';
 import '../utils/app_theme.dart';
-import '../services/cram_service.dart';
 
 class RiskSimulatorScreen extends StatefulWidget {
   const RiskSimulatorScreen({super.key});
@@ -19,12 +18,16 @@ class _RiskSimulatorScreenState extends State<RiskSimulatorScreen> {
     setState(() => _calculating = true);
     Future.delayed(const Duration(milliseconds: 1200), () {
       setState(() {
-        _result = RiskEngine.calculateRisk(
-          residency: 'resident',
-          pepStatus: 'foreign-pep',
-          product: 'intl-transfer',
-          geography: 'uae',
-        );
+        _result = {
+          'score': 78,
+          'rating': 'High',
+          'factors': [
+            {'name': 'Customer Type Risk', 'score': 85, 'weight': 35, 'weighted': 29.75},
+            {'name': 'Geography Risk', 'score': 42, 'weight': 25, 'weighted': 10.5},
+            {'name': 'Product Risk', 'score': 90, 'weight': 30, 'weighted': 27.0},
+            {'name': 'Channel Risk', 'score': 50, 'weight': 10, 'weighted': 5.0},
+          ]
+        };
         _calculating = false;
       });
     });
@@ -38,42 +41,36 @@ class _RiskSimulatorScreenState extends State<RiskSimulatorScreen> {
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(child: _buildInputsPanel()),
+          Expanded(child: _buildInputs()),
           const SizedBox(width: 24),
-          Expanded(child: _buildResultsSection()),
+          Expanded(child: _buildResults()),
         ],
       ),
     );
   }
 
-  Widget _buildInputsPanel() {
+  Widget _buildInputs() {
     return Panel(
       title: 'Simulation Inputs',
       subtitle: 'Select customer profile details',
       child: Column(
         children: [
-          _buildDropdown('Residency Status', 'Resident'),
+          _buildField('Residency Status', 'Resident'),
           const SizedBox(height: 16),
-          _buildDropdown('PEP Status', 'Foreign PEP'),
+          _buildField('PEP Status', 'Foreign PEP'),
           const SizedBox(height: 16),
-          _buildDropdown('Nature of Business', 'Retail Trade'),
+          _buildField('Nature of Business', 'Retail Trade'),
           const SizedBox(height: 16),
-          _buildDropdown('Banking Product', 'International Transfer'),
-          const SizedBox(height: 24),
+          _buildField('Banking Product', 'International Transfer'),
+          const SizedBox(height: 32),
           SizedBox(
             width: double.infinity,
             height: 48,
             child: ElevatedButton.icon(
               onPressed: _calculating ? null : _handleCalculate,
-              icon: _calculating
-                ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
-                : const Icon(LucideIcons.playCircle),
-              label: Text(_calculating ? 'CALCULATING...' : 'CALCULATE RISK'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.primaryColor,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-              ),
+              icon: _calculating ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white)) : const Icon(LucideIcons.playCircle),
+              label: Text(_calculating ? 'Calculating...' : 'Calculate Risk', style: const TextStyle(fontWeight: FontWeight.bold)),
+              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primaryColor, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
             ),
           ),
         ],
@@ -81,52 +78,28 @@ class _RiskSimulatorScreenState extends State<RiskSimulatorScreen> {
     );
   }
 
-  Widget _buildDropdown(String label, String value) {
+  Widget _buildField(String label, String value) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppTheme.primaryColor)),
+        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: BoxDecoration(
-            border: Border.all(color: AppTheme.borderColor),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(value),
-              const Icon(LucideIcons.chevronDown, size: 16),
-            ],
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          decoration: BoxDecoration(border: Border.all(color: AppTheme.borderColor), borderRadius: BorderRadius.circular(8)),
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(value), const Icon(LucideIcons.chevronDown, size: 14)]),
         ),
       ],
     );
   }
 
-  Widget _buildResultsSection() {
-    if (_calculating) {
-      return const Center(child: CircularProgressIndicator());
-    }
+  Widget _buildResults() {
+    if (_calculating) return const Center(child: CircularProgressIndicator());
     if (_result == null) {
       return Container(
         height: 400,
-        decoration: BoxDecoration(
-          border: Border.all(color: AppTheme.borderColor, style: BorderStyle.none),
-          color: AppTheme.backgroundColor,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(LucideIcons.calculator, size: 48, color: Colors.black12),
-              SizedBox(height: 16),
-              Text('Ready to simulate risk assessment', style: TextStyle(color: AppTheme.mutedTextColor)),
-            ],
-          ),
-        ),
+        decoration: BoxDecoration(color: AppTheme.backgroundColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: AppTheme.borderColor, style: BorderStyle.none)),
+        child: const Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(LucideIcons.calculator, size: 48, color: Colors.black12), Text('Ready to simulate risk assessment', style: TextStyle(color: AppTheme.mutedTextColor))])),
       );
     }
 
@@ -137,31 +110,12 @@ class _RiskSimulatorScreenState extends State<RiskSimulatorScreen> {
           subtitle: 'Overall score and rating',
           child: Container(
             padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: AppTheme.accentColor.withOpacity(0.05),
-              borderRadius: BorderRadius.circular(12),
-            ),
+            decoration: BoxDecoration(color: AppTheme.primaryColor.withValues(alpha: 0.05), borderRadius: BorderRadius.circular(12), border: Border.all(color: AppTheme.primaryColor.withValues(alpha: 0.1))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('FINAL SCORE', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AppTheme.mutedTextColor)),
-                    Text('${_result!['overallScore']}', style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: AppTheme.primaryColor)),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    const Text('FINAL RATING', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AppTheme.mutedTextColor)),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                      decoration: BoxDecoration(color: AppTheme.criticalColor, borderRadius: BorderRadius.circular(4)),
-                      child: Text(_result!['finalRating'], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    ),
-                  ],
-                ),
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [const Text('FINAL SCORE', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AppTheme.mutedTextColor)), Text('${_result!['score']}', style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: AppTheme.primaryColor))]),
+                Column(crossAxisAlignment: CrossAxisAlignment.end, children: [const Text('FINAL RATING', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AppTheme.mutedTextColor)), Container(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6), decoration: BoxDecoration(color: AppTheme.criticalColor, borderRadius: BorderRadius.circular(8)), child: Text(_result!['rating'], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)))])
               ],
             ),
           ),
@@ -171,20 +125,19 @@ class _RiskSimulatorScreenState extends State<RiskSimulatorScreen> {
           title: 'Risk Breakdown',
           subtitle: 'Weighted contribution by factor',
           child: DataTable(
+            headingRowColor: WidgetStateProperty.all(AppTheme.backgroundColor),
             columns: const [
-              DataColumn(label: Text('Factor')),
-              DataColumn(label: Text('Score')),
-              DataColumn(label: Text('Weight')),
-              DataColumn(label: Text('Weighted')),
+              DataColumn(label: Text('FACTOR', style: TextStyle(fontSize: 11))),
+              DataColumn(label: Text('SCORE', style: TextStyle(fontSize: 11))),
+              DataColumn(label: Text('WEIGHT', style: TextStyle(fontSize: 11))),
+              DataColumn(label: Text('WEIGHTED', style: TextStyle(fontSize: 11))),
             ],
-            rows: (_result!['factors'] as List).map((f) {
-              return DataRow(cells: [
-                DataCell(Text(f['name'], style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold))),
-                DataCell(Text('${f['score']}')),
-                DataCell(Text('${f['weight']}%')),
-                DataCell(Text('${f['weightedScore']}', style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.accentColor))),
-              ]);
-            }).toList(),
+            rows: (_result!['factors'] as List).map((f) => DataRow(cells: [
+              DataCell(Text(f['name'], style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold))),
+              DataCell(Text('${f['score']}')),
+              DataCell(Text('${f['weight']}%')),
+              DataCell(Text('${f['weighted']}', style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.accentColor))),
+            ])).toList(),
           ),
         ),
       ],

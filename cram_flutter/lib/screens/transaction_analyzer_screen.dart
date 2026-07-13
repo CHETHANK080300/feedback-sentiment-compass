@@ -29,7 +29,17 @@ class _TransactionAnalyzerScreenState extends State<TransactionAnalyzerScreen> {
         children: [
           _buildFilterBar(),
           const SizedBox(height: 24),
-          _buildKpiGrid(),
+          const Row(
+            children: [
+              Expanded(child: KpiCard(title: 'Total Transactions', value: '45,239', delta: 12.5, icon: LucideIcons.refreshCcw, tone: 'primary')),
+              SizedBox(width: 16),
+              Expanded(child: KpiCard(title: 'Transaction Value', value: '\$2.14M', delta: 8.1, icon: LucideIcons.creditCard, tone: 'accent')),
+              SizedBox(width: 16),
+              Expanded(child: KpiCard(title: 'Active Customers', value: '12,847', delta: 5.3, icon: LucideIcons.users, tone: 'info')),
+              SizedBox(width: 16),
+              Expanded(child: KpiCard(title: 'Avg Processing Time', value: '1.8s', delta: -3.2, icon: LucideIcons.clock, tone: 'success')),
+            ],
+          ),
           const SizedBox(height: 24),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,6 +62,14 @@ class _TransactionAnalyzerScreenState extends State<TransactionAnalyzerScreen> {
               Expanded(child: _buildDistributionPanel('Transaction Types', 'Classification of activities', 'type')),
             ],
           ),
+          const SizedBox(height: 24),
+          Row(
+            children: [
+              Expanded(child: _buildRaisedDisputesPanel()),
+              const SizedBox(width: 24),
+              Expanded(child: _buildRecentTransactionsPanel()),
+            ],
+          ),
         ],
       ),
     );
@@ -64,33 +82,63 @@ class _TransactionAnalyzerScreenState extends State<TransactionAnalyzerScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextButton.icon(
+          OutlinedButton.icon(
             onPressed: () => setState(() => _drillDown = null),
-            icon: const Icon(LucideIcons.arrowLeft, size: 16),
+            icon: const Icon(LucideIcons.arrowLeft, size: 14),
             label: const Text('Back to Dashboard'),
+            style: OutlinedButton.styleFrom(
+              visualDensity: VisualDensity.compact,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            ),
+          ),
+          const SizedBox(height: 24),
+          const Row(
+            children: [
+              Expanded(child: KpiCard(title: 'Selected Volume', value: '14.2K', delta: 4.2, icon: LucideIcons.refreshCcw, tone: 'primary')),
+              SizedBox(width: 16),
+              Expanded(child: KpiCard(title: 'Success Rate', value: '99.4%', delta: 0.2, icon: LucideIcons.zap, tone: 'success')),
+              SizedBox(width: 16),
+              Expanded(child: KpiCard(title: 'Avg. Latency', value: '1.2s', delta: -5.0, icon: LucideIcons.clock, tone: 'info')),
+            ],
           ),
           const SizedBox(height: 24),
           Row(
             children: [
-              Expanded(child: KpiCard(title: 'Selected Volume', value: _drillDown!['value'] == 'Mobile' ? '14.2K' : '8.5K', trend: '4.2%', isPositive: true, icon: LucideIcons.refreshCcw)),
-              const SizedBox(width: 16),
-              const Expanded(child: KpiCard(title: 'Success Rate', value: '99.4%', trend: '0.2%', isPositive: true, icon: LucideIcons.zap)),
-              const SizedBox(width: 16),
-              const Expanded(child: KpiCard(title: 'Avg. Latency', value: '1.2s', trend: '5%', isPositive: false, icon: LucideIcons.clock)),
+              const Expanded(
+                child: Panel(
+                  title: 'Trend Analysis',
+                  subtitle: 'Performance over the last 30 days',
+                  child: SizedBox(
+                    height: 300,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(LucideIcons.trendingUp, size: 32, color: Colors.black12),
+                          SizedBox(height: 12),
+                          Text('Trend Visualization Loading...', style: TextStyle(color: AppTheme.mutedTextColor)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 24),
+              Expanded(
+                child: Panel(
+                  title: 'User Demographics',
+                  subtitle: 'Segment distribution for this category',
+                  child: Column(
+                    children: [
+                      _buildDemographicRow('Retail', 65),
+                      _buildDemographicRow('Corporate', 20),
+                      _buildDemographicRow('HNI', 10),
+                      _buildDemographicRow('Others', 5),
+                    ],
+                  ),
+                ),
+              ),
             ],
-          ),
-          const SizedBox(height: 24),
-          Panel(
-            title: 'User Demographics',
-            subtitle: 'Segment distribution for ${_drillDown!['value']}',
-            child: Column(
-              children: [
-                _buildDemographicRow('Retail', _drillDown!['value'] == 'Mobile' ? 75 : 45),
-                _buildDemographicRow('Corporate', 15),
-                _buildDemographicRow('HNI', 8),
-                _buildDemographicRow('Others', 2),
-              ],
-            ),
           ),
         ],
       ),
@@ -105,8 +153,8 @@ class _TransactionAnalyzerScreenState extends State<TransactionAnalyzerScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),
-              Text('$value%', style: const TextStyle(color: AppTheme.mutedTextColor)),
+              Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AppTheme.primaryColor)),
+              Text('$value%', style: const TextStyle(color: AppTheme.mutedTextColor, fontSize: 12)),
             ],
           ),
           const SizedBox(height: 8),
@@ -137,15 +185,15 @@ class _TransactionAnalyzerScreenState extends State<TransactionAnalyzerScreen> {
               ),
               child: const Row(
                 children: [
-                  Text('This Month'),
+                  Text('This Month', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
                   SizedBox(width: 8),
-                  Icon(LucideIcons.chevronDown, size: 16),
+                  Icon(LucideIcons.chevronDown, size: 14),
                 ],
               ),
             ),
             const SizedBox(width: 12),
             Container(
-              width: 250,
+              width: 300,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -154,9 +202,9 @@ class _TransactionAnalyzerScreenState extends State<TransactionAnalyzerScreen> {
               ),
               child: const Row(
                 children: [
-                  Icon(LucideIcons.search, size: 16, color: AppTheme.mutedTextColor),
+                  Icon(LucideIcons.search, size: 14, color: AppTheme.mutedTextColor),
                   SizedBox(width: 8),
-                  Text('Filter transactions...', style: TextStyle(color: AppTheme.mutedTextColor)),
+                  Text('Filter transactions...', style: TextStyle(color: AppTheme.mutedTextColor, fontSize: 13)),
                 ],
               ),
             ),
@@ -166,31 +214,19 @@ class _TransactionAnalyzerScreenState extends State<TransactionAnalyzerScreen> {
           children: [
             OutlinedButton.icon(
               onPressed: () {},
-              icon: const Icon(LucideIcons.filter, size: 16),
-              label: const Text('Filters'),
+              icon: const Icon(LucideIcons.filter, size: 14),
+              label: const Text('Filters', style: TextStyle(fontSize: 12)),
+              style: OutlinedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
             ),
             const SizedBox(width: 12),
             OutlinedButton.icon(
               onPressed: () {},
-              icon: const Icon(LucideIcons.download, size: 16),
-              label: const Text('Export'),
+              icon: const Icon(LucideIcons.download, size: 14),
+              label: const Text('Export', style: TextStyle(fontSize: 12)),
+              style: OutlinedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
             ),
           ],
         ),
-      ],
-    );
-  }
-
-  Widget _buildKpiGrid() {
-    return const Row(
-      children: [
-        Expanded(child: KpiCard(title: 'Total Transactions', value: '45,239', trend: '12.5%', isPositive: true, icon: LucideIcons.refreshCcw)),
-        SizedBox(width: 16),
-        Expanded(child: KpiCard(title: 'Transaction Value', value: '\$2.14M', trend: '8.1%', isPositive: true, icon: LucideIcons.creditCard)),
-        SizedBox(width: 16),
-        Expanded(child: KpiCard(title: 'Active Customers', value: '12,847', trend: '5.3%', isPositive: true, icon: LucideIcons.users)),
-        SizedBox(width: 16),
-        Expanded(child: KpiCard(title: 'Avg Processing Time', value: '1.8s', trend: '3.2%', isPositive: true, icon: LucideIcons.clock)),
       ],
     );
   }
@@ -199,7 +235,7 @@ class _TransactionAnalyzerScreenState extends State<TransactionAnalyzerScreen> {
     return Panel(
       title: 'Transaction Volume Trend',
       subtitle: 'Volume of transactions by category',
-      trailing: Container(
+      action: Container(
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           color: AppTheme.backgroundColor,
@@ -223,11 +259,11 @@ class _TransactionAnalyzerScreenState extends State<TransactionAnalyzerScreen> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         decoration: BoxDecoration(
           color: active ? Colors.white : Colors.transparent,
-          borderRadius: BorderRadius.circular(4),
-          boxShadow: active ? [const BoxShadow(color: Colors.black12, blurRadius: 2)] : null,
+          borderRadius: BorderRadius.circular(6),
+          boxShadow: active ? [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 4, offset: const Offset(0, 1))] : null,
         ),
         child: Text(
           label,
@@ -244,10 +280,11 @@ class _TransactionAnalyzerScreenState extends State<TransactionAnalyzerScreen> {
   Widget _buildAreaChart() {
     return LineChart(
       LineChartData(
-        gridData: const FlGridData(show: true, drawVerticalLine: false),
+        gridData: const FlGridData(show: true, drawVerticalLine: false, horizontalInterval: 1),
         titlesData: const FlTitlesData(
           rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true, reservedSize: 30)),
         ),
         borderData: FlBorderData(show: false),
         lineBarsData: [
@@ -255,17 +292,17 @@ class _TransactionAnalyzerScreenState extends State<TransactionAnalyzerScreen> {
             isCurved: true,
             color: AppTheme.accentColor,
             barWidth: 3,
-            isStrokeCapRound: true,
             dotData: const FlDotData(show: false),
-            belowBarData: BarAreaData(show: true, color: AppTheme.accentColor.withOpacity(0.1)),
-            spots: const [
-              FlSpot(0, 3),
-              FlSpot(1, 4),
-              FlSpot(2, 3.5),
-              FlSpot(3, 5),
-              FlSpot(4, 4.5),
-              FlSpot(5, 6),
-            ],
+            belowBarData: BarAreaData(show: true, color: AppTheme.accentColor.withValues(alpha: 0.1)),
+            spots: const [FlSpot(0, 3), FlSpot(1, 5), FlSpot(2, 4), FlSpot(3, 7), FlSpot(4, 6), FlSpot(5, 8), FlSpot(6, 4)],
+          ),
+          LineChartBarData(
+            isCurved: true,
+            color: AppTheme.primaryColor,
+            barWidth: 3,
+            dotData: const FlDotData(show: false),
+            belowBarData: BarAreaData(show: true, color: AppTheme.primaryColor.withValues(alpha: 0.05)),
+            spots: const [FlSpot(0, 2), FlSpot(1, 3), FlSpot(2, 2.5), FlSpot(3, 4), FlSpot(4, 3.5), FlSpot(5, 5), FlSpot(6, 2)],
           ),
         ],
       ),
@@ -281,13 +318,13 @@ class _TransactionAnalyzerScreenState extends State<TransactionAnalyzerScreen> {
           topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
         ),
         borderData: FlBorderData(show: false),
-        barGroups: [
-          BarChartGroupData(x: 0, barRods: [BarChartRodData(toY: 8, color: AppTheme.accentColor, width: 16)]),
-          BarChartGroupData(x: 1, barRods: [BarChartRodData(toY: 10, color: AppTheme.primaryColor, width: 16)]),
-          BarChartGroupData(x: 2, barRods: [BarChartRodData(toY: 14, color: AppTheme.accentColor, width: 16)]),
-          BarChartGroupData(x: 3, barRods: [BarChartRodData(toY: 15, color: AppTheme.primaryColor, width: 16)]),
-          BarChartGroupData(x: 4, barRods: [BarChartRodData(toY: 13, color: AppTheme.accentColor, width: 16)]),
-        ],
+        barGroups: List.generate(7, (i) => BarChartGroupData(
+          x: i,
+          barRods: [
+            BarChartRodData(toY: (i + 2) * 2.0, color: AppTheme.accentColor, width: 12, borderRadius: BorderRadius.circular(4)),
+            BarChartRodData(toY: (i + 1) * 1.5, color: AppTheme.primaryColor, width: 12, borderRadius: BorderRadius.circular(4)),
+          ],
+        )),
       ),
     );
   }
@@ -298,22 +335,24 @@ class _TransactionAnalyzerScreenState extends State<TransactionAnalyzerScreen> {
       subtitle: 'Real-time notifications',
       child: Column(
         children: [
-          _buildAlertItem('Activity Spike', 'International transfer volume exceeded threshold by 42% in UAE.', AppTheme.criticalColor, LucideIcons.alertTriangle),
+          _buildAlertItem('Activity Spike', 'International transfer volume exceeded threshold by 42% in UAE.', AppTheme.criticalColor, LucideIcons.alertTriangle, '10:42 AM'),
           const SizedBox(height: 16),
-          _buildAlertItem('Security Concern', 'Multiple failed login attempts detected from unrecognized IP range.', AppTheme.warningColor, LucideIcons.shieldAlert),
+          _buildAlertItem('Security Concern', 'Multiple failed login attempts detected from unrecognized IP range.', AppTheme.warningColor, LucideIcons.shieldAlert, '09:15 AM'),
           const SizedBox(height: 16),
-          _buildAlertItem('System Status', 'Primary database maintenance completed. All services operational.', AppTheme.primaryColor, LucideIcons.zap),
+          _buildAlertItem('System Status', 'Primary database maintenance completed. All services operational.', AppTheme.primaryColor, LucideIcons.zap, '08:00 AM'),
+          const SizedBox(height: 12),
+          TextButton(onPressed: () {}, child: const Text('View All Notifications →', style: TextStyle(fontSize: 11))),
         ],
       ),
     );
   }
 
-  Widget _buildAlertItem(String title, String desc, Color color, IconData icon) {
+  Widget _buildAlertItem(String title, String desc, Color color, IconData icon, String time) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.05),
-        border: Border.all(color: color.withOpacity(0.2)),
+        color: color.withValues(alpha: 0.05),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -321,7 +360,7 @@ class _TransactionAnalyzerScreenState extends State<TransactionAnalyzerScreen> {
         children: [
           Container(
             padding: const EdgeInsets.all(6),
-            decoration: BoxDecoration(color: color.withOpacity(0.1), shape: BoxShape.circle),
+            decoration: BoxDecoration(color: color.withValues(alpha: 0.1), shape: BoxShape.circle),
             child: Icon(icon, size: 14, color: color),
           ),
           const SizedBox(width: 12),
@@ -329,7 +368,13 @@ class _TransactionAnalyzerScreenState extends State<TransactionAnalyzerScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: color)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(title, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: color)),
+                    Text(time, style: const TextStyle(fontSize: 9, color: AppTheme.mutedTextColor)),
+                  ],
+                ),
                 const SizedBox(height: 4),
                 Text(desc, style: const TextStyle(fontSize: 11, color: AppTheme.mutedTextColor)),
               ],
@@ -342,9 +387,10 @@ class _TransactionAnalyzerScreenState extends State<TransactionAnalyzerScreen> {
 
   Widget _buildDistributionPanel(String title, String subtitle, String type) {
     final List<PieChartSectionData> sections = [
-      PieChartSectionData(color: AppTheme.accentColor, value: 45, title: '45%', radius: 40, titleStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white)),
-      PieChartSectionData(color: AppTheme.primaryColor, value: 30, title: '30%', radius: 40, titleStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white)),
-      PieChartSectionData(color: const Color(0xFF334155), value: 15, title: '15%', radius: 40, titleStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white)),
+      PieChartSectionData(color: AppTheme.accentColor, value: 45, title: '', radius: 30),
+      PieChartSectionData(color: AppTheme.primaryColor, value: 30, title: '', radius: 30),
+      PieChartSectionData(color: const Color(0xFF334155), value: 15, title: '', radius: 30),
+      PieChartSectionData(color: const Color(0xFF64748B), value: 10, title: '', radius: 30),
     ];
 
     return Panel(
@@ -353,7 +399,7 @@ class _TransactionAnalyzerScreenState extends State<TransactionAnalyzerScreen> {
       child: Column(
         children: [
           SizedBox(
-            height: 200,
+            height: 180,
             child: PieChart(
               PieChartData(
                 sections: sections,
@@ -361,14 +407,12 @@ class _TransactionAnalyzerScreenState extends State<TransactionAnalyzerScreen> {
                 sectionsSpace: 4,
                 pieTouchData: PieTouchData(
                   touchCallback: (event, response) {
-                    if (response != null && response.touchedSection != null) {
+                    if (event is FlTapUpEvent && response != null && response.touchedSection != null) {
                       final index = response.touchedSection!.touchedSectionIndex;
-                      if (index >= 0 && index < sections.length) {
+                      if (index >= 0) {
                          setState(() {
-                           final value = index == 0 ? (type == 'channel' ? 'Mobile' : 'Deposits')
-                                      : index == 1 ? (type == 'channel' ? 'Internet' : 'Transfers')
-                                      : (type == 'channel' ? 'ATM' : 'Withdrawals');
-                           _drillDown = {'type': type, 'value': value};
+                           final val = index == 0 ? 'Mobile' : index == 1 ? 'Internet' : 'ATM';
+                           _drillDown = {'type': type, 'value': type == 'channel' ? val : (index == 0 ? 'Deposits' : 'Transfers')};
                          });
                       }
                     }
@@ -377,9 +421,81 @@ class _TransactionAnalyzerScreenState extends State<TransactionAnalyzerScreen> {
               ),
             ),
           ),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _LegendItem(color: AppTheme.accentColor, label: 'Teal'),
+              SizedBox(width: 12),
+              _LegendItem(color: AppTheme.primaryColor, label: 'Slate'),
+            ],
+          ),
+          const SizedBox(height: 12),
           const Text('Tip: Click a segment to drill down', style: TextStyle(fontSize: 10, fontStyle: FontStyle.italic, color: AppTheme.mutedTextColor)),
         ],
       ),
+    );
+  }
+
+  Widget _buildRaisedDisputesPanel() {
+    return Panel(
+      title: 'Raised Disputes',
+      subtitle: 'Recent customer issue tracking',
+      child: Column(
+        children: [
+           _buildTable([
+             ['DIS-7721', 'Ahmad Abdullah', 'Transaction Error', 'PENDING'],
+             ['DIS-4410', 'Elena Rodriguez', 'Unauthorized', 'REVIEW'],
+             ['DIS-2291', 'Samuel Kwok', 'Double Billing', 'RESOLVED'],
+           ]),
+           const SizedBox(height: 12),
+           TextButton(onPressed: () {}, child: const Text('Manage All Disputes →', style: TextStyle(fontSize: 11))),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRecentTransactionsPanel() {
+    return Panel(
+      title: 'Recent Transactions',
+      subtitle: 'Live activity stream',
+      child: Column(
+        children: [
+          _buildTable([
+            ['TXN-88291', 'Ahmad Abdullah', '\$1,240.00', 'Mobile'],
+            ['TXN-88292', 'Elena Rodriguez', '\$500.00', 'ATM'],
+            ['TXN-88293', 'Samuel Kwok', '\$3,120.00', 'Branch'],
+          ], isTxn: true),
+          const SizedBox(height: 12),
+          TextButton(onPressed: () {}, child: const Text('View Full Transaction Log →', style: TextStyle(fontSize: 11))),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTable(List<List<String>> data, {bool isTxn = false}) {
+    return Table(
+      children: data.map((row) => TableRow(
+        children: row.map((cell) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12.0),
+          child: Text(cell, style: TextStyle(fontSize: 12, fontWeight: isTxn && cell.contains('\$') ? FontWeight.bold : FontWeight.normal, color: isTxn && cell.contains('\$') ? AppTheme.accentColor : AppTheme.primaryColor)),
+        )).toList(),
+      )).toList(),
+    );
+  }
+}
+
+class _LegendItem extends StatelessWidget {
+  final Color color;
+  final String label;
+  const _LegendItem({required this.color, required this.label});
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(width: 8, height: 8, decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(2))),
+        const SizedBox(width: 4),
+        Text(label, style: const TextStyle(fontSize: 10, color: AppTheme.mutedTextColor)),
+      ],
     );
   }
 }

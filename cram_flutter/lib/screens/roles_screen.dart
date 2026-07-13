@@ -14,35 +14,35 @@ class RolesScreen extends StatelessWidget {
       body: Panel(
         title: 'Permission Matrix',
         subtitle: 'Configure RBAC for system modules',
-        trailing: ElevatedButton.icon(
-          onPressed: () {},
-          icon: const Icon(LucideIcons.shieldCheck, size: 16),
-          label: const Text('Update Permissions'),
-        ),
-        child: DataTable(
-          columns: const [
-            DataColumn(label: Text('Feature')),
-            DataColumn(label: Text('Admin')),
-            DataColumn(label: Text('Manager')),
-            DataColumn(label: Text('Auditor')),
-          ],
-          rows: [
-            _buildRow('Risk Parameters', true, true, false),
-            _buildRow('Risk Weights', true, false, false),
-            _buildRow('Audit Logs', true, true, true),
-            _buildRow('User Management', true, false, false),
-          ],
+        action: ElevatedButton.icon(onPressed: () {}, icon: const Icon(LucideIcons.shieldCheck, size: 14), label: const Text('Update Permissions', style: TextStyle(fontSize: 12)), style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primaryColor, foregroundColor: Colors.white)),
+        child: SizedBox(
+          width: double.infinity,
+          child: DataTable(
+            headingRowColor: WidgetStateProperty.all(AppTheme.backgroundColor),
+            columns: const [
+              DataColumn(label: Text('FEATURE', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold))),
+              DataColumn(label: Text('ADMIN', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold))),
+              DataColumn(label: Text('MANAGER', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold))),
+              DataColumn(label: Text('AUDITOR', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold))),
+            ],
+            rows: [
+              _buildRow('Risk Parameters', true, true, false),
+              _buildRow('Risk Weights', true, false, false),
+              _buildRow('Audit Logs', true, true, true),
+              _buildRow('Workflows', true, true, false),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  DataRow _buildRow(String feature, bool admin, bool manager, bool auditor) {
+  DataRow _buildRow(String feat, bool adm, bool mgr, bool aud) {
     return DataRow(cells: [
-      DataCell(Text(feature, style: const TextStyle(fontWeight: FontWeight.bold))),
-      DataCell(Icon(admin ? LucideIcons.check : LucideIcons.x, color: admin ? AppTheme.successColor : AppTheme.criticalColor, size: 16)),
-      DataCell(Icon(manager ? LucideIcons.check : LucideIcons.x, color: manager ? AppTheme.successColor : AppTheme.criticalColor, size: 16)),
-      DataCell(Icon(auditor ? LucideIcons.check : LucideIcons.x, color: auditor ? AppTheme.successColor : AppTheme.criticalColor, size: 16)),
+      DataCell(Text(feat, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13))),
+      DataCell(Icon(adm ? LucideIcons.check : LucideIcons.x, color: adm ? AppTheme.successColor : AppTheme.criticalColor, size: 16)),
+      DataCell(Icon(mgr ? LucideIcons.check : LucideIcons.x, color: mgr ? AppTheme.successColor : AppTheme.criticalColor, size: 16)),
+      DataCell(Icon(aud ? LucideIcons.check : LucideIcons.x, color: aud ? AppTheme.successColor : AppTheme.criticalColor, size: 16)),
     ]);
   }
 }
